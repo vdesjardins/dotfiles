@@ -1,0 +1,155 @@
+#!/usr/bin/env bash
+
+alias ls='ls --color'
+alias grep="grep --color"
+alias a='ls -A'
+alias la='ls -A -l -G'
+alias cdd='cd -'
+alias dl='dirs -v'
+function cdc() {
+    cd $1; ls
+}
+alias l="ls -ltrhG"
+alias h="history"
+
+alias dus='du -ms * | sort -n'
+
+# Quick cd
+function cr() {
+    cd ~/projects/$*
+}
+alias cdh="cd ~/projects/hotel"
+alias cdx="cd ~/projects/x24"
+
+# Utility
+alias reload="source ~/bin/dotfiles/bash/aliases"
+alias ea="$EDITOR ~/bin/dotfiles/bash/aliases; reload"
+alias ee="$EDITOR ~/bin/dotfiles/bash/env"
+alias eal="$EDITOR ~/.local.aliases; source ~/.local.aliases"
+alias eel="$EDITOR ~/.local.env"
+
+# docker
+alias d="sudo docker"
+alias dri="sudo docker run -it --rm"
+
+function take {
+    mkdir $1
+    cd $1
+}
+
+# ssh
+function settitle() {
+    printf "\033k$1\033\\"
+}
+
+function ssh() {
+    settitle "$*"
+    command ssh "$@"
+    r=$?
+    settitle "${SHELL##*/}"
+    return $r
+}
+
+# Finder
+alias o="open . &"
+alias ff="open -a Firefox"
+
+# Git
+alias g="git"
+alias gs="git status"
+alias gb="git branch"
+alias gba="git branch -a"
+alias gco="git checkout"
+alias ga="git add"
+alias gc="git commit"
+alias gd="git diff"
+alias gdm="git diff master"
+alias gp="git pull"
+alias gf="git fetch"
+alias gpu="git push"
+alias gl="git log"
+alias grm="git ls-files --deleted -z | xargs -0 git rm"
+alias eg="$EDITOR .git/config"
+# merge a subtree. Feed it with a remote name and the local branch (ex.: master)
+alias gsm="git merge --squash -s subtree --no-commit"
+
+# edit dirty files
+alias edf="vim \$(git status -s -uno -z | sed 's/ M//g')"
+
+stashgrep() {
+  for i in `git stash list | awk -F ':' '{print $1}'`; do
+    git stash show -p $i | grep -H --label="$i" "$1"
+  done
+}
+
+# Emacs
+alias em="open -a Emacs"
+alias emm="open -a Emacs ."
+
+# tags
+function ct() {
+    rm -f TAGS
+    etags --append --output=TAGS $*
+}
+
+# Processes
+alias tu='top -o cpu'
+alias tm='top -o vsize'
+
+# trace
+function stc() {
+  strace -f -s 4096 -o /tmp/trace.trc "$@"
+}
+function stp() {
+  strace -f -s 4096 -o /tmp/trace.trc -p $1
+}
+
+# Rails
+alias r="rake"
+alias rmig="rake db:migrate"
+
+# Ruby
+alias irb="irb --readline -r irb/completion"
+alias rii="ri -Tf ansi"
+
+# open file. Can use xdg-open too. which one is better?
+alias ']'="gnome-open"
+
+# oracle
+alias sqlplus='rlwrap /usr/bin/sqlplus /nolog'
+
+# mysql
+alias mysql='mysql -uroot -p --prompt="mysql (\d)> "'
+
+# apt
+alias aptu='sudo apt-get update && sudo apt-get dist-upgrade'
+alias aptdu='sudo apt-get dist-upgrade'
+alias apti='sudo apt-get install'
+alias apts='apt-cache search'
+alias aptsh='apt-cache show'
+
+# pretty print of environment variables for a running process
+function pp_env() {
+    if [ $(id -u) -eq 0 ]; then
+        sudo=""
+    else
+        sudo="sudo"
+    fi
+    $sudo bash -c "xargs --null --max-args=1 echo < /proc/$1/environ"
+}
+
+# find ssh host using substring
+function fhost() {
+    local part=$1
+
+    [[ -f ~/.ssh/known_hosts ]] && hosts=$(awk '{print $1}' ~/.ssh/known_hosts | tr ',' '\n')
+    #[[ -f ~/.ssh/config ]] && hosts_config=$(grep ^Host ~/.ssh/config | sed s/Host\ // | egrep -v '^\*$')
+    #hosts=(${hosts[@]-} ${hosts_config[@]-})
+
+    SAVE_IFS=$IFS
+    IFS="\n"
+    hosts_str="${hosts[*]}"
+    IFS=$SAVE_IFS
+
+    echo $hosts_str | grep $part
+}

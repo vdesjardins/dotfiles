@@ -1,0 +1,10 @@
+Host *
+	ControlMaster auto
+	ControlPath /tmp/%r@%h:%p
+	PermitLocalCommand yes
+	LocalCommand ~/bin/screen_ssh.sh $PPID %n
+	HashKnownHosts no
+	ForwardAgent yes
+	IdentityFile ~/.ssh/keys/id_rsa_%r
+	IdentityFile ~/.ssh/id_rsa
+

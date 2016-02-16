@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+export PATH="$HOME/tools/bin:$HOME/bin:$PATH"
+
+export CLICOLOR="YES"
+
+export EDITOR=vim
+
+export HISTFILESIZE=3000
+export PYTHONSTARTUP=~/.pythonrc
+export MANPATH=/usr/local/man:$MANPATH
+
+# cdargs
+if [ -f /usr/share/doc/cdargs/examples/cdargs-bash.sh ]; then
+  source /usr/share/doc/cdargs/examples/cdargs-bash.sh
+fi
+
+if [[ -f ~/bin/shell_prompt.sh ]]; then
+  source ~/bin/shell_prompt.sh
+fi
+
+# rvm
+if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi

@@ -1,0 +1,64 @@
+[user]
+	name = Vincent Desjardins
+	email = vdesjardins@gmail.com
+[mirror]
+	summary = true
+[core]
+	excludesfile = /home/vdesjardins/.gitignore
+[alias]
+	st = status
+	c  = commit
+	co = checkout
+	ps = push
+	pl = pull
+	br = branch
+	bra = branch -a
+	bi = bisect
+	a = add
+	d = diff
+	dm = diff master
+	f = fetch
+	l = log --numstat
+	mt = mergetool
+	who = shortlog -s --
+	r = !sh -c 'git ls-files --deleted -z | xargs -0 git rm'
+	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+	whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+	intercommit = !sh -c 'git show "$1" > .git/commit1 && git show "$2" > .git/commit2 && interdiff .git/commit[12] | less -FRS' -
+	edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; vim `f`"
+	add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
+	graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+	alias = !sh -c '[ $# = 2 ] && git config --global alias.\"$1\" \"$2\" && exit 0 || echo \"usage: git alias <new alias> <original command>\" >&2 && exit 1' -
+	aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	ui = auto
+	interactive = auto
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+[merge]
+	conflictstyle = diff3
+	tool = vimdiff
+[push]
+	# for now since git at work doesn't support simple.
+	#default = simple
+	default = current
