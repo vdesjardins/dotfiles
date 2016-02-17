@@ -22,9 +22,9 @@ alias cdh="cd ~/projects/hotel"
 alias cdx="cd ~/projects/x24"
 
 # Utility
-alias reload="source ~/bin/dotfiles/bash/aliases"
-alias ea="$EDITOR ~/bin/dotfiles/bash/aliases; reload"
-alias ee="$EDITOR ~/bin/dotfiles/bash/env"
+alias reload="source ~/dotfiles/bash/aliases"
+alias ea="$EDITOR ~/dotfiles/bash/aliases; reload"
+alias ee="$EDITOR ~/dotfiles/bash/env"
 alias eal="$EDITOR ~/.local.aliases; source ~/.local.aliases"
 alias eel="$EDITOR ~/.local.env"
 

@@ -42,9 +42,9 @@ if [ "$(uname)" = "Linux" ]; then
   watch=notme
   export LOGCHECK=60
 
-  . ~/bin/dotfiles/zsh/env
-  . ~/bin/dotfiles/zsh/config
-  . ~/bin/dotfiles/zsh/aliases
+  . ~/dotfiles/zsh/env
+  . ~/dotfiles/zsh/config
+  . ~/dotfiles/zsh/aliases
 
   # use .localzshrc for settings specific to one system
   [[ -f ~/.localzshrc ]] && .  ~/.localzshrc

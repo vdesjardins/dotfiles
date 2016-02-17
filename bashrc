@@ -1,7 +1,7 @@
 if [ "$(uname)" = "Linux" ]; then
-  source ~/bin/dotfiles/bash/env
-  source ~/bin/dotfiles/bash/config
-  source ~/bin/dotfiles/bash/aliases
+  source ~/dotfiles/bash/env
+  source ~/dotfiles/bash/config
+  source ~/dotfiles/bash/aliases
 
   # for settings specific to one system
   [[ -f ~/.local.env ]] && source ~/.local.env
