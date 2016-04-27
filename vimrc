@@ -87,6 +87,7 @@ Plugin 'vim-scripts/logstash.vim'
 Plugin 'saltstack/salt-vim'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'vim-scripts/ZoomWin'
+Plugin 'junegunn/vim-easy-align'
 
 call vundle#end()
 syntax on                 " Enable syntax highlighting
@@ -774,3 +775,13 @@ let g:syntastic_python_checkers = ['pylint']
 noremap <leader>z :call ZoomWin()<CR>
 " }}}
 
+" vimrooter -------------------------------- {{{
+let g:rooter_patterns = ['.git/']
+" }}}
+
+" vim-easy-align -------------------------------- {{{
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+" }}}
