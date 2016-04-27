@@ -87,6 +87,7 @@ Plugin 'vim-scripts/logstash.vim'
 Plugin 'saltstack/salt-vim'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'vim-scripts/ZoomWin'
+Plugin 'editorconfig/editorconfig-vim'
 
 call vundle#end()
 syntax on                 " Enable syntax highlighting
