@@ -119,7 +119,7 @@ alias ']'="gnome-open"
 alias sqlplus='rlwrap /usr/bin/sqlplus /nolog'
 
 # mysql
-alias mysql='mysql -uroot -p --prompt="mysql (\d)> "'
+#alias mysql='mysql -uroot -p --prompt="mysql (\d)> "'
 
 # apt
 alias aptu='sudo apt-get update && sudo apt-get dist-upgrade'
