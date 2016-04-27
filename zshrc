@@ -26,7 +26,7 @@ if [ "$(uname)" = "Linux" ]; then
 
   # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
   # Example format: plugins=(rails git textmate ruby lighthouse)
-  plugins=(git ruby rails cap gem zsh-syntax-highlighting history-substring-search node rvm svn thor bundler lein extract ssh-agent golang dircycle docker yum history rsync systemd tmux)
+  plugins=(git ruby rails cap gem zsh-syntax-highlighting history-substring-search node rvm svn thor bundler lein extract ssh-agent golang dircycle docker yum dnf history rsync systemd tmux chucknorris golang man mvn pip vundle)
 
   source $ZSH/oh-my-zsh.sh
 
@@ -72,3 +72,11 @@ fi
 
 export PATH=$PATH:$HOME/.rvm/bin:$HOME/.local/bin # Add RVM and Python to PATH
 
+# disable auto correct
+unsetopt correct_all
+
+# The next line updates PATH for the Google Cloud SDK.
+[[ -d $HOME/google-cloud-sdk ]] && source '/home/vdesjardins/google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+[[ -d $HOME/google-cloud-sdk ]] && source '/home/vdesjardins/google-cloud-sdk/completion.zsh.inc'
