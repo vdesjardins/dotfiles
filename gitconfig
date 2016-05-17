@@ -63,3 +63,7 @@
 	# for now since git at work doesn't support simple.
 	#default = simple
 	default = current
+[pull]
+	rebase = true
+[branch]
+	autosetuprebase = always
