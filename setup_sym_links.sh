@@ -15,3 +15,5 @@ done
 rm ~/.ssh/config
 ln -s ~/dotfiles/ssh/config ~/.ssh/config
 
+# vim
+mkdir ~/.vimundo ~/.vimbkp
