@@ -46,7 +46,7 @@ if MySys() ==# "unix"
 endif
 
 " We're always using the default vundle to start things up.
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin(s:vundle_plugin_path)
 Plugin 'gmarik/vundle'
 Plugin 'fatih/vim-go'
@@ -85,10 +85,10 @@ Plugin 'nanotech/jellybeans.vim'
 Plugin 'morhetz/gruvbox'
 Plugin 'vim-scripts/logstash.vim'
 Plugin 'saltstack/salt-vim'
-Plugin 'chase/vim-ansible-yaml'
 Plugin 'vim-scripts/ZoomWin'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'editorconfig/editorconfig-vim'
+Plugin 'pearofducks/ansible-vim'
 
 call vundle#end()
 syntax on                 " Enable syntax highlighting
@@ -786,3 +786,10 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 " }}}
+
+" ansible -------------------------------- {{{
+let g:ansible_attribute_highlight = "ob"
+let g:ansible_name_highlight = 'd'
+let g:ansible_extra_keywords_highlight = 1
+" }}}
+
