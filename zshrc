@@ -76,7 +76,11 @@ export PATH=$PATH:$HOME/.rvm/bin:$HOME/.local/bin # Add RVM and Python to PATH
 unsetopt correct_all
 
 # The next line updates PATH for the Google Cloud SDK.
-[[ -d $HOME/google-cloud-sdk ]] && source '/home/vdesjardins/google-cloud-sdk/path.zsh.inc'
+[[ -d $HOME/google-cloud-sdk ]] && source "$HOME/google-cloud-sdk/path.zsh.inc"
 
 # The next line enables shell command completion for gcloud.
-[[ -d $HOME/google-cloud-sdk ]] && source '/home/vdesjardins/google-cloud-sdk/completion.zsh.inc'
+[[ -d $HOME/google-cloud-sdk ]] && source "$HOME/google-cloud-sdk/completion.zsh.inc"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
