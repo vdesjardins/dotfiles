@@ -10,7 +10,7 @@
 	c  = commit
 	co = checkout
 	ps = push
-	pl = pull
+	pl = pull --rebase
 	br = branch
 	bra = branch -a
 	bi = bisect
