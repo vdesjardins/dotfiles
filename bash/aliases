@@ -32,6 +32,39 @@ alias eel="$EDITOR ~/.local.env"
 alias d="sudo docker"
 alias dri="sudo docker run -it --rm"
 
+# ansible
+alias ansible-pr="docker run -it -v $HOME/.ssh:/root/.ssh -v $SSH_AUTH_SOCK:/tmp/ssh.sck -e SSH_AUTH_SOCK=/tmp/ssh.sck -v $(pwd):/ansible -v ~/gce:~/gce --rm=true ansible ansible-playbook -b -u $USER -i inventory.yml site.yml"
+
+function ansible-init() {
+  mkdir -p group_vars
+  mkdir -p host_vars
+  touch site.yml
+}
+
+function ansible-role-init() {
+  dir=$1
+  mkdir -p roles/${dir}/tasks
+  mkdir -p roles/${dir}/handlers
+  mkdir -p roles/${dir}/templates
+  mkdir -p roles/${dir}/files
+  mkdir -p roles/${dir}/vars
+  mkdir -p roles/${dir}/defaults
+  mkdir -p roles/${dir}/meta
+  touch roles/${dir}/tasks/main.yml
+}
+
+function ansible-role-clean() {
+  find . -type d -empty
+  
+  echo "Do you wish to remove these directories?"
+  select yn in "Yes" "No"; do
+    case $yn in
+      Yes ) find . -type d -empty -exec rm -rf '{}' \; 2>/dev/null; break;;
+      No ) exit;;
+    esac
+  done
+}
+
 function take {
     mkdir $1
     cd $1
@@ -118,9 +151,6 @@ alias ']'="gnome-open"
 # oracle
 alias sqlplus='rlwrap /usr/bin/sqlplus /nolog'
 
-# mysql
-#alias mysql='mysql -uroot -p --prompt="mysql (\d)> "'
-
 # apt
 alias aptu='sudo apt-get update && sudo apt-get dist-upgrade'
 alias aptdu='sudo apt-get dist-upgrade'
@@ -153,3 +183,6 @@ function fhost() {
 
     echo $hosts_str | grep $part
 }
+
+# k8s
+alias kc=kubectl
