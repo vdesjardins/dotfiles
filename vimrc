@@ -444,9 +444,9 @@ endtry
 " }}}
 
 " Statusline --------------------------- {{{
-
-" " Always show the statusline
+" Always show the statusline
 set laststatus=2
+" }}}
 
 " Parenthesis/bracket expanding ----------------------- {{{
 vnoremap $1 <esc>`>a)<esc>`<i(<esc>
@@ -789,4 +789,11 @@ nmap ga <Plug>(EasyAlign)
 
 " Eclim -------------------------------- {{{
 let g:EclimCompletionMethod = 'omnifunc'
+" }}}
+
+" Ansible section --------------------------------------------- {{{
+augroup ansible_group
+  autocmd!
+  autocmd FileType ansible,ansible_host set keywordprg=ansible-doc
+augroup END
 " }}}
