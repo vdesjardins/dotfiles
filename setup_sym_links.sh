@@ -15,5 +15,11 @@ done
 rm ~/.ssh/config
 ln -s ~/dotfiles/ssh/config ~/.ssh/config
 
+# docker
+mkdir ~/.docker
+if [[ ! -f ~/docker/config.json ]]; then
+  cp ~/dotfiles/docker/config.json ~/.docker/config.json
+fi
+
 # vim
 mkdir ~/.vimundo ~/.vimbkp
