@@ -11,6 +11,10 @@ for f in ${cfg_list[@]}; do
   ln -s ~/dotfiles/${f} ~/.${f}
 done
 
+# Special VIM files
+mkdir ~/.vim
+ln -s ~/dotfiles/vim/UltiSnips ~/.vim/
+
 # special case without dot in front of the dest file.
 rm ~/.ssh/config
 ln -s ~/dotfiles/ssh/config ~/.ssh/config

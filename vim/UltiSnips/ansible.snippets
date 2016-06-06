@@ -1,0 +1,254 @@
+priority -50
+
+snippet apt "Apt package install"
+- name: install $1
+  apt:
+    pkg: $2
+    state: latest
+  tags:
+    - package
+endsnippet
+
+snippet yum "Yum package install"
+- name: install $1
+  yum:
+    pkg: $2
+    state: latest
+  tags:
+    - package
+endsnippet
+
+snippet service "Service"
+- name: $1
+  service:
+    name: $2
+    enabled: yes
+    state: $3
+  tags:
+    - service
+endsnippet
+
+snippet user "User"
+- name: add user $1
+  user:
+    name: $1
+    shell: ${2:/bin/bash}
+    state: present
+  tags:
+    - user
+endsnippet
+
+snippet template "Template file"
+- name: $1
+  template:
+    src: $2
+    dest: $3
+    owner: ${4:root}
+    group: ${5:root}
+    mode: ${6:0644}
+  tags:
+    - ${7:config}
+endsnippet
+
+snippet file "File"
+- name: $1
+  file:
+    path: $2
+    owner: ${3:root}
+    group: ${4:root}
+    mode: ${5:0644}
+    state: $6
+  tags:
+    - ${7:config}
+endsnippet
+
+snippet copy "Copy file"
+- name: $1
+  copy:
+    src: $2
+    dest: $3
+    owner: ${4:root}
+    group: ${5:root}
+    mode: ${6:0644}
+  tags:
+    - ${7:config}
+endsnippet
+
+snippet pip "Pip package install"
+- name: install $1
+  pip:
+  tags:
+    - ${2:config}
+endsnippet
+
+snippet command "Command"
+- name: $1
+  command: $2
+  args:
+    chdir: $3
+    creates: $4
+  tags:
+    - ${5:command}
+endsnippet
+
+snippet git "Git repo"
+- name: $1
+  git:
+    repo: $2
+    dest: $3
+    accept_hostkey: yes
+  tags:
+    - ${4:repo}
+endsnippet
+
+snippet get_url "Get_url"
+- name: $1
+  get_url:
+    url: $2
+    dest: $3
+    sha256sum: $4
+  tags:
+    - ${5:url}
+endsnippet
+
+snippet cron "Cron"
+- name: $1
+  sudo_user: $2
+  cron:
+    name: $3
+    state: ${4:present}
+    job: $5
+  tags:
+    - ${6:cron}
+endsnippet
+
+snippet unarchive "Unarchive"
+- name: $1
+  unarchive:
+    src: $2
+    dest: $3
+    copy: ${4:no}
+  tags:
+    - ${5:archive}
+endsnippet
+
+snippet mysql_db "Mysql DB"
+- name: $1
+  mysql_db:
+    name: $2
+    state: present
+  tags:
+    - ${3:config}
+endsnippet
+
+snippet mysql_user "Mysql user"
+- name: $1
+  mysql_user:
+    name: $2
+    password: $3
+    priv: $4.*:ALL
+    state: present
+  tags:
+    - ${5:config}
+endsnippet
+
+snippet authorized_key "Authorized keys"
+- name: $1
+  authorized_key:
+    key: $2
+    manage_dir: ${3:yes}
+    user: $4
+    state: ${5:present}
+  tags:
+    - ${6:config}
+endsnippet
+
+snippet subversion "Subversion declaration"
+- name: $1
+  subversion:
+    repo: $2
+    dest: $3
+  tags:
+    - ${4:repo}
+endsnippet
+
+snippet gem "Gem declaration"
+- name: $1
+  gem:
+    name: $2
+    state: ${3:present}
+  tags:
+    - ${4:package}
+endsnippet
+
+snippet postgresql_db "Postgresql DB declaration"
+- name: $1
+  sudo_user: postgres
+  postgresql_db:
+    name: $2
+    encoding: 'UTF-8'
+    template: 'template0'
+  tags:
+    - ${3:config}
+endsnippet
+
+snippet postgresql_user "Postgresql user declaration"
+- name: $1
+  sudo_user: postgres
+  postgresql_user:
+    name: $2
+    password: $3
+    db: $4
+  tags:
+    - ${5:config}
+endsnippet
+
+snippet npm "NPM declaration"
+- name: $1
+  npm:
+    name: $2
+    global: yes
+  tags:
+    - ${3:package}
+endsnippet
+
+snippet shell "Shell declaration"
+- name: $1
+  shell: $2
+  args:
+    chdir: $3
+    creates: $4
+  tags:
+    - ${5:command}
+endsnippet
+
+snippet synchronize "Sync declaration"
+- name: $1
+  synchronize:
+    src: $2
+    dest: $3
+  tags:
+    - ${4:sync}
+endsnippet
+
+snippet lineinfile "Lineinfile declaration"
+- name: $1
+  lineinfile:
+    dest: $2
+    regexp: $3
+    line: $4
+    state: ${5:present}
+  tags:
+    - ${6:config}
+endsnippet
+
+snippet wait_for "Wait for port/file"
+- name: $1
+  wait_for:
+    host: $2
+    port: $3
+    delay: $4
+  tags:
+    - ${5:wait}
+endsnippet
+
