@@ -12,7 +12,7 @@ endsnippet
 snippet yum "Yum package install"
 - name: install $1
   yum:
-    pkg: $2
+    name: $2
     state: latest
   tags:
     - package
@@ -26,16 +26,6 @@ snippet service "Service"
     state: $3
   tags:
     - service
-endsnippet
-
-snippet user "User"
-- name: add user $1
-  user:
-    name: $1
-    shell: ${2:/bin/bash}
-    state: present
-  tags:
-    - user
 endsnippet
 
 snippet template "Template file"
@@ -250,5 +240,42 @@ snippet wait_for "Wait for port/file"
     delay: $4
   tags:
     - ${5:wait}
+endsnippet
+
+snippet pkgutil "Solaris pkgutil package install"
+- name: install $1
+  pkgutil:
+    pkg: $2
+    state: latest
+  tags:
+    - package
+endsnippet
+
+snippet include "Include task file"
+- include: $1.yml
+  tags:
+    - $1
+endsnippet
+
+snippet group "create group"
+- name: create group $1
+  group:
+    name: $1
+    state: present
+  tags:
+    - group
+endsnippet
+
+snippet user "create user"
+- name: create user $1
+  user:
+    name: $1
+    home: /opt/${2:$1}
+    createhome: ${3:yes}
+    shell: ${4:/bin/bash}
+    group: ${5:$1}
+    state: present
+  tags:
+    - user
 endsnippet
 
