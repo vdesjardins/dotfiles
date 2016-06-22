@@ -66,9 +66,9 @@ endsnippet
 
 snippet pip "Pip package install"
 - name: install $1
-  pip:
+  pip: $2
   tags:
-    - ${2:config}
+    - ${3:package}
 endsnippet
 
 snippet command "Command"
@@ -245,7 +245,7 @@ endsnippet
 snippet pkgutil "Solaris pkgutil package install"
 - name: install $1
   pkgutil:
-    pkg: $2
+    name: $2
     state: latest
   tags:
     - package
