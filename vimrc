@@ -88,6 +88,7 @@ Plugin 'vim-scripts/ZoomWin'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'pearofducks/ansible-vim'
+Plugin 'vim-scripts/TaskList.vim'
 
 call vundle#end()
 syntax on                 " Enable syntax highlighting
@@ -795,4 +796,8 @@ augroup ansible_group
   autocmd!
   autocmd FileType ansible,ansible_host set keywordprg=ansible-doc
 augroup END
+" }}}
+
+" Task List --------------------------------------------- {{{
+map <leader>v <Plug>TaskList
 " }}}
