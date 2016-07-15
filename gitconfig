@@ -1,6 +1,7 @@
 [user]
-	name = Vincent Desjardins
-	email = vdesjardins@gmail.com
+	useConfigOnly = true
+	#name = Vincent Desjardins
+	#email = vdesjardins@gmail.com
 [mirror]
 	summary = true
 [core]
