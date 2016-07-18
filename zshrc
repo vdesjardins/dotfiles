@@ -75,8 +75,17 @@ export PATH=$PATH:$HOME/.rvm/bin:$HOME/.local/bin # Add RVM and Python to PATH
 # disable auto correct
 unsetopt correct_all
 
+# load custom completions
+if [[ -d ~/dotfiles/zsh/completions/ ]]; then
+  for f in ~/dotfiles/zsh/completions/*.zsh; do
+    source $f
+  done
+fi
 # The next line updates PATH for the Google Cloud SDK.
-[[ -d $HOME/google-cloud-sdk ]] && source "$HOME/google-cloud-sdk/path.zsh.inc"
+if [[ -d $HOME/google-cloud-sdk ]]; then
+  source "$HOME/google-cloud-sdk/path.zsh.inc"
+  source "$HOME/google-cloud-sdk/completion.zsh.inc"
+fi
 
 # The next line enables shell command completion for gcloud.
 [[ -d $HOME/google-cloud-sdk ]] && source "$HOME/google-cloud-sdk/completion.zsh.inc"
