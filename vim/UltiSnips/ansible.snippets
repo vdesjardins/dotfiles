@@ -47,7 +47,19 @@ snippet file "File"
     owner: ${3:root}
     group: ${4:root}
     mode: ${5:0644}
-    state: $6
+    state: ${6:present}
+  tags:
+    - ${7:config}
+endsnippet
+
+snippet filed "Directory"
+- name: $1
+  file:
+    path: $2
+    owner: ${3:root}
+    group: ${4:root}
+    mode: ${5:0755}
+    state: ${6:directory}
   tags:
     - ${7:config}
 endsnippet
