@@ -28,6 +28,9 @@ alias ee="$EDITOR ~/dotfiles/bash/env"
 alias eal="$EDITOR ~/.local.aliases; source ~/.local.aliases"
 alias eel="$EDITOR ~/.local.env"
 
+# weather
+alias weather="curl http://wttr.in/quebec_city"
+
 # docker
 alias d="sudo docker"
 alias dri="sudo docker run -it --rm"
