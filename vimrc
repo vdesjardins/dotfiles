@@ -89,6 +89,7 @@ Plugin 'junegunn/vim-easy-align'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'pearofducks/ansible-vim'
 Plugin 'vim-scripts/TaskList.vim'
+Plugin 'AndrewRadev/splitjoin.vim'
 
 call vundle#end()
 syntax on                 " Enable syntax highlighting
@@ -800,4 +801,12 @@ augroup END
 
 " Task List --------------------------------------------- {{{
 map <leader>v <Plug>TaskList
+" }}}
+"
+" Java --------------------------------------------- {{{
+augroup java_group
+  autocmd!
+  autocmd FileType java set makeprg=mvn\ compile\ -q\ -f\ .\pom.xml
+  autocmd FileType java set errorformat=\[ERROR]\ %f:[%l\\,%v]\ %m
+augroup END
 " }}}
