@@ -810,3 +810,8 @@ augroup java_group
   autocmd FileType java set errorformat=\[ERROR]\ %f:[%l\\,%v]\ %m
 augroup END
 " }}}
+
+" easytags --------------------------------------------- {{{
+set tags=./tags;
+let g:easytags_dynamic_files = 1
+" }}}
