@@ -52,6 +52,16 @@ snippet file "File"
     - ${7:config}
 endsnippet
 
+snippet link "File"
+- name: $1
+  file:
+    src: $2
+    dest: $3
+    state: link
+  tags:
+    - ${7:config}
+endsnippet
+
 snippet filed "Directory"
 - name: $1
   file:
