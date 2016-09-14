@@ -64,7 +64,7 @@ Plugin 'tpope/vim-vividchalk'
 Plugin 'tpope/vim-endwise'
 Plugin 'airblade/vim-rooter'
 Plugin 'houtsnip/vim-emacscommandline'
-Plugin 'mileszs/ack.vim'
+Plugin 'mhinz/vim-grepper'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-scripts/L9'
 Plugin 'honza/vim-snippets'
@@ -364,13 +364,11 @@ func! CurrentFileDir(cmd)
 endfunc
 " }}}
 
-" Ack mapping ---------------------------------------- {{{
-nnoremap <leader>a :Ack
-if executable("ag")
-  let g:ackprg = 'ag --nogroup --nocolor --column'
-else
-  let g:ackprg = 'ack -H --nocolor --nogroup --column'
-endif
+" Grepper mapping ---------------------------------------- {{{
+nnoremap <leader>a :Grepper
+nnoremap <leader>git :Grepper -tool git -noswitch<cr>
+nnoremap <leader>ag  :Grepper -tool ag  -grepprg ag --vimgrep -G '^.+\.txt'<cr>
+nnoremap <leader>*   :Grepper -tool ack -cword -noprompt<cr>
 " }}}
 
 " Moving around, tabs and buffers ------------------------------------ {{{
