@@ -286,7 +286,6 @@ vnoremap <silent> # :call VisualSearch('b')<CR>
 
 " When you press gv you vimgrep after the selected text
 vnoremap <silent> gv :call VisualSearch('gv')<CR>
-noremap <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
 
 function! CmdLine(str)
   exe "menu Foo.Bar :" . a:str
@@ -365,10 +364,10 @@ endfunc
 " }}}
 
 " Grepper mapping ---------------------------------------- {{{
-nnoremap <leader>a :Grepper
-nnoremap <leader>git :Grepper -tool git -noswitch<cr>
-nnoremap <leader>ag  :Grepper -tool ag  -grepprg ag --vimgrep -G '^.+\.txt'<cr>
-nnoremap <leader>*   :Grepper -tool ack -cword -noprompt<cr>
+nnoremap <leader>* :Grepper
+nnoremap <leader>g :Grepper -tool git -noswitch<cr>
+nnoremap <leader>a :Grepper -tool ag -grepprg ag --vimgrep<cr>
+nnoremap <leader>ack :Grepper -tool ack -cword -noprompt<cr>
 " }}}
 
 " Moving around, tabs and buffers ------------------------------------ {{{
