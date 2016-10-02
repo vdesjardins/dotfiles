@@ -483,7 +483,7 @@ augroup END
 
 " }}}
 
-" Cope ---------------------------------- {{{
+" Cope (quickfix) ---------------------------------- {{{
 noremap <leader>co :botright cope<cr>
 noremap <leader>cc :cclose<cr>
 noremap <leader>n :cnext<cr>
@@ -624,17 +624,23 @@ augroup END
 " go ------------------------------------------------ {{{
 augroup go_group
   autocmd!
-  autocmd FileType go nnoremap <localleader>s <Plug>(go-implements)
-  autocmd FileType go nnoremap <localleader>i <Plug>(go-info)
-  autocmd FileType go nnoremap <localleader>gd <Plug>(go-doc)
-  autocmd FileType go nnoremap <localleader>gv <Plug>(go-doc-vertical)
-  autocmd FileType go nnoremap <localleader>r <Plug>(go-run)
-  autocmd FileType go nnoremap <localleader>b <Plug>(go-build)
-  autocmd FileType go nnoremap <localleader>t <Plug>(go-test)
-  autocmd FileType go nnoremap <localleader>c <Plug>(go-coverage)
-  autocmd FileType go nnoremap <localleader>e <Plug>(go-rename)
+  autocmd FileType go nmap <localleader>s <Plug>(go-implements)
+  autocmd FileType go nmap <localleader>i <Plug>(go-info)
+  autocmd FileType go nmap <localleader>gd <Plug>(go-doc)
+  autocmd FileType go nmap <localleader>gv <Plug>(go-doc-vertical)
+  autocmd FileType go nmap <localleader>r <Plug>(go-run)
+  autocmd FileType go nmap <localleader>b <Plug>(go-build)
+  autocmd FileType go nmap <localleader>t <Plug>(go-test)
+  autocmd FileType go nmap <localleader>c <Plug>(go-coverage)
+  autocmd FileType go nmap <localleader>e <Plug>(go-rename)
 augroup END
 let g:go_bin_path = expand("~/.gotools")
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
 " }}}
 
 " Vim grep ------------------------------------------ {{{
@@ -768,6 +774,11 @@ let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
 
 let g:syntastic_python_checkers = ['pylint']
+
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+let g:go_list_type = "quickfix"
+
 " }}}
 
 " ZoomWin -------------------------------- {{{
