@@ -823,3 +823,8 @@ augroup END
 set tags=./tags;
 let g:easytags_dynamic_files = 1
 " }}}
+"
+" snippet --------------------------------------------- {{{
+set tags=./tags;
+noremap <leader>es :e! ~/.vim/UltiSnips/<cr>
+" }}}
