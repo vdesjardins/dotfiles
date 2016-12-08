@@ -88,9 +88,11 @@ endsnippet
 
 snippet pip "Pip package install"
 - name: install $1
-  pip: $2
+  pip:
+    name: $2
+    state: ${3:present}
   tags:
-    - ${3:package}
+    - ${4:package}
 endsnippet
 
 snippet command "Command"
@@ -299,5 +301,39 @@ snippet user "create user"
     state: present
   tags:
     - user
+endsnippet
+
+snippet wintemplate "Windows Template"
+- name: $1
+  win_template:
+    dest: $2
+    src: $3
+  tags:
+    - ${4:config}
+endsnippet
+
+snippet winfile "Windows File"
+- name: $1
+  win_file:
+    path: $2
+    state: ${3:directory}
+  tags:
+    - copy
+endsnippet
+
+snippet wincopy "Windows Copy"
+- name: $1
+  win_copy:
+    src: $2
+    dest: $3
+  tags:
+    - copy
+endsnippet
+
+snippet winshell "Windows Shell"
+- name: $1
+  win_shell: $2
+  tags:
+    - command
 endsnippet
 
