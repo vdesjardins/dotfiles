@@ -782,7 +782,7 @@ let g:go_list_type = "quickfix"
 " }}}
 
 " ZoomWin -------------------------------- {{{
-noremap <leader>z :call ZoomWin()<CR>
+noremap <leader>z :ZoomWin<CR>
 " }}}
 
 " vimrooter -------------------------------- {{{
