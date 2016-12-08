@@ -58,7 +58,7 @@ function ansible-role-init() {
 
 function ansible-role-clean() {
   find . -type d -empty
-  
+
   echo "Do you wish to remove these directories?"
   select yn in "Yes" "No"; do
     case $yn in
@@ -106,6 +106,7 @@ alias gpu="git push"
 alias gl="git log"
 alias grm="git ls-files --deleted -z | xargs -0 git rm"
 alias eg="$EDITOR .git/config"
+alias egg="$EDITOR ~/.gitconfig"
 # merge a subtree. Feed it with a remote name and the local branch (ex.: master)
 alias gsm="git merge --squash -s subtree --no-commit"
 
