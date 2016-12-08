@@ -90,6 +90,7 @@ Plugin 'editorconfig/editorconfig-vim'
 Plugin 'pearofducks/ansible-vim'
 Plugin 'vim-scripts/TaskList.vim'
 Plugin 'AndrewRadev/splitjoin.vim'
+Plugin 'ntpeters/vim-better-whitespace'
 
 call vundle#end()
 syntax on                 " Enable syntax highlighting
@@ -170,6 +171,8 @@ function! Inc(...)
   return result
 endfunction
 
+nnoremap <leader>ws :StripWhitespace<cr>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " modeline
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -223,7 +226,8 @@ set t_vb=
 set nolist
 set listchars=tab:▸\ ,eol:¬
 
-hi TabLineSel ctermbg=2
+highlight TabLineSel ctermbg=2
+highlight ExtraWhitespace ctermbg=167 guibg=#fb4934
 
 " Remove toolbar
 set guioptions-=T
@@ -469,17 +473,6 @@ nnoremap <M-j> mz:m+<cr>`z
 nnoremap <M-k> mz:m-2<cr>`z
 vnoremap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
 vnoremap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
-
-"Delete trailing white space
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-augroup _delete_trailingWS_group
-autocmd!
-autocmd BufWrite *.* :call DeleteTrailingWS()
-augroup END
 
 " }}}
 
