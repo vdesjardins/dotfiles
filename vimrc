@@ -26,6 +26,11 @@ if MySys() ==? "windows"
     "setglobal bomb
     set fileencodings=ucs-bom,utf-8,latin1
   endif
+
+  set langmenu=en_US.UTF-8  " sets the language of the menu (gvim)
+  language English          " sets the language of the messages / ui (vim)
+
+  au GUIEnter * simalt ~n
 endif
 
 " Vundle Setup --------------------------- {{{
@@ -43,10 +48,14 @@ if MySys() ==# "unix"
   if isdirectory(s:plugin_path)
     let s:vundle_plugin_path = s:plugin_path
   endif
+  set rtp+=~/.vim/bundle/Vundle.vim
+endif
+
+if MySys() ==# "windows"
+  set rtp+=~/vimfiles/bundle/Vundle.vim
 endif
 
 " We're always using the default vundle to start things up.
-set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin(s:vundle_plugin_path)
 Plugin 'gmarik/vundle'
 Plugin 'fatih/vim-go'
@@ -98,7 +107,7 @@ filetype plugin indent on " Enable filetype-specific indenting and plugins
 " }}}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Genral
+" General
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set history=1000          " How many history lines vim remembers.
 set autoread              " auto read file changed from the outside
