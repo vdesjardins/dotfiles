@@ -612,7 +612,6 @@ augroup END
 augroup go_group
   autocmd!
   autocmd FileType go nmap <localleader>s <Plug>(go-implements)
-  autocmd FileType go nmap <localleader>i <Plug>(go-info)
   autocmd FileType go nmap <localleader>gd <Plug>(go-doc)
   autocmd FileType go nmap <localleader>gv <Plug>(go-doc-vertical)
   autocmd FileType go nmap <localleader>r <Plug>(go-run)
@@ -620,6 +619,8 @@ augroup go_group
   autocmd FileType go nmap <localleader>t <Plug>(go-test)
   autocmd FileType go nmap <localleader>c <Plug>(go-coverage)
   autocmd FileType go nmap <localleader>e <Plug>(go-rename)
+  autocmd FileType go nmap <localleader>i <Plug>(go-imports)
+  autocmd FileType go nmap <localleader>m :make<cr>
 augroup END
 let g:go_bin_path = expand("~/.gotools")
 let g:go_highlight_functions = 1
@@ -628,6 +629,7 @@ let g:go_highlight_fields = 1
 let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
+let g:go_auto_type_info = 1
 " }}}
 
 " Vim grep ------------------------------------------ {{{
