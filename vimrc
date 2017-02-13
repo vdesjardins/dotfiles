@@ -803,10 +803,11 @@ map <leader>v <Plug>TaskList
 " Java --------------------------------------------- {{{
 augroup java_group
   autocmd!
-  autocmd FileType java set makeprg=mvn\ compile\ -q\ -f\ .\pom.xml
+  autocmd FileType java set makeprg=mvn\ compile\ -q\ -f\ pom.xml
   autocmd FileType java set errorformat=\[ERROR]\ %f:[%l\\,%v]\ %m
   autocmd FileType java setlocal omnifunc=javacomplete#Complete
-  autocmd BufWritePre * NeoFormat
+  autocmd FileType java nmap <localleader>m :make<cr>
+  autocmd BufWritePre * :Neoformat
 augroup END
 " }}}
 
