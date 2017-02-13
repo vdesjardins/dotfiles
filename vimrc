@@ -33,75 +33,60 @@ if MySys() ==? "windows"
   au GUIEnter * simalt ~n
 endif
 
-" Vundle Setup --------------------------- {{{
 filetype off
 
-" With NFS shared home directory we want to be able to use compiled plugin
-" modules with different library versions. To help that if a directory named
-" with the hostname is present in the .vim directory we will load plugins from
-" there.
-let s:vundle_plugin_path = expand("~/.vim/bundle")
-if MySys() ==# "unix"
-  let s:hostname = substitute(system('hostname'), '\n', '', '')
-  let s:plugin_path = expand("~/.vim/" . s:hostname)
+" vim-plug setup --------------------------- {{{
 
-  if isdirectory(s:plugin_path)
-    let s:vundle_plugin_path = s:plugin_path
-  endif
-  set rtp+=~/.vim/bundle/Vundle.vim
-endif
+call plug#begin('~/.vim/plugged')
 
-if MySys() ==# "windows"
-  set rtp+=~/vimfiles/bundle/Vundle.vim
-endif
+Plug 'gmarik/vundle'
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
+Plug 'scrooloose/syntastic'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'sjl/gundo.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'puppetlabs/puppet-syntax-vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'xolox/vim-easytags'
+Plug 'xolox/vim-misc'
+Plug 'tpope/vim-vividchalk'
+Plug 'tpope/vim-endwise'
+Plug 'airblade/vim-rooter'
+Plug 'houtsnip/vim-emacscommandline'
+Plug 'mhinz/vim-grepper'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'artur-shaik/vim-javacomplete2'
+Plug 'vim-scripts/L9'
+Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+Plug 'cespare/vim-toml'
+Plug 'vim-scripts/tComment'
+Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'sgur/ctrlp-extensions.vim'
+Plug 'tacahiroy/ctrlp-funky'
+Plug 'tpope/vim-repeat'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'edkolev/tmuxline.vim'
+Plug 'edkolev/promptline.vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'morhetz/gruvbox'
+Plug 'vim-scripts/logstash.vim'
+Plug 'regedarek/ZoomWin'
+Plug 'junegunn/vim-easy-align'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'pearofducks/ansible-vim'
+Plug 'vim-scripts/TaskList.vim'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'sbdchd/neoformat'
 
-" We're always using the default vundle to start things up.
-call vundle#begin(s:vundle_plugin_path)
-Plugin 'gmarik/vundle'
-Plugin 'fatih/vim-go'
-Plugin 'scrooloose/syntastic'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'sjl/gundo.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-surround'
-Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'puppetlabs/puppet-syntax-vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'xolox/vim-easytags'
-Plugin 'xolox/vim-misc'
-Plugin 'tpope/vim-vividchalk'
-Plugin 'tpope/vim-endwise'
-Plugin 'airblade/vim-rooter'
-Plugin 'houtsnip/vim-emacscommandline'
-Plugin 'mhinz/vim-grepper'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'vim-scripts/L9'
-Plugin 'honza/vim-snippets'
-Plugin 'SirVer/ultisnips'
-Plugin 'cespare/vim-toml'
-Plugin 'vim-scripts/tComment'
-Plugin 'scrooloose/nerdtree'
-Plugin 'majutsushi/tagbar'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'sgur/ctrlp-extensions.vim'
-Plugin 'tacahiroy/ctrlp-funky'
-Plugin 'tpope/vim-repeat'
-Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'edkolev/tmuxline.vim'
-Plugin 'edkolev/promptline.vim'
-Plugin 'nanotech/jellybeans.vim'
-Plugin 'morhetz/gruvbox'
-Plugin 'vim-scripts/logstash.vim'
-Plugin 'regedarek/ZoomWin'
-Plugin 'junegunn/vim-easy-align'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'pearofducks/ansible-vim'
-Plugin 'vim-scripts/TaskList.vim'
-Plugin 'AndrewRadev/splitjoin.vim'
-Plugin 'ntpeters/vim-better-whitespace'
+call plug#end()
 
-call vundle#end()
 syntax on                 " Enable syntax highlighting
 filetype plugin indent on " Enable filetype-specific indenting and plugins
 " }}}
