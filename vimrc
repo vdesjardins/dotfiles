@@ -784,8 +784,8 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 " }}}
-
 " Eclim -------------------------------- {{{
+
 let g:EclimCompletionMethod = 'omnifunc'
 " }}}
 
@@ -805,6 +805,8 @@ augroup java_group
   autocmd!
   autocmd FileType java set makeprg=mvn\ compile\ -q\ -f\ .\pom.xml
   autocmd FileType java set errorformat=\[ERROR]\ %f:[%l\\,%v]\ %m
+  autocmd FileType java setlocal omnifunc=javacomplete#Complete
+  autocmd BufWritePre * NeoFormat
 augroup END
 " }}}
 
@@ -817,3 +819,4 @@ let g:easytags_dynamic_files = 1
 set tags=./tags;
 noremap <leader>es :e! ~/.vim/UltiSnips/<cr>
 " }}}
+
