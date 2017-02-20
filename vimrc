@@ -84,6 +84,8 @@ Plug 'vim-scripts/TaskList.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'sbdchd/neoformat'
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim'
 
 call plug#end()
 

@@ -71,3 +71,5 @@
 	autosetuprebase = always
 [rebase]
 	autoStash = true
+[github]
+	user = vdesjardins
