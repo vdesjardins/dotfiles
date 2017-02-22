@@ -86,12 +86,16 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'sbdchd/neoformat'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
+Plug 'tpope/vim-rake'
+Plug 'tpope/gem-browse'
+Plug 'tpope/vim-bundler'
 
 call plug#end()
 
+" }}}
+
 syntax on                 " Enable syntax highlighting
 filetype plugin indent on " Enable filetype-specific indenting and plugins
-" }}}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
@@ -811,6 +815,11 @@ augroup java_group
   autocmd FileType java nmap <localleader>m :make<cr>
   autocmd BufWritePre * :Neoformat
 augroup END
+" }}}
+
+" XML --------------------------------------------- {{{
+autocmd!
+autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 " }}}
 
 " easytags --------------------------------------------- {{{
