@@ -243,7 +243,8 @@ set completeopt=menu,preview
 set t_Co=256
 set background=dark
 "colorscheme vividchalk
-colorscheme gruvbox
+"colorscheme gruvbox
+colorscheme jellybeans
 if MySys() ==? "windows"
   set guifont=Lucida_Console:h10:cANSI
 endif
