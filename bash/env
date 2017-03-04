@@ -4,7 +4,7 @@ export PATH="$HOME/.gotools:$HOME/tools/bin:$HOME/bin:$PATH"
 
 export CLICOLOR="YES"
 
-export EDITOR=vim
+export EDITOR=nvim
 
 export HISTFILESIZE=3000
 export PYTHONSTARTUP=~/.pythonrc
