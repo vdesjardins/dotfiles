@@ -88,6 +88,7 @@ Plug 'mattn/webapi-vim'
 Plug 'tpope/vim-rake'
 Plug 'tpope/gem-browse'
 Plug 'tpope/vim-bundler'
+Plug 'dansomething/vim-eclim'
 
 call plug#end()
 
