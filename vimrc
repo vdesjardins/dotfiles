@@ -39,7 +39,6 @@ filetype off
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'gmarik/vundle'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
 Plug 'scrooloose/syntastic'
 Plug 'ctrlpvim/ctrlp.vim'
