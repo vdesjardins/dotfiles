@@ -533,9 +533,9 @@ augroup ruby_group
   autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
   autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
   autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+  autocmd FileType ruby,eruby let g:ycm_collect_identifiers_from_tags_files = 1
   autocmd FileType ruby inoremap <buffer> $f #--- PH ----------------------------------------------<esc>FP2xi
   autocmd BufNewFile,BufRead *_spec.rb compiler rspec
-
 augroup END
 " }}}
 
