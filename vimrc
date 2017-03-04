@@ -818,11 +818,6 @@ augroup java_group
 augroup END
 " }}}
 
-" XML --------------------------------------------- {{{
-autocmd!
-autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
-" }}}
-
 " easytags --------------------------------------------- {{{
 set tags=./tags;
 let g:easytags_dynamic_files = 1
