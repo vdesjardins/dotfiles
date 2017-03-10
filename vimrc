@@ -56,7 +56,6 @@ Plug 'airblade/vim-rooter'
 Plug 'houtsnip/vim-emacscommandline'
 Plug 'mhinz/vim-grepper'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-Plug 'artur-shaik/vim-javacomplete2'
 Plug 'vim-scripts/L9'
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
@@ -96,6 +95,7 @@ call plug#end()
 
 syntax on                 " Enable syntax highlighting
 filetype plugin indent on " Enable filetype-specific indenting and plugins
+set mouse=
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
@@ -275,6 +275,7 @@ augroup myfiletypes_group
   autocmd FileType spec set ai sw=2 sts=2 et
   autocmd FileType properties set ai sw=2 sts=2 et
   autocmd FileType jproperties set ai sw=2 sts=2 et
+  autocmd FileType xml set ai sw=4 sts=4 et
 augroup END
 
 if has("autocmd")
@@ -774,6 +775,7 @@ let g:syntastic_python_checkers = ['pylint']
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 let g:go_list_type = "quickfix"
+let g:syntastic_java_checkers = ['checkstyle']
 
 " }}}
 
@@ -791,10 +793,6 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 " }}}
-" Eclim -------------------------------- {{{
-
-let g:EclimCompletionMethod = 'omnifunc'
-" }}}
 
 " Ansible section --------------------------------------------- {{{
 augroup ansible_group
@@ -808,14 +806,38 @@ map <leader>v <Plug>TaskList
 " }}}
 "
 " Java --------------------------------------------- {{{
+function! neoformat#formatters#xml#tidy() abort
+  return {
+        \ 'exe': 'tidy',
+        \ 'args': ['-quiet',
+        \          '-xml',
+        \          '--indent auto',
+        \          '--indent-spaces ' . shiftwidth(),
+        \          '--vertical-space yes',
+        \          '--tidy-mark no',
+        \          '-utf8'
+        \         ],
+        \ 'stdin': 1,
+        \ }
+endfunction
+
 augroup java_group
   autocmd!
   autocmd FileType java set makeprg=mvn\ compile\ -q\ -f\ pom.xml
+  autocmd BufNewFile,BufRead pom.xml set makeprg=mvn\ compile\ -q\ -f\ pom.xml
   autocmd FileType java set errorformat=\[ERROR]\ %f:[%l\\,%v]\ %m
-  autocmd FileType java setlocal omnifunc=javacomplete#Complete
   autocmd FileType java nmap <localleader>m :make<cr>
   autocmd BufWritePre * :Neoformat
+
+  autocmd FileType java nmap <localleader>r :Java<cr>
+  autocmd FileType java nmap <localleader>i :JavaImportOrganize<cr>
+  autocmd FileType java nmap <localleader>gd :JavaDocSearch -x declarations<cr>
+  autocmd FileType java nmap <localleader>b :Mvn install<cr>
+  autocmd FileType java nmap <localleader>t :Mvn test<cr>
 augroup END
+
+let g:EclimCompletionMethod = 'omnifunc'
+
 " }}}
 
 " easytags --------------------------------------------- {{{
@@ -828,3 +850,4 @@ set tags=./tags;
 noremap <leader>es :e! ~/.vim/UltiSnips/<cr>
 " }}}
 
+syntax on
