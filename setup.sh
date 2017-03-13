@@ -19,6 +19,11 @@ ln -s ~/dotfiles/vim/UltiSnips ~/.vim/
 rm ~/.ssh/config
 ln -s ~/dotfiles/ssh/config ~/.ssh/config
 
+# NVIM
+mkdir -p ~/.config/nvim
+ln -s ~/dotfiles/vimrc ~/.config/nvim/init.vim
+ln -s ~/dotfiles/vim/UltiSnips ~/.config/nvim/
+
 # docker
 mkdir ~/.docker
 if [[ ! -f ~/docker/config.json ]]; then
