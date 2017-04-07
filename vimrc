@@ -797,7 +797,7 @@ nmap ga <Plug>(EasyAlign)
 " Ansible section --------------------------------------------- {{{
 augroup ansible_group
   autocmd!
-  autocmd FileType ansible,ansible_host set keywordprg=ansible-doc
+  autocmd FileType ansible,ansible_host setlocal keywordprg=:te\ ansible-doc
 augroup END
 " }}}
 
