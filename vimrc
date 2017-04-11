@@ -798,6 +798,7 @@ nmap ga <Plug>(EasyAlign)
 augroup ansible_group
   autocmd!
   autocmd FileType ansible,ansible_host setlocal keywordprg=:te\ ansible-doc
+  autocmd BufRead,BufNewFile */playbooks/*.yml,*/playbooks/*.yaml set filetype=ansible
 augroup END
 " }}}
 
