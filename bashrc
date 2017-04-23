@@ -25,3 +25,5 @@ if [ -f $HOME/.bashrc-$(uname)-$(hostname) ]; then
   . $HOME/.bashrc-$(uname)-$(hostname)
 fi
 
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

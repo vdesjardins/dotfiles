@@ -88,6 +88,7 @@ Plug 'tpope/vim-rake'
 Plug 'tpope/gem-browse'
 Plug 'tpope/vim-bundler'
 Plug 'dansomething/vim-eclim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 call plug#end()
 

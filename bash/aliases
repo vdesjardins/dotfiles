@@ -27,6 +27,7 @@ alias ea="$EDITOR ~/dotfiles/bash/aliases; reload"
 alias ee="$EDITOR ~/dotfiles/bash/env"
 alias eal="$EDITOR ~/.local.aliases; source ~/.local.aliases"
 alias eel="$EDITOR ~/.local.env"
+alias ef='$EDITOR $(fzf)'
 
 # weather
 alias weather="curl http://wttr.in/quebec_city"

@@ -15,9 +15,5 @@ if [ -f /usr/share/doc/cdargs/examples/cdargs-bash.sh ]; then
   source /usr/share/doc/cdargs/examples/cdargs-bash.sh
 fi
 
-if [[ -f ~/dotfiles/shell_prompt.sh ]]; then
-  source ~/dotfiles/shell_prompt.sh
-fi
-
 # rvm
 if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi
