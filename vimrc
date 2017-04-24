@@ -41,7 +41,6 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
 Plug 'vim-syntastic/syntastic'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'sjl/gundo.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -65,8 +64,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'sgur/ctrlp-extensions.vim'
-Plug 'tacahiroy/ctrlp-funky'
 Plug 'tpope/vim-repeat'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'edkolev/tmuxline.vim'
@@ -89,6 +86,8 @@ Plug 'tpope/gem-browse'
 Plug 'tpope/vim-bundler'
 Plug 'dansomething/vim-eclim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'pbogut/fzf-mru.vim'
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -699,16 +698,15 @@ if MySys() ==? "windows"
   let g:LustyExplorerSuppressRubyWarning = 1
 endif
 
-noremap <leader>t :CtrlPMixed<cr>
-noremap <leader>b :CtrlPBuffer<cr>
-noremap <leader>f :CtrlPTag<cr>
-noremap <leader>y :CtrlPYankring<cr>
-noremap <leader>m :CtrlPFunky<cr>
+" }}}
 
-let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'dir', 'rtscript',
-      \ 'undo', 'line', 'changes', 'mixed', 'bookmarkdir', 'extensions',
-      \ 'funky']
-
+" FZF --------------------------------- {{{
+let g:fzf_buffers_jump = 1
+let g:fzf_command_prefix = 'FZF'
+noremap <leader>t :FZF<cr>
+noremap <leader>b :FZFBuffers<cr>
+noremap <leader>f :FZFTags<cr>
+noremap <leader>m :FZFMarks<cr>
 " }}}
 
 " Utilities --------------------------------- {{{
