@@ -88,6 +88,7 @@ Plug 'dansomething/vim-eclim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'pbogut/fzf-mru.vim'
 Plug 'junegunn/fzf.vim'
+Plug 'PProvost/vim-ps1'
 
 call plug#end()
 
