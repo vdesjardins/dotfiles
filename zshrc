@@ -14,14 +14,6 @@ if [ "$(uname)" = "Linux" ]; then
 
   zplug load
 
-  # Customize to your needs...
-  export HISTSIZE=25000
-  export SAVEHIST=10000
-  setopt INC_APPEND_HISTORY
-  setopt HIST_IGNORE_SPACE
-  setopt HIST_REDUCE_BLANKS
-  setopt HIST_VERIFY
-
   # Watch other user login/out
   watch=notme
   export LOGCHECK=60

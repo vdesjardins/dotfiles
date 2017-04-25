@@ -7,6 +7,8 @@ zplug "mafredri/zsh-async", from:github, defer:0
 # # Load completion library for those sweet [tab] squares
 zplug "lib/completion", from:oh-my-zsh
 
+zplug "lib/history", from:oh-my-zsh
+
 # # Syntax highlighting for commands, load last
 zplug "zsh-users/zsh-syntax-highlighting", from:github, defer:3
 zplug "zsh-users/zsh-history-substring-search"
