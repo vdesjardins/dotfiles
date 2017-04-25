@@ -1,0 +1,27 @@
+priority -50
+
+snippet static "Static App"
+sall.pall.$1.app_type=static
+sall.pall.$1.scm=${2:git}
+sall.pall.$1.repository=$3
+sall.pall.$1.owner=${4:CGRP}
+sall.pall.$1.description=$5
+sall.pall.$1.topology.servers=$6
+sall.pall.$1.proxyapp.app_type=proxyapp
+endsnippet
+
+snippet proxy-app "Config Proxy App"
+sall.pall.$1.topology.proxy.instance=${2:s01-test-rpxy-labo}
+sall.pall.$1.topology.proxy.servers.${3:cll1-web-rp1}.vip=${4:10.40.72.127}
+sall.pall.$1.proxy.rootcontext=${5:/}
+sall.pall.$1.proxyapp.rootcontext=${6:/}
+endsnippet
+
+snippet proxy-stub "Config Proxy Stub"
+sall.pall.$1.topology.proxy.instance=${2:s01-test-rpxy-labo}
+sall.pall.$1.topology.proxy.servers.${3:cll1-web-rp1}.vip=${4:10.40.72.127}
+sall.pall.$1.owner=${5:CGRP}
+sall.pall.$1.description=$6
+sall.pall.$1.app_type=none
+endsnippet
+

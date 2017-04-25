@@ -105,6 +105,15 @@ snippet command "Command"
     - ${5:command}
 endsnippet
 
+snippet setfact "Set fact"
+- name: $1
+  set_fact:
+    $2: $3
+  check_mode: no
+  tags:
+    - always
+endsnippet
+
 snippet git "Git repo"
 - name: $1
   git:
