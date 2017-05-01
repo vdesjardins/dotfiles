@@ -618,9 +618,11 @@ augroup END
 " }}}
 
 " go ------------------------------------------------ {{{
+" golang
 augroup go_group
   autocmd!
   autocmd FileType go nmap <localleader>s <Plug>(go-implements)
+  autocmd FileType go nmap <localleader>d <Plug>(go-def)
   autocmd FileType go nmap <localleader>gd <Plug>(go-doc)
   autocmd FileType go nmap <localleader>gv <Plug>(go-doc-vertical)
   autocmd FileType go nmap <localleader>r <Plug>(go-run)
@@ -835,9 +837,14 @@ augroup java_group
   autocmd FileType java nmap <localleader>gd :JavaDocSearch -x declarations<cr>
   autocmd FileType java nmap <localleader>b :Mvn install<cr>
   autocmd FileType java nmap <localleader>t :Mvn test<cr>
+  autocmd FileType java nmap <localleader>s :JavaSearch -x implementors<cr>
+  autocmd FileType java nmap <localleader>dd :JavaSearch -x declarations<cr>
+  autocmd FileType java nmap <localleader>aa :JavaSearch -x all<cr>
+  autocmd FileType java nmap <localleader>dr :JavaSearch -x references<cr>
 augroup END
 
 let g:EclimCompletionMethod = 'omnifunc'
+let g:EclimDefaultFileOpenAction = 'edit'
 
 " }}}
 
