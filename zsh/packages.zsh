@@ -20,6 +20,7 @@ zplug "plugins/docker", from:oh-my-zsh
 zplug "plugins/dnf", from:oh-my-zsh
 zplug "plugins/golang", from:oh-my-zsh
 zplug "plugins/kubectl", from:oh-my-zsh
+zplug "plugins/git-flow", from:oh-my-zsh
 
 zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
 
