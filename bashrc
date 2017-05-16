@@ -1,3 +1,4 @@
+
 if [ "$(uname)" = "Linux" ]; then
   source ~/dotfiles/bash/env
   source ~/dotfiles/bash/config
@@ -9,7 +10,7 @@ if [ "$(uname)" = "Linux" ]; then
   [[ -f ~/.local.aliases ]] && source ~/.local.aliases
 fi
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PATH="$HOME/.rbenv/bin:$PATH"
 
 # add platform specific bashrc
 if [ -f $HOME/.bashrc-$(uname) ]; then

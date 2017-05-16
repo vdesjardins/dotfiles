@@ -46,7 +46,7 @@ if [ -f $HOME/.zshrc-$(uname)-$(hostname) ]; then
   . $HOME/.zshrc-$(uname)-$(hostname)
 fi
 
-export PATH=$PATH:$HOME/.rvm/bin:$HOME/.local/bin # Add RVM and Python to PATH
+export PATH="$HOME/.rbenv/bin:$PATH"
 
 # disable auto correct
 unsetopt correct_all
