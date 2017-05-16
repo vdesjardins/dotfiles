@@ -89,8 +89,13 @@ function settitle() {
 }
 
 function ssh() {
-    settitle "$*"
-    command ssh "$@"
+    if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
+        settitle "$(echo $* | rev | cut -d ' ' -f1 | rev | cut -d . -f 1)"
+        command ssh "$@"
+    else
+        command ssh "$@"
+    fi
+
     r=$?
     settitle "${SHELL##*/}"
     return $r
