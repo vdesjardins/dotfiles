@@ -15,14 +15,15 @@ zplug "zsh-users/zsh-syntax-highlighting", from:github, defer:3
 zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-completions"
 
-zplug "plugins/systemd", from:oh-my-zsh
-zplug "plugins/docker", from:oh-my-zsh
-zplug "plugins/dnf", from:oh-my-zsh
-zplug "plugins/golang", from:oh-my-zsh
-zplug "plugins/kubectl", from:oh-my-zsh
-zplug "plugins/git-flow", from:oh-my-zsh
-zplug "plugins/git", from:oh-my-zsh
-zplug "plugins/git-extras", from:oh-my-zsh
+zplug "plugins/systemd", from:oh-my-zsh, defer:2
+zplug "plugins/docker", from:oh-my-zsh, defer:2
+zplug "plugins/dnf", from:oh-my-zsh, defer:2
+zplug "plugins/golang", from:oh-my-zsh, defer:2
+zplug "plugins/kubectl", from:oh-my-zsh, defer:2
+zplug "plugins/tmux", from:oh-my-zsh, defer:2
+zplug "plugins/git-flow", from:oh-my-zsh, defer:2
+zplug "plugins/git", from:oh-my-zsh, defer:2
+zplug "plugins/git-extras", from:oh-my-zsh, defer:2
 
 zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
 
