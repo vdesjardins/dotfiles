@@ -23,7 +23,8 @@ zplug "plugins/kubectl", from:oh-my-zsh, defer:2
 zplug "plugins/tmux", from:oh-my-zsh, defer:2
 zplug "plugins/git-flow", from:oh-my-zsh, defer:2
 zplug "plugins/git", from:oh-my-zsh, defer:2
-zplug "plugins/git-extras", from:oh-my-zsh, defer:2
+zplug "plugins/git-extras", from:oh-my-zsh, defer:3
+zplug "plugins/vault", from:oh-my-zsh, defer:2
 
 zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
 
