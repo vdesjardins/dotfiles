@@ -54,7 +54,7 @@ Plug 'tpope/vim-endwise'
 Plug 'airblade/vim-rooter'
 Plug 'houtsnip/vim-emacscommandline'
 Plug 'mhinz/vim-grepper'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --system-boost --gocode-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --system-boost --gocode-completer --clang-completer' }
 Plug 'vim-scripts/L9'
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
@@ -89,6 +89,10 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'pbogut/fzf-mru.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'PProvost/vim-ps1'
+Plug 'leafgarland/typescript-vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'mattn/emmet-vim'
+Plug 'hail2u/vim-css3-syntax'
 
 call plug#end()
 
