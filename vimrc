@@ -93,6 +93,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
 Plug 'hail2u/vim-css3-syntax'
+"Plug 'icholy/typescript-tools'
 
 call plug#end()
 
