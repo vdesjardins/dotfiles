@@ -35,6 +35,35 @@ endif
 
 filetype off
 
+if MySys() ==? "windows"
+  if has('nvim')
+    let autoloaddir = expand('~\AppData\Local\nvim\autoload')
+  else
+    let autoloaddir = expand('~\vimfiles\autoload')
+  endif
+
+  if empty(glob(expand(autoloaddir . '\plug.vim')))
+    silent execute "!powershell -NoProfile -Command " .
+         \ "New-Item -ItemType Directory -Force -Path " . autoloaddir
+    silent execute "!powershell -NoExit -NoProfile -Command " .
+         \ "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim', " .
+         \ "'" . autoloaddir . "\\plug.vim')"
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  endif
+else
+  if has('nvim')
+    let autoloaddir = expand('~/.local/share/nvim/site/autoload')
+  else
+    let autoloaddir = expand('~/.vim/autoload')
+  endif
+
+  if empty(glob(autoloaddir . '/plug.vim'))
+    silent execute "!curl -fLo " . autoloaddir . "/plug.vim --create-dirs " .
+         \ "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  endif
+endif
+
 " vim-plug setup --------------------------- {{{
 
 call plug#begin('~/.vim/plugged')
