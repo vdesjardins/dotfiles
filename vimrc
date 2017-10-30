@@ -35,38 +35,41 @@ endif
 
 filetype off
 
+" vim-plug setup --------------------------- {{{
+
 if MySys() ==? "windows"
   if has('nvim')
-    let autoloaddir = expand('~\AppData\Local\nvim\autoload')
+    let s:autoloaddir = expand('~\AppData\Local\nvim\autoload')
   else
-    let autoloaddir = expand('~\vimfiles\autoload')
+    let s:autoloaddir = expand('~\vimfiles\autoload')
   endif
 
-  if empty(glob(expand(autoloaddir . '\plug.vim')))
+  if empty(glob(expand(s:autoloaddir . '\plug.vim')))
     silent execute "!powershell -NoProfile -Command " .
-         \ "New-Item -ItemType Directory -Force -Path " . autoloaddir
+         \ "New-Item -ItemType Directory -Force -Path " . s:autoloaddir
     silent execute "!powershell -NoExit -NoProfile -Command " .
          \ "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim', " .
-         \ "'" . autoloaddir . "\\plug.vim')"
+         \ "'" . s:autoloaddir . "\\plug.vim')"
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   endif
+  let s:vimplugdir = expand('~\vimfiles\plugged')
 else
   if has('nvim')
-    let autoloaddir = expand('~/.local/share/nvim/site/autoload')
+    let s:autoloaddir = expand('~/.local/share/nvim/site/autoload')
   else
-    let autoloaddir = expand('~/.vim/autoload')
+    let s:autoloaddir = expand('~/.vim/autoload')
   endif
 
-  if empty(glob(autoloaddir . '/plug.vim'))
-    silent execute "!curl -fLo " . autoloaddir . "/plug.vim --create-dirs " .
+  if empty(glob(s:autoloaddir . '/plug.vim'))
+    silent execute "!curl -fLo " . s:autoloaddir . "/plug.vim --create-dirs " .
          \ "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   endif
+
+  let s:vimplugdir = expand('~/.vim/plugged')
 endif
 
-" vim-plug setup --------------------------- {{{
-
-call plug#begin('~/.vim/plugged')
+call plug#begin(s:vimplugdir)
 
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
 Plug 'vim-syntastic/syntastic'
