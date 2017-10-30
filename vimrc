@@ -86,7 +86,7 @@ Plug 'tpope/vim-endwise'
 Plug 'airblade/vim-rooter'
 Plug 'houtsnip/vim-emacscommandline'
 Plug 'mhinz/vim-grepper'
-Plug 'Valloric/YouCompleteMe', { 'do': 'PATH=/usr/local/go/bin:$PATH ./install.py --system-boost --gocode-completer --clang-completer' }
+Plug 'roxma/nvim-completion-manager'
 Plug 'vim-scripts/L9'
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
@@ -116,7 +116,6 @@ Plug 'mattn/webapi-vim'
 Plug 'tpope/vim-rake'
 Plug 'tpope/gem-browse'
 Plug 'tpope/vim-bundler'
-Plug 'dansomething/vim-eclim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'pbogut/fzf-mru.vim'
 Plug 'junegunn/fzf.vim'
@@ -125,6 +124,10 @@ Plug 'leafgarland/typescript-vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
 Plug 'hail2u/vim-css3-syntax'
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/echodoc.vim'
+Plug 'vdesjardins/vim-langclient-java', { 'do': './install.sh' }
+
 "Plug 'icholy/typescript-tools'
 
 call plug#end()
@@ -670,6 +673,7 @@ augroup go_group
   autocmd FileType go nmap <localleader>i <Plug>(go-imports)
   autocmd FileType go nmap <localleader>m :make<cr>
 augroup END
+
 let g:go_bin_path = expand("~/.gotools")
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -861,6 +865,9 @@ function! neoformat#formatters#xml#tidy() abort
         \ }
 endfunction
 
+" Automatically start language servers.
+let g:LanguageClient_autoStart = 1
+
 augroup java_group
   autocmd!
   autocmd FileType java set makeprg=mvn\ compile\ -q\ -f\ pom.xml
@@ -869,19 +876,13 @@ augroup java_group
   autocmd FileType java nmap <localleader>m :make<cr>
   autocmd BufWritePre * :Neoformat
 
-  autocmd FileType java nmap <localleader>r :Java<cr>
-  autocmd FileType java nmap <localleader>i :JavaImportOrganize<cr>
-  autocmd FileType java nmap <localleader>gd :JavaDocSearch -x declarations<cr>
-  autocmd FileType java nmap <localleader>b :Mvn install<cr>
-  autocmd FileType java nmap <localleader>t :Mvn test<cr>
-  autocmd FileType java nmap <localleader>s :JavaSearch -x implementors<cr>
-  autocmd FileType java nmap <localleader>dd :JavaSearch -x declarations<cr>
-  autocmd FileType java nmap <localleader>aa :JavaSearch -x all<cr>
-  autocmd FileType java nmap <localleader>dr :JavaSearch -x references<cr>
+  autocmd FileType java nmap K :call LanguageClient_textDocument_hover()<CR>
+  autocmd FileType java nmap <localleader>d :call LanguageClient_textDocument_definition()<CR>
+  autocmd FileType java nmap <localleader>e :call LanguageClient_textDocument_rename()<CR>
+  autocmd FileType java nmap <localleader>/ :call LanguageClient_textDocument_documentSymbol()<CR>
+  autocmd FileType java nmap <localleader>r :call LanguageClient_textDocument_references()<CR>
+  autocmd FileType java nmap <localleader>g :call LanguageClient_workspace_symbol()<CR>
 augroup END
-
-let g:EclimCompletionMethod = 'omnifunc'
-let g:EclimDefaultFileOpenAction = 'edit'
 
 " }}}
 
