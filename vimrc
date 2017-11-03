@@ -865,8 +865,8 @@ function! neoformat#formatters#xml#tidy() abort
         \ }
 endfunction
 
-" Automatically start language servers.
-let g:LanguageClient_autoStart = 1
+let g:langclient_java_xmx = '2G'
+let g:langclient_java_autostart = 1
 
 augroup java_group
   autocmd!
