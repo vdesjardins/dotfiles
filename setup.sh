@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cfg_list=(zshrc tmux.conf vimrc pythonrc pryrc gitconfig bashrc)
+cfg_list=(zshrc tmux.conf vimrc pythonrc pryrc gitconfig bashrc editorconfig)
 
 for f in ${cfg_list[@]}; do
   if ! [[ -L ~/.${f} ]]; then
