@@ -81,6 +81,7 @@ Plug 'puppetlabs/puppet-syntax-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
+Plug 'xolox/vim-session'
 Plug 'tpope/vim-vividchalk'
 Plug 'tpope/vim-endwise'
 Plug 'airblade/vim-rooter'
@@ -894,6 +895,10 @@ let g:easytags_dynamic_files = 1
 " snippet --------------------------------------------- {{{
 set tags=./tags;
 noremap <leader>es :e! ~/.vim/UltiSnips/<cr>
+" }}}
+
+" session --------------------------------------------- {{{
+let g:session_autosave = 'no'
 " }}}
 
 syntax on
