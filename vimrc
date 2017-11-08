@@ -866,7 +866,6 @@ function! neoformat#formatters#xml#tidy() abort
         \ }
 endfunction
 
-let g:langclient_java_xmx = '2G'
 let g:langclient_java_autostart = 1
 
 augroup java_group
