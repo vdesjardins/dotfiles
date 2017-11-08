@@ -127,7 +127,7 @@ Plug 'mattn/emmet-vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/echodoc.vim'
-Plug 'vdesjardins/vim-langclient-java', { 'do': './install.sh' }
+Plug 'vdesjardins/vim-langclient-java'
 
 "Plug 'icholy/typescript-tools'
 
