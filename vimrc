@@ -77,17 +77,18 @@ Plug 'sjl/gundo.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'kien/rainbow_parentheses.vim'
-Plug 'puppetlabs/puppet-syntax-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
-Plug 'tpope/vim-vividchalk'
 Plug 'tpope/vim-endwise'
 Plug 'airblade/vim-rooter'
 Plug 'houtsnip/vim-emacscommandline'
 Plug 'mhinz/vim-grepper'
 Plug 'roxma/nvim-completion-manager'
+if !has('nvim')
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 Plug 'vim-scripts/L9'
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
@@ -101,7 +102,6 @@ Plug 'tpope/vim-repeat'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'edkolev/promptline.vim'
-Plug 'nanotech/jellybeans.vim'
 Plug 'morhetz/gruvbox'
 Plug 'vim-scripts/logstash.vim'
 Plug 'regedarek/ZoomWin'
@@ -284,9 +284,7 @@ set completeopt=menu,preview
 " Colors and Fonts ---------------------- {{{
 set t_Co=256
 set background=dark
-"colorscheme vividchalk
-"colorscheme gruvbox
-colorscheme jellybeans
+colorscheme gruvbox
 if MySys() ==? "windows"
   set guifont=Lucida_Console:h10:cANSI
 endif
