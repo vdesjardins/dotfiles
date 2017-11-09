@@ -128,6 +128,7 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/echodoc.vim'
 Plug 'vdesjardins/vim-langclient-java'
+Plug 'roxma/python-support.nvim'
 
 "Plug 'icholy/typescript-tools'
 
