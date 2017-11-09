@@ -71,6 +71,7 @@ endif
 
 call plug#begin(s:vimplugdir)
 
+Plug 'archSeer/colibri.vim'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
 Plug 'vim-syntastic/syntastic'
 Plug 'sjl/gundo.vim'
@@ -102,7 +103,6 @@ Plug 'tpope/vim-repeat'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'edkolev/promptline.vim'
-Plug 'morhetz/gruvbox'
 Plug 'vim-scripts/logstash.vim'
 Plug 'regedarek/ZoomWin'
 Plug 'junegunn/vim-easy-align'
@@ -284,7 +284,8 @@ set completeopt=menu,preview
 " Colors and Fonts ---------------------- {{{
 set t_Co=256
 set background=dark
-colorscheme gruvbox
+set termguicolors
+colorscheme colibri
 if MySys() ==? "windows"
   set guifont=Lucida_Console:h10:cANSI
 endif
