@@ -86,10 +86,14 @@ Plug 'tpope/vim-endwise'
 Plug 'airblade/vim-rooter'
 Plug 'houtsnip/vim-emacscommandline'
 Plug 'mhinz/vim-grepper'
-Plug 'roxma/nvim-completion-manager'
-if !has('nvim')
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+Plug 'zchee/deoplete-go'
 Plug 'vim-scripts/L9'
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
@@ -128,7 +132,7 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/echodoc.vim'
 Plug 'vdesjardins/vim-langclient-java'
-Plug 'roxma/python-support.nvim'
+" Plug 'roxma/python-support.nvim'
 
 "Plug 'icholy/typescript-tools'
 
@@ -279,8 +283,10 @@ set guioptions-=T
 set winaltkeys=no
 
 " Completion only on the longest text entered
-set completeopt+=longest
-set completeopt=menu,preview
+" set completeopt+=longest
+" set completeopt=menu,preview
+
+let g:deoplete#enable_at_startup = 1
 
 " Colors and Fonts ---------------------- {{{
 set t_Co=256
@@ -882,6 +888,8 @@ augroup java_group
   autocmd FileType java nmap <localleader>/ :call LanguageClient_textDocument_documentSymbol()<CR>
   autocmd FileType java nmap <localleader>r :call LanguageClient_textDocument_references()<CR>
   autocmd FileType java nmap <localleader>g :call LanguageClient_workspace_symbol()<CR>
+  autocmd FileType java nmap <localleader>a :call LanguageClient_textDocument_codeAction()<CR>
+  autocmd FileType java nmap <localleader>f :call LanguageClient_textDocument_formatting()<CR>
 augroup END
 
 " }}}
