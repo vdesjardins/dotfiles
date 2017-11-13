@@ -30,6 +30,48 @@ if [[ $? -eq 0 ]]; then
   alias vi=nvim
 fi
 
+# opening a file with docker container
+function e() {
+    set -e
+    # TODO: iterate to resolve all files with realpath before invoking
+    # for now just taking the first argument
+    docker run -it --rm \
+        -v $HOME:$HOME \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v /etc/localtime:/etc/localtime \
+        -e TZ=America/Montreal \
+        -e EUID=$UID \
+        -e EGID=$GID \
+        -e HOME=$HOME \
+        vdesjardins/neovim $(realpath $1)
+}
+
+export EDITOR=vi
+
+function e_debug() {
+    docker run -it --rm \
+        -v $HOME:$HOME \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v /etc/localtime:/etc/localtime \
+        -e TZ=America/Montreal \
+        -e EUID=$UID \
+        -e EGID=$GID \
+        -e HOME=$HOME \
+        --entrypoint=/bin/bash \
+        vdesjardins/neovim
+}
+
+function sf() {
+    if [ "$#" -lt 1 ]; then echo "Supply string to search for!"; return 1; fi
+    # printf -v search "%q" "$*"
+    search="$1"
+    include="yml,js,json,php,md,styl,pug,jade,html,config,py,cpp,c,go,hs,rb,conf,fa,lst,java"
+    exclude=".config,.git,node_modules,vendor,build,yarn.lock,*.sty,*.bst,*.coffee,dist,*.class,*.war,*.jar"
+    rg_command='rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always" -g "*.{'$include'}" -g "!{'$exclude'}/*"'
+    files=`eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}'`
+    [[ -n "$files" ]] && ${EDITOR:-vim} $files
+}
+
 # Utility
 alias reload="source ~/dotfiles/bash/aliases"
 alias ea="$EDITOR ~/dotfiles/bash/aliases; reload"
@@ -49,33 +91,33 @@ alias dri="sudo docker run -it --rm"
 alias ansible-pr="docker run -it -v $HOME/.ssh:/root/.ssh -v $SSH_AUTH_SOCK:/tmp/ssh.sck -e SSH_AUTH_SOCK=/tmp/ssh.sck -v $(pwd):/ansible -v ~/gce:~/gce --rm=true ansible ansible-playbook -b -u $USER -i inventory.yml site.yml"
 
 function ansible-init() {
-  mkdir -p group_vars
-  mkdir -p host_vars
-  touch site.yml
+    mkdir -p group_vars
+    mkdir -p host_vars
+    touch site.yml
 }
 
 function ansible-role-init() {
-  dir=$1
-  mkdir -p roles/${dir}/tasks
-  mkdir -p roles/${dir}/handlers
-  mkdir -p roles/${dir}/templates
-  mkdir -p roles/${dir}/files
-  mkdir -p roles/${dir}/vars
-  mkdir -p roles/${dir}/defaults
-  mkdir -p roles/${dir}/meta
-  touch roles/${dir}/tasks/main.yml
+    dir=$1
+    mkdir -p roles/${dir}/tasks
+    mkdir -p roles/${dir}/handlers
+    mkdir -p roles/${dir}/templates
+    mkdir -p roles/${dir}/files
+    mkdir -p roles/${dir}/vars
+    mkdir -p roles/${dir}/defaults
+    mkdir -p roles/${dir}/meta
+    touch roles/${dir}/tasks/main.yml
 }
 
 function ansible-role-clean() {
-  find . -type d -empty
+    find . -type d -empty
 
-  echo "Do you wish to remove these directories?"
-  select yn in "Yes" "No"; do
-    case $yn in
-      Yes ) find . -type d -empty -exec rm -rf '{}' \; 2>/dev/null; break;;
-      No ) exit;;
-    esac
-  done
+    echo "Do you wish to remove these directories?"
+    select yn in "Yes" "No"; do
+        case $yn in
+            Yes ) find . -type d -empty -exec rm -rf '{}' \; 2>/dev/null; break;;
+            No ) exit;;
+        esac
+    done
 }
 
 function take {
