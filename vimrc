@@ -288,16 +288,6 @@ set winaltkeys=no
 
 let g:deoplete#enable_at_startup = 1
 
-" Colors and Fonts ---------------------- {{{
-set t_Co=256
-set background=dark
-set termguicolors
-colorscheme colibri
-if MySys() ==? "windows"
-  set guifont=Lucida_Console:h10:cANSI
-endif
-" }}}
-
 " Vimscript file settings ---------------------- {{{
 augroup vim_group
   autocmd!
@@ -909,3 +899,14 @@ let g:session_autosave = 'no'
 " }}}
 
 syntax on
+
+" Colors and Fonts ---------------------- {{{
+set t_Co=256
+set background=dark
+set termguicolors
+colorscheme colibri
+if MySys() ==? "windows"
+  set guifont=Lucida_Console:h10:cANSI
+endif
+" }}}
+
