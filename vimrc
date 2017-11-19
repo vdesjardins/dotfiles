@@ -873,13 +873,14 @@ augroup java_group
   autocmd BufWritePre * :Neoformat
 
   autocmd FileType java nmap K :call LanguageClient_textDocument_hover()<CR>
-  autocmd FileType java nmap <localleader>d :call LanguageClient_textDocument_definition()<CR>
+  autocmd FileType java nmap <C-]> :call LanguageClient_textDocument_definition()<CR>
   autocmd FileType java nmap <localleader>e :call LanguageClient_textDocument_rename()<CR>
   autocmd FileType java nmap <localleader>/ :call LanguageClient_textDocument_documentSymbol()<CR>
   autocmd FileType java nmap <localleader>r :call LanguageClient_textDocument_references()<CR>
   autocmd FileType java nmap <localleader>g :call LanguageClient_workspace_symbol()<CR>
   autocmd FileType java nmap <localleader>a :call LanguageClient_textDocument_codeAction()<CR>
   autocmd FileType java nmap <localleader>f :call LanguageClient_textDocument_formatting()<CR>
+  autocmd FileType java nmap <localleader>h :call LanguageClient_textDocument_signatureHelp()<CR>
 augroup END
 
 " }}}
