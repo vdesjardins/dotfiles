@@ -260,7 +260,7 @@ alias kcdss="kubectl describe secrets"
 alias mk=minikube
 
 # ssl
-function ssl_dump () {
+function ssl_dump() {
 	host=$1
 	port=$2
 	true | openssl s_client -showcerts -connect ${host}:${port} -servername ${host} | openssl x509 -noout -text
