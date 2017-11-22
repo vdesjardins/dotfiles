@@ -409,8 +409,7 @@ endfunc
 
 " Grepper mapping ---------------------------------------- {{{
 nnoremap <leader>* :Grepper
-nnoremap <leader>g :Grepper -tool git -noswitch<cr>
-nnoremap <leader>a :Grepper -tool ag -grepprg ag --vimgrep<cr>
+nnoremap <leader>a :Grepper -tool rg --vimgrep --no-heading<cr>
 nnoremap <leader>ack :Grepper -tool ack -cword -noprompt<cr>
 " }}}
 
@@ -683,7 +682,7 @@ let g:go_auto_type_info = 1
 
 " Vim grep ------------------------------------------ {{{
 let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated .git log logs tmp'
-set grepprg=/bin/grep\ -nH
+set grepprg=rg\ --vimgrep
 " }}}
 
 " MISC ---------------------------------------- {{{
@@ -748,6 +747,17 @@ noremap <leader>t :FZF<cr>
 noremap <leader>b :FZFBuffers<cr>
 noremap <leader>f :FZFTags<cr>
 noremap <leader>m :FZFMarks<cr>
+
+
+command! -bang -nargs=* Rg
+      \ call fzf#vim#grep(
+      \   'rg --column --line-number --no-heading --color=always --ignore-case '.shellescape(<q-args>), 1,
+      \   <bang>0 ? fzf#vim#with_preview('up:60%')
+      \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \   <bang>0)
+
+noremap <leader>g :Rg<cr>
+
 " }}}
 
 " Utilities --------------------------------- {{{
