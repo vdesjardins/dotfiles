@@ -132,6 +132,8 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/echodoc.vim'
 Plug 'vdesjardins/vim-langclient-java'
+Plug 'bfredl/nvim-miniyank'
+
 " Plug 'roxma/python-support.nvim'
 
 "Plug 'icholy/typescript-tools'
@@ -717,11 +719,6 @@ else
   nnoremap <Leader>cl :let @+=expand("%:p")<CR>
 endif
 
-" YankRing
-let g:yankring_history_file=".vimyankring"
-nnoremap <silent> <F3> :YRShow<cr>
-inoremap <silent> <F3> <ESC>:YRShow<cr>
-
 " zen-coding
 let g:user_zen_settings = {
       \   'indentation': "  ",
@@ -907,6 +904,12 @@ noremap <leader>es :e! ~/.vim/UltiSnips/<cr>
 
 " session --------------------------------------------- {{{
 let g:session_autosave = 'no'
+" }}}
+
+" miniyank --------------------------------------------- {{{
+map p <Plug>(miniyank-autoput)
+map P <Plug>(miniyank-autoPut)
+map <C-p> <Plug>(miniyank-cycle)
 " }}}
 
 syntax on
