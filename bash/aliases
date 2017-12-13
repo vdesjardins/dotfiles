@@ -258,6 +258,7 @@ alias kcdd="kubectl describe deployments"
 alias kcdc="kubectl describe configmaps"
 alias kcdss="kubectl describe secrets"
 alias mk=minikube
+alias kinspect="kubectl run --rm -i -t vince-d --image=alpine --restart=Never --command /bin/sh"
 
 # ssl
 function ssl_dump() {
