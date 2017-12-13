@@ -30,6 +30,6 @@ zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
 
 # # Theme!
 # zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
-#zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
-zplug "afrozalm/agnosterAfro", as:theme
-  
+zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
+# zplug "afrozalm/agnosterAfro", as:theme
+
