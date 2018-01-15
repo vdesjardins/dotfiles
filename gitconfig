@@ -61,6 +61,12 @@
 [merge]
 	conflictstyle = diff3
 	tool = vimdiff
+
+[mergetool]
+	prompt = true
+[mergetool "vimdiff"]
+	cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED
+
 [push]
 	# for now since git at work doesn't support simple.
 	#default = simple
