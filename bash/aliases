@@ -245,20 +245,35 @@ function fhost() {
 }
 
 # k8s
-alias kc=kubectl
-alias kcgp="kubectl get pods"
-alias kcgs="kubectl get services"
-alias kcgd="kubectl get deployments"
-alias kcgc="kubectl get configmaps"
-alias kcgss="kubectl get secrets"
-alias kcgn="kubectl get namespaces"
-alias kcdp="kubectl describe pods"
-alias kcds="kubectl describe services"
-alias kcdd="kubectl describe deployments"
-alias kcdc="kubectl describe configmaps"
-alias kcdss="kubectl describe secrets"
+alias kc="kubectl $NS"
+alias kcgp="kc get pods"
+alias kcgs="kc get services"
+alias kcgd="kc get deployments"
+alias kcgc="kc get configmaps"
+alias kcgss="kc get secrets"
+alias kcgn="kc get namespaces"
+alias kcdp="kc describe pods"
+alias kcds="kc describe services"
+alias kcdd="kc describe deployments"
+alias kcdc="kc describe configmaps"
+alias kcdss="kc describe secrets"
+alias kce="kc exec"
+alias kcl="kc logs"
+alias kca="kc apply"
+alias kcdelp="kc delete pod"
+alias kcdeld="kc delete deploy"
 alias mk=minikube
 alias kinspect="kubectl run --rm -i -t vince-d --image=alpine --restart=Never --command /bin/sh"
+
+function kswitch() {
+    if [[ "$@" == "" ]]; then
+        echo -e "Missing namespace!"
+        return 1
+    fi
+
+    ns=$1
+    kubectl config set-context $(kubectl config current-context) --namespace="$ns"
+}
 
 # ssl
 function ssl_dump() {
