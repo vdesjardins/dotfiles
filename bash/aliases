@@ -4,6 +4,7 @@ alias ls='ls --color'
 alias grep="grep --color"
 alias a='ls -A'
 alias la='ls -A -l -G'
+alias ll='ls -ltr'
 alias cdd='cd -'
 alias dl='dirs -v'
 function cdc() {
@@ -245,7 +246,8 @@ function fhost() {
 }
 
 # k8s
-alias kc="kubectl $NS"
+alias kc="kubectl"
+alias kcg="kc get"
 alias kcgp="kc get pods"
 alias kcgs="kc get services"
 alias kcgd="kc get deployments"
@@ -253,6 +255,8 @@ alias kcgc="kc get configmaps"
 alias kcgss="kc get secrets"
 alias kcgn="kc get namespaces"
 alias kcdp="kc describe pods"
+alias kcd="kc describe"
+alias kcdel="kc delete"
 alias kcds="kc describe services"
 alias kcdd="kc describe deployments"
 alias kcdc="kc describe configmaps"
@@ -262,8 +266,13 @@ alias kcl="kc logs"
 alias kca="kc apply"
 alias kcdelp="kc delete pod"
 alias kcdeld="kc delete deploy"
+alias kced="kc edit"
 alias mk=minikube
 alias kinspect="kubectl run --rm -i -t vince-d --image=alpine --restart=Never --command /bin/sh"
+alias kcgpp="kubectl get pods -n kong-system-internal -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.name}{\"(\"}{.ports[*].name}{\" \"}{.ports[*].containerPort}{\")\"}{\", \"}{end}{end}' | sort"
+
+alias kccuc="kubectl config use-context"
+alias kccgc="kubectl config get-contexts"
 
 function kswitch() {
     if [[ "$@" == "" ]]; then
@@ -273,6 +282,21 @@ function kswitch() {
 
     ns=$1
     kubectl config set-context $(kubectl config current-context) --namespace="$ns"
+}
+
+function hswitch() {
+    if [[ "$1" == "" ]]; then
+        echo "** Paramètre obligatoire manqant"
+        echo "** Liste des envs:"
+        ls -1 ~/.creds/helm/envs/
+        return 1
+    fi
+
+    pem_dir=~/.creds/helm/envs/$1
+
+    cp ${pem_dir}/server/int.pem $(helm home)/ca.pem
+    cp ${pem_dir}/user/client.pem $(helm home)/cert.pem
+    cp ${pem_dir}/user/client-key.pem $(helm home)/key.pem
 }
 
 # ssl
