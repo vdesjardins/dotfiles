@@ -8,7 +8,7 @@ zplug "mafredri/zsh-async", from:github, defer:0
 zplug "lib/completion", from:oh-my-zsh
 
 zplug "lib/history", from:oh-my-zsh
-zplug 'plugins/ssh-agent', from:oh-my-zsh, ignore:oh-my-zsh.sh
+zplug 'plugins/gpg-agent', from:oh-my-zsh, ignore:oh-my-zsh.sh
 
 # # Syntax highlighting for commands, load last
 zplug "zsh-users/zsh-syntax-highlighting", from:github, defer:3
@@ -32,4 +32,5 @@ zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
 # zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
 # zplug "afrozalm/agnosterAfro", as:theme
+# zplug "themes/agnoster", from:oh-my-zsh
 
