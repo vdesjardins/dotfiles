@@ -8,7 +8,6 @@ zplug "mafredri/zsh-async", from:github, defer:0
 zplug "lib/completion", from:oh-my-zsh
 
 zplug "lib/history", from:oh-my-zsh
-zplug 'plugins/gpg-agent', from:oh-my-zsh, ignore:oh-my-zsh.sh
 
 # # Syntax highlighting for commands, load last
 zplug "zsh-users/zsh-syntax-highlighting", from:github, defer:3
