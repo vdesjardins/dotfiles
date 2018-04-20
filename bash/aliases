@@ -312,18 +312,22 @@ function kswitch() {
 }
 
 function hswitch() {
-    if [[ "$1" == "" ]]; then
-        echo "** Paramètre obligatoire manqant"
-        echo "** Liste des envs:"
-        ls -1 ~/.creds/helm/envs/
+    env=$1
+
+    if [[ ${env} == "" ]]; then
+        echo "*** Known Helm Environnements in Vault ***"
+        vault secrets list | grep helm/clusters | cut -d'/' -f 3
         return 1
     fi
 
-    pem_dir=~/.creds/helm/envs/$1
+    temp_dir=$(mktemp -d)
+    vault write -format=json helm/clusters/${env}/issue/default common_name=client-helm.lacapitale.com >$temp_dir/payload
 
-    cp ${pem_dir}/server/int.pem $(helm home)/ca.pem
-    cp ${pem_dir}/user/client.pem $(helm home)/cert.pem
-    cp ${pem_dir}/user/client-key.pem $(helm home)/key.pem
+    cat $temp_dir/payload | jq -r .data.certificate > ~/.helm/cert.pem
+    cat $temp_dir/payload | jq -r .data.issuing_ca > ~/.helm/ca.pem
+    cat $temp_dir/payload | jq -r .data.private_key > ~/.helm/key.pem
+
+    rm -rf ${temp_dir}
 }
 
 # ssl
