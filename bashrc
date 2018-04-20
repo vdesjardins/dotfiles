@@ -26,5 +26,7 @@ if [ -f $HOME/.bashrc-$(uname)-$(hostname) ]; then
   . $HOME/.bashrc-$(uname)-$(hostname)
 fi
 
-
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# Vault
+command -v vault >/dev/null 2>&1 && complete -C /usr/local/bin/vault vault

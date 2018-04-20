@@ -69,3 +69,5 @@ fi
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+autoload -U +X bashcompinit && bashcompinit
+command -v vault >/dev/null 2>&1 && complete -o nospace -C /usr/local/bin/vault vault

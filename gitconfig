@@ -87,4 +87,4 @@
 [github]
 	user = vdesjardins
 [commit]
-	gpgsign = true
+	#gpgsign = true
