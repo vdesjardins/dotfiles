@@ -1,7 +1,9 @@
 [user]
 	useConfigOnly = true
-	#name = Vincent Desjardins
-	#email = vdesjardins@gmail.com
+	signingkey = CF7EEEA5FD1B11B8
+	#signingkey = 04C423B8C964B58C
+	name = Vincent Desjardins
+	email = vdesjardins@gmail.com
 [mirror]
 	summary = true
 [core]
@@ -61,6 +63,10 @@
 [merge]
 	conflictstyle = diff3
 	tool = vimdiff
+	renamelimit = 3000
+
+[diff]
+	renameLimit = 3000
 
 [mergetool]
 	prompt = true
@@ -80,3 +86,5 @@
 	autoStash = true
 [github]
 	user = vdesjardins
+[commit]
+	gpgsign = true
