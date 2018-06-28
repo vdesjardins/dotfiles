@@ -1,8 +1,10 @@
 
 if [ "$(uname)" = "Linux" ]; then
-  source ~/dotfiles/bash/env
+  for f in $(ls -1 ~/dotfiles/shells/*); do
+      source ${f}
+  done
+
   source ~/dotfiles/bash/config
-  source ~/dotfiles/bash/aliases
 
   # for settings specific to one system
   [[ -f ~/.local.env ]] && source ~/.local.env

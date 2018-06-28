@@ -1,10 +1,46 @@
 #!/bin/bash
 
+alias eak="$EDITOR ~/dotfiles/shells/k8s; source ~/dotfiles/shells/k8s"
+alias kc="kubectl"
+alias kcg="kc get"
+alias kcgp="kc get pods --show-labels"
+alias kcgs="kc get services"
+alias kcgd="kc get deployments"
+alias kcgc="kc get configmaps"
+alias kcgss="kc get secrets"
+alias kcgn="kc get namespaces"
+alias kcgj="kc get jobs,cronjobs"
+alias kcge="kc get events"
+alias kcdp="kc describe pods"
+alias kcd="kc describe"
+alias kcdel="kc delete"
+alias kcds="kc describe services"
+alias kcdd="kc describe deployments"
+alias kcdc="kc describe configmaps"
+alias kcdss="kc describe secrets"
+alias kce="kc exec -it"
+alias kcl="kc logs"
+alias kca="kc apply"
+alias kcdelp="kc delete pod"
+alias kcdeld="kc delete deploy"
+alias kced="kc edit"
+alias kcpf="kc port-forward"
+alias mk=minikube
+alias kinspect="kubectl run --rm -i -t vince-d --image=gcr.io/google-containers/toolbox --restart=Never --labels 'istio-injection=disabled' --command /bin/bash"
+alias kcgpp="kubectl get pods -n kong-system-internal -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.name}{\"(\"}{.ports[*].name}{\" \"}{.ports[*].containerPort}{\")\"}{\", \"}{end}{end}' | sort"
+
+alias kcccc="kubectl config current-context"
+alias kccuc="kubectl config use-context"
+alias kccgc="kubectl config get-contexts"
+
+alias podinfo="kubectl get po -n kong-system-internal -o json | jq -r '.items[] | [(.metadata.name),([.spec.containers[].name] | join(\",\")),(.spec.nodeSelector[\"cloud.google.com/gke-nodepool\"])] | @tsv'"
+
+
 function cluster-switch() {
     local cluster=${1}
 
     if [[ ${cluster} == "" ]]; then
-        cluster=$(kubectl config get-contexts | tail -n +2 | awk '{ print $2; }' | fzf)
+        cluster=$(set -o pipefail && kubectl config get-contexts | tail -n +2 | awk '{ print $2; }' | fzf)
     fi
 
     if [[ ${cluster} == "" ]]; then
@@ -32,7 +68,7 @@ EOT
     chmod +x ${startup_script}
 
     tmux new-session -d -s ${session_name} ${startup_script}
-    tmux setenv -t ${session_name} KUBECONFIG=${kubeconfig}
+    tmux setenv -t ${session_name} KUBECONFIG ${kubeconfig}
     tmux switch-client -t ${session_name}
 }
 alias csw=cluster-switch
@@ -40,7 +76,7 @@ alias csw=cluster-switch
 function namespace-switch() {
     local ns=${1}
     if [[ ${ns} == "" ]]; then
-        ns=$(kubectl get namespaces | tail -n +2 | awk '{ print $1; }' | fzf)
+        ns=$(set -o pipefail && kubectl get namespaces | tail -n +2 | awk '{ print $1; }' | fzf)
     fi
 
     if [[ ${ns} == "" ]]; then
@@ -48,8 +84,136 @@ function namespace-switch() {
         return 1
     fi
 
+    local COLOR='\033[0;34m'
+    local NC='\033[0m'
+    echo "Switching Default Namespace to ${COLOR}${ns}${NC}"
     kubectl config set-context $(kubectl config current-context) --namespace="$ns"
 }
 alias ksw=namespace-switch
+
+function namespace-picker() {
+    kubectl get namespaces | tail -n +2 | awk '{ print $1; }' | fzf
+}
+alias nsp=namespace-picker
+
+function helm-switch() {
+    local cluster=$1
+
+    vault token lookup >/dev/null 2>&1
+
+    if [[ $? != 0 ]]; then
+        # if [[ -z ${AD_USERNAME} ]]; then
+        echo -n "Vault Username: "
+        read username
+        vault login -method=ldap -path=ad username=${username}
+        # fi
+        if [[ $? != 0 ]]; then
+            return 1
+        fi
+    fi
+
+    if [[ ${cluster} == "" ]]; then
+        cluster=$(set -o pipefail && vault secrets list | grep helm/clusters | cut -d'/' -f 3 | fzf)
+    fi
+
+    if [[ ${cluster} == "" ]]; then
+        echo "no helm cluster provided."
+        return 1
+    fi
+
+    temp_dir=$(mktemp -d)
+    vault write -format=json helm/clusters/${cluster}/issue/default common_name=client-helm.lacapitale.com >$temp_dir/payload
+
+    cat $temp_dir/payload | jq -r .data.certificate > ~/.helm/cert.pem
+    cat $temp_dir/payload | jq -r .data.issuing_ca > ~/.helm/ca.pem
+    cat $temp_dir/payload | jq -r .data.private_key > ~/.helm/key.pem
+
+    rm -rf ${temp_dir}
+}
+alias hsw=helm-switch
+
+# old function
+function kswitch() {
+    if [[ "$@" == "" ]]; then
+        echo -e "Missing namespace!"
+        return 1
+    fi
+
+    ns=$1
+    kubectl config set-context $(kubectl config current-context) --namespace="$ns"
+}
+
+function k8s-internal-ips() {
+    kubectl get node -o json | jq '.items[] | "\(.metadata.name) \(.status.addresses | map(select(.type | contains("InternalIP"))) | .[].address)"' -Mr
+}
+
+function k8s-connect-to-nodes() {
+    local cluster_name=$(kubectl config current-context)
+
+    local first=1
+
+    for i in $(kubectl get node -o json | jq '.items[].status.addresses | map(select(.type | contains("InternalIP"))) | .[].address' -Mr); do
+
+        if [[ ${first} == 1 ]]; then
+            cmd="tmux new-session -d -n k8s-hosts -s ssh-${cluster_name} ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}\; switch-client -t ssh-${cluster_name}"
+            first=0
+        else
+            cmd="${cmd}\; split-window ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}"
+        fi
+    done
+
+    cmd="${cmd}\; select-layout tiled"
+
+    eval ${cmd}
+}
+
+alias hl="helm ls --tls"
+function hm() {
+    helm "$@" --tls
+}
+
+function hswitch() {
+    env=$1
+
+    if [[ ${env} == "" ]]; then
+        echo "*** Known Helm Environnements in Vault ***"
+        vault secrets list | grep helm/clusters | cut -d'/' -f 3
+        return 0
+    fi
+
+    temp_dir=$(mktemp -d)
+    vault write -format=json helm/clusters/${env}/issue/default common_name=client-helm.lacapitale.com >$temp_dir/payload
+
+    cat $temp_dir/payload | jq -r .data.certificate > ~/.helm/cert.pem
+    cat $temp_dir/payload | jq -r .data.issuing_ca > ~/.helm/ca.pem
+    cat $temp_dir/payload | jq -r .data.private_key > ~/.helm/key.pem
+
+    rm -rf ${temp_dir}
+}
+
+function getcrb() {
+    ns=$1
+    sa=$2
+
+    if [[ "$ns" == "" || "$sa" == "" ]]; then
+        echo "paramètres requis: namespace, serviceaccount"
+        return 1
+    fi
+
+    kubectl get clusterrolebindings -o json | jq -r $(cat <<-EOT
+      .items[] |
+      select(
+        .subjects // [] | .[] |
+        [.kind,.namespace,.name] == ["ServiceAccount\","${ns}","${sa}"]
+      ) |
+      .metadata.name
+EOT
+)
+}
+
+function kcgrl() {
+    arg=$1
+    kubectl get pod -o json ${arg} | jq '.items[] | {pod: .metadata.name, namespace: .metadata.namespace, nodeName: .spec.nodeName, memory: [(.spec.containers[] | {container: .name, requests: .resources.requests.memory, limits: .resources.limits.memory} )], cpu: [(.spec.containers[] | {container: .name, requests: .resources.requests.cpu, limit: .resources.limits.cpu} )] }'
+}
 
 # vim: ft=sh

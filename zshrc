@@ -18,9 +18,11 @@ if [ "$(uname)" = "Linux" ]; then
   watch=notme
   export LOGCHECK=60
 
-  . ~/dotfiles/zsh/env
-  . ~/dotfiles/zsh/config
-  . ~/dotfiles/zsh/aliases
+  for f in $(ls -1 ~/dotfiles/shells/*); do
+      source ${f}
+  done
+
+  source ~/dotfiles/zsh/config
 
   # use .localzshrc for settings specific to one system
   [[ -f ~/.localzshrc ]] && .  ~/.localzshrc

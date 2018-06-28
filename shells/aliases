@@ -73,9 +73,9 @@ function sf() {
 }
 
 # Utility
-alias reload="source ~/dotfiles/bash/aliases"
-alias ea="$EDITOR ~/dotfiles/bash/aliases; reload"
-alias ee="$EDITOR ~/dotfiles/bash/env; source ~/dotfiles/bash/env"
+alias reload="source ~/dotfiles/shells/aliases"
+alias ea="$EDITOR ~/dotfiles/shells/aliases; reload"
+alias ee="$EDITOR ~/dotfiles/shells/env; source ~/dotfiles/shells/env"
 alias eal="$EDITOR ~/.local.aliases; source ~/.local.aliases"
 alias eel="$EDITOR ~/.local.env"
 alias ef='$EDITOR $(fzf)'
@@ -166,6 +166,7 @@ alias eg="$EDITOR .git/config"
 alias egg="$EDITOR ~/.gitconfig"
 # merge a subtree. Feed it with a remote name and the local branch (ex.: master)
 alias gsm="git merge --squash -s subtree --no-commit"
+alias glso="git ls-files -o"
 
 # edit dirty files
 alias edf="vim \$(git status -s -uno -z | sed 's/ M//g')"
@@ -243,91 +244,6 @@ function fhost() {
 	IFS=$SAVE_IFS
 
 	echo $hosts_str | grep $part
-}
-
-# k8s
-alias kc='kubectl "--context=${KUBECTL_CONTEXT:-$(kubectl config current-context)}" ${KUBECTL_NAMESPACE/[[:alnum:]-]*/--namespace=${KUBECTL_NAMESPACE}}'
-# alias kc="kubectl"
-alias kcg="kc get"
-alias kcgp="kc get pods --show-labels"
-alias kcgs="kc get services"
-alias kcgd="kc get deployments"
-alias kcgc="kc get configmaps"
-alias kcgss="kc get secrets"
-alias kcgn="kc get namespaces"
-alias kcgj="kc get jobs,cronjobs"
-alias kcge="kc get events"
-alias kcdp="kc describe pods"
-alias kcd="kc describe"
-alias kcdel="kc delete"
-alias kcds="kc describe services"
-alias kcdd="kc describe deployments"
-alias kcdc="kc describe configmaps"
-alias kcdss="kc describe secrets"
-alias kce="kc exec -it"
-alias kcl="kc logs"
-alias kca="kc apply"
-alias kcdelp="kc delete pod"
-alias kcdeld="kc delete deploy"
-alias kced="kc edit"
-alias kcpf="kc port-forward"
-alias mk=minikube
-alias kinspect="kubectl run --rm -i -t vince-d --image=giantswarm/tiny-tools --restart=Never --command /bin/sh"
-alias kcgpp="kubectl get pods -n kong-system-internal -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.name}{\"(\"}{.ports[*].name}{\" \"}{.ports[*].containerPort}{\")\"}{\", \"}{end}{end}' | sort"
-
-alias kcccc="kubectl config current-context"
-alias kccuc="kubectl config use-context"
-alias kccgc="kubectl config get-contexts"
-
-alias podinfo="kubectl get po -n kong-system-internal -o json | jq -r '.items[] | [(.metadata.name),([.spec.containers[].name] | join(\",\")),(.spec.nodeSelector[\"cloud.google.com/gke-nodepool\"])] | @tsv'"
-
-function getcrb() {
-    ns=$1
-    sa=$2
-
-    if [[ "$ns" == "" || "$sa" == "" ]]; then
-        echo "paramètres requis: namespace, serviceaccount"
-        return 1
-    fi
-
-    kubectl get clusterrolebindings -o json | jq -r $(cat <<-EOT
-      .items[] |
-      select(
-        .subjects // [] | .[] |
-        [.kind,.namespace,.name] == ["ServiceAccount\","${ns}","${sa}"]
-      ) |
-      .metadata.name
-EOT
-)
-}
-
-function kswitch() {
-    if [[ "$@" == "" ]]; then
-        echo -e "Missing namespace!"
-        return 1
-    fi
-
-    ns=$1
-    kubectl config set-context $(kubectl config current-context) --namespace="$ns"
-}
-
-function hswitch() {
-    env=$1
-
-    if [[ ${env} == "" ]]; then
-        echo "*** Known Helm Environnements in Vault ***"
-        vault secrets list | grep helm/clusters | cut -d'/' -f 3
-        return 1
-    fi
-
-    temp_dir=$(mktemp -d)
-    vault write -format=json helm/clusters/${env}/issue/default common_name=client-helm.lacapitale.com >$temp_dir/payload
-
-    cat $temp_dir/payload | jq -r .data.certificate > ~/.helm/cert.pem
-    cat $temp_dir/payload | jq -r .data.issuing_ca > ~/.helm/ca.pem
-    cat $temp_dir/payload | jq -r .data.private_key > ~/.helm/key.pem
-
-    rm -rf ${temp_dir}
 }
 
 # ssl
