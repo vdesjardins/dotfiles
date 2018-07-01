@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source ~/.dnscreds
+
+dnsname="home.kube-herd.com"
+
+external_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+
+curl -s "https://${username}:${password}@domains.google.com/nic/update?hostname=${dnsname}&myip=${external_ip}"
+
