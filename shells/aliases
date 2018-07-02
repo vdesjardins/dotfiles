@@ -8,7 +8,8 @@ alias ll='ls -ltr'
 alias cdd='cd -'
 alias dl='dirs -v'
 function cdc() {
-	cd $1; ls
+	cd $1
+	ls
 }
 alias l="ls -ltrhG"
 alias h="history"
@@ -62,13 +63,16 @@ function e_debug() {
 }
 
 function sf() {
-	if [ "$#" -lt 1 ]; then echo "Supply string to search for!"; return 1; fi
+	if [ "$#" -lt 1 ]; then
+		echo "Supply string to search for!"
+		return 1
+	fi
 	# printf -v search "%q" "$*"
 	search="$1"
 	include="yml,js,json,php,md,styl,pug,jade,html,config,py,cpp,c,go,hs,rb,conf,fa,lst,java"
 	exclude=".config,.git,node_modules,vendor,build,yarn.lock,*.sty,*.bst,*.coffee,dist,*.class,*.war,*.jar"
 	rg_command='rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always" -g "*.{'$include'}" -g "!{'$exclude'}/*"'
-	files=`eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}'`
+	files=$(eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}')
 	[[ -n "$files" ]] && ${EDITOR:-vim} $files
 }
 
@@ -114,13 +118,16 @@ function ansible-role-clean() {
 	echo "Do you wish to remove these directories?"
 	select yn in "Yes" "No"; do
 		case $yn in
-			Yes ) find . -type d -empty -exec rm -rf '{}' \; 2>/dev/null; break;;
-			No ) exit;;
+		Yes)
+			find . -type d -empty -exec rm -rf '{}' \; 2>/dev/null
+			break
+			;;
+		No) exit ;;
 		esac
 	done
 }
 
-function take {
+function take() {
 	mkdir -p $1
 	cd $1
 }
@@ -172,7 +179,7 @@ alias glso="git ls-files -o"
 alias edf="vim \$(git status -s -uno -z | sed 's/ M//g')"
 
 stashgrep() {
-	for i in `git stash list | awk -F ':' '{print $1}'`; do
+	for i in $(git stash list | awk -F ':' '{print $1}'); do
 		git stash show -p $i | grep -H --label="$i" "$1"
 	done
 }
