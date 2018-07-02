@@ -22,6 +22,8 @@ function tmux_find_pane() {
 	(tmux switch -t $(tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_tty}' | grep $(ps -o tty= -p $(lsof -t $FNAME))$ | awk '{ print $1 }'))
 }
 
+alias tre="source <(tmux show-environment -s)"
+
 # Quick cd
 function cr() {
 	cd ~/projects/$*
