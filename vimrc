@@ -305,7 +305,7 @@ augroup myfiletypes_group
   " autoindent with two spaces, always expand tabs
   autocmd FileType ruby,eruby,yaml,ru set ai sw=2 sts=2 et
   autocmd FileType python set ai sw=4 sts=4 et ts=8
-  autocmd FileType sh set ai sw=4 sts=4 et ts=8
+  autocmd FileType sh set noet ci pi sts=0 sw=8 ts=8
   autocmd FileType javascript,json set ai sw=2 sts=2 et
   autocmd FileType java set ai sw=4 sts=4 et
   autocmd FileType html set ai sw=2 sts=2 et
@@ -564,6 +564,18 @@ augroup sh_group
   autocmd!
   autocmd FileType sh inoremap <buffer> $f #--- PH ----------------------------------------------<esc>FP2xi
 augroup END
+function! neoformat#formatters#sh#shfmt() abort
+  let s:sw = shiftwidth()
+  if &expandtab == 0
+    let s:sw = 0
+  endif
+
+  return {
+          \ 'exe': 'shfmt',
+          \ 'args': ['-i ' . 0],
+          \ 'stdin': 1,
+          \ }
+endfunction
 " }}}
 
 " Ruby section --------------------------------------------- {{{
