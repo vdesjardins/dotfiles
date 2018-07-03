@@ -23,6 +23,7 @@ function tmux_find_pane() {
 }
 
 alias tre="source <(tmux show-environment -s)"
+alias t="tmux attach -d"
 
 # Quick cd
 function cr() {
