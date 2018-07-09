@@ -99,7 +99,7 @@ Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
 Plug 'cespare/vim-toml'
 Plug 'vim-scripts/tComment'
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -133,10 +133,9 @@ Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/echodoc.vim'
 Plug 'vdesjardins/vim-langclient-java'
 Plug 'bfredl/nvim-miniyank'
-
-" Plug 'roxma/python-support.nvim'
-
-"Plug 'icholy/typescript-tools'
+Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'roxma/vim-tmux-clipboard'
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
