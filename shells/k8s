@@ -26,16 +26,26 @@ alias kca="kc apply"
 alias kcdelp="kc delete pod"
 alias kcdeld="kc delete deploy"
 alias kced="kc edit"
+alias kcm="kc edit"
+alias kcmc="kcm configmap"
+alias kcmd="kcm deploy"
+alias kcms="kcm service"
+alias kcmi="kcm ing"
+alias kcmss="kcm secret"
 alias kcpf="kc port-forward"
 alias mk=minikube
 alias kinspect="kubectl run --rm -i -t vince-d --image=gcr.io/google-containers/toolbox --restart=Never --labels 'istio-injection=disabled' --command /bin/bash"
-alias kcgpp="kubectl get pods -n kong-system-internal -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.name}{\"(\"}{.ports[*].name}{\" \"}{.ports[*].containerPort}{\")\"}{\", \"}{end}{end}' | sort"
 
 alias kcccc="kubectl config current-context"
 alias kccuc="kubectl config use-context"
 alias kccgc="kubectl config get-contexts"
 
-alias podinfo="kubectl get po -n kong-system-internal -o json | jq -r '.items[] | [(.metadata.name),([.spec.containers[].name] | join(\",\")),(.spec.nodeSelector[\"cloud.google.com/gke-nodepool\"])] | @tsv'"
+function kcgpp() {
+	kubectl get pods -n ${1} -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{":\t"}{.ports[*].name}{":"}{.ports[*].containerPort}{""}{"\t"}{end}{end}' | sort | column -t -c $(tput cols)
+}
+function podinfo() {
+	kubectl get po -n ${1} -o json | jq -r '.items[] | [(.metadata.name),([.spec.containers[].name] | join(",")),(.spec.nodeSelector["cloud.google.com/gke-nodepool"])] | @tsv'
+}
 
 function cluster-switch() {
 	local cluster=${1}
@@ -98,11 +108,13 @@ function helm-switch() {
 	vault token lookup >/dev/null 2>&1
 
 	if [[ $? != 0 ]]; then
-		# if [[ -z ${AD_USERNAME} ]]; then
-		echo -n "Vault Username: "
-		read username
-		vault login -method=ldap -path=ad username=${username}
-		# fi
+		if [[ -z ${VAULT_USERNAME} ]]; then
+			echo -n "Vault Username: "
+			read username
+			vault login -method=ldap -path=ad username=${username}
+		else
+			vault login -method=ldap -path=ad username=${VAULT_USERNAME}
+		fi
 		if [[ $? != 0 ]]; then
 			return 1
 		fi
@@ -211,6 +223,19 @@ function getcrb() {
 function kcgrl() {
 	arg=$1
 	kubectl get pod -o json ${arg} | jq '.items[] | {pod: .metadata.name, namespace: .metadata.namespace, nodeName: .spec.nodeName, memory: [(.spec.containers[] | {container: .name, requests: .resources.requests.memory, limits: .resources.limits.memory} )], cpu: [(.spec.containers[] | {container: .name, requests: .resources.requests.cpu, limit: .resources.limits.cpu} )] }'
+}
+
+function k8s-master-addr() {
+	cluster=$1
+	if [[ ${cluster} == "" ]]; then
+		kubectl config view -o json | jq '.clusters[] | { name: .name, addr: .cluster.server} .addr' -Mr
+	else
+		kubectl config view -o json | jq '.clusters[] | { name: .name, addr: .cluster.server} | select(.name == "gke_corp-prod-gkeinfra_northamerica-northeast1-a_prod01") | .addr' -Mr
+	fi
+}
+
+function k8s-dump-ca() {
+	kubectl config view --raw -o json | jq -r '.clusters[0].cluster."certificate-authority-data"' | tr -d '"' | base64 --decode
 }
 
 # k8s search for resources
