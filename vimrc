@@ -98,7 +98,7 @@ Plug 'vim-scripts/L9'
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
 Plug 'cespare/vim-toml'
-Plug 'vim-scripts/tComment'
+Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
@@ -136,6 +136,8 @@ Plug 'bfredl/nvim-miniyank'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'hashivim/vim-terraform'
+Plug 'juliosueiras/vim-terraform-completion'
 
 call plug#end()
 
@@ -287,6 +289,8 @@ set winaltkeys=no
 " set completeopt+=longest
 " set completeopt=menu,preview
 
+let g:deoplete#omni_patterns = {}
+let g:deoplete#omni_patterns.terraform = '[^ *\t"{=$]\w*'
 let g:deoplete#enable_at_startup = 1
 
 " Vimscript file settings ---------------------- {{{
@@ -935,3 +939,6 @@ if MySys() ==? "windows"
 endif
 " }}}
 
+" vim-commentary ---------------------- {{{
+autocmd FileType terraform setlocal commentstring=#%s
+" }}}
