@@ -137,7 +137,7 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'hashivim/vim-terraform'
-Plug 'juliosueiras/vim-terraform-completion'
+Plug 'neomake/neomake'
 
 call plug#end()
 
@@ -285,13 +285,12 @@ set guioptions-=T
 " Disable ALT keys for menu
 set winaltkeys=no
 
-" Completion only on the longest text entered
-" set completeopt+=longest
-" set completeopt=menu,preview
+" Remove Info(Preview) window
+set completeopt-=preview
 
-let g:deoplete#omni_patterns = {}
-let g:deoplete#omni_patterns.terraform = '[^ *\t"{=$]\w*'
-let g:deoplete#enable_at_startup = 1
+" Hide Info(Preview) window after completions
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 " Vimscript file settings ---------------------- {{{
 augroup vim_group
@@ -846,7 +845,7 @@ noremap <leader>z :ZoomWin<CR>
 " }}}
 
 " vimrooter -------------------------------- {{{
-let g:rooter_patterns = ['.git/']
+let g:rooter_patterns = ['.terraform/', '.git/']
 " }}}
 
 " vim-easy-align -------------------------------- {{{
