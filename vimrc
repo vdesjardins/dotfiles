@@ -71,7 +71,7 @@ endif
 
 call plug#begin(s:vimplugdir)
 
-Plug 'archSeer/colibri.vim'
+Plug 'dracula/vim'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
 Plug 'vim-syntastic/syntastic'
 Plug 'sjl/gundo.vim'
@@ -932,7 +932,7 @@ syntax on
 set t_Co=256
 set background=dark
 set termguicolors
-colorscheme colibri
+colorscheme dracula
 if MySys() ==? "windows"
   set guifont=Lucida_Console:h10:cANSI
 endif
