@@ -14,3 +14,7 @@ indent_size = 2
 indent_style = tab
 tab_width = 4
 
+[*.diff]
+insert_final_newline = false
+trim_trailing_whitespace = false
+
