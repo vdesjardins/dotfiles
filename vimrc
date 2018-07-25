@@ -107,24 +107,17 @@ Plug 'tpope/vim-repeat'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'edkolev/promptline.vim'
-Plug 'vim-scripts/logstash.vim'
-Plug 'regedarek/ZoomWin'
 Plug 'junegunn/vim-easy-align'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'pearofducks/ansible-vim'
-Plug 'vim-scripts/TaskList.vim'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'sbdchd/neoformat'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
-Plug 'tpope/vim-rake'
-Plug 'tpope/gem-browse'
-Plug 'tpope/vim-bundler'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'pbogut/fzf-mru.vim'
 Plug 'junegunn/fzf.vim'
-Plug 'PProvost/vim-ps1'
 Plug 'leafgarland/typescript-vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
@@ -837,7 +830,6 @@ let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 let g:go_list_type = "quickfix"
 let g:syntastic_java_checkers = ['checkstyle']
-
 " }}}
 
 " ZoomWin -------------------------------- {{{
