@@ -72,7 +72,7 @@ endif
 call plug#begin(s:vimplugdir)
 
 Plug 'dracula/vim'
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries', 'for': 'go' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 Plug 'vim-syntastic/syntastic'
 Plug 'sjl/gundo.vim'
 Plug 'tpope/vim-fugitive'
