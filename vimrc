@@ -281,9 +281,8 @@ set winaltkeys=no
 " Remove Info(Preview) window
 set completeopt-=preview
 
-" Hide Info(Preview) window after completions
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+let g:deoplete#omni_patterns = {}
+let g:deoplete#enable_at_startup = 1
 
 " Vimscript file settings ---------------------- {{{
 augroup vim_group
