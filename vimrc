@@ -836,7 +836,7 @@ noremap <leader>z :ZoomWin<CR>
 " }}}
 
 " vimrooter -------------------------------- {{{
-let g:rooter_patterns = ['.terraform/', '.git/']
+let g:rooter_patterns = ['.root', '.git/']
 " }}}
 
 " vim-easy-align -------------------------------- {{{
