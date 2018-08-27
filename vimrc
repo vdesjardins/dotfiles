@@ -86,17 +86,31 @@ Plug 'tpope/vim-endwise'
 Plug 'airblade/vim-rooter'
 Plug 'houtsnip/vim-emacscommandline'
 Plug 'mhinz/vim-grepper'
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+
+" BEGIN new auto complete
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'prabirshrestha/asyncomplete-gocode.vim'
+
+if has('python3')
+  Plug 'SirVer/ultisnips'
+  Plug 'honza/vim-snippets'
+  Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 endif
-Plug 'zchee/deoplete-go'
+
+Plug 'Shougo/neco-syntax'
+Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
+
+Plug 'Shougo/neco-vim'
+Plug 'prabirshrestha/asyncomplete-necovim.vim'
+
+Plug 'prabirshrestha/asyncomplete-file.vim'
+" END new auto complete
+
 Plug 'vim-scripts/L9'
-Plug 'honza/vim-snippets'
-Plug 'SirVer/ultisnips'
 Plug 'cespare/vim-toml'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -280,9 +294,6 @@ set winaltkeys=no
 
 " Remove Info(Preview) window
 set completeopt-=preview
-
-let g:deoplete#omni_patterns = {}
-let g:deoplete#enable_at_startup = 1
 
 " Vimscript file settings ---------------------- {{{
 augroup vim_group
@@ -931,4 +942,65 @@ endif
 
 " vim-commentary ---------------------- {{{
 autocmd FileType terraform setlocal commentstring=#%s
+" }}}
+
+" tmux-navigator ---------------------- {{{
+nnoremap <silent> {Left-mapping} :TmuxNavigateLeft<cr>
+nnoremap <silent> {Down-Mapping} :TmuxNavigateDown<cr>
+nnoremap <silent> {Up-Mapping} :TmuxNavigateUp<cr>
+nnoremap <silent> {Right-Mapping} :TmuxNavigateRight<cr>
+nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
+" }}}
+
+" asynccomplete registrations ---------------------- {{{
+let g:asyncomplete_smart_completion = 1
+let g:asyncomplete_auto_popup = 1
+
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+
+call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'whitelist': ['*'],
+    \ 'blacklist': ['go'],
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ }))
+
+call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
+    \ 'name': 'gocode',
+    \ 'whitelist': ['go'],
+    \ 'completor': function('asyncomplete#sources#gocode#completor'),
+    \ 'config': {
+    \    'gocode_path': expand('~/.gotools/gocode')
+    \  },
+    \ }))
+
+if has('python3')
+    let g:UltiSnipsExpandTrigger="<c-l>"
+    call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+        \ 'name': 'ultisnips',
+        \ 'whitelist': ['*'],
+        \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+        \ }))
+  endif
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necosyntax#get_source_options({
+    \ 'name': 'necosyntax',
+    \ 'whitelist': ['*'],
+    \ 'completor': function('asyncomplete#sources#necosyntax#completor'),
+    \ }))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necovim#get_source_options({
+    \ 'name': 'necovim',
+    \ 'whitelist': ['vim'],
+    \ 'completor': function('asyncomplete#sources#necovim#completor'),
+    \ }))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
 " }}}
