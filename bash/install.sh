@@ -5,6 +5,7 @@ function install_tools() {
 	install_rg
 	install_sh_formatter
 	install_pkgs
+	vim_langservers
 }
 
 function install_hostess() {
@@ -32,6 +33,11 @@ function install_sh_formatter() {
 
 function install_pkgs() {
 	sudo apt install -y highlight
+}
+
+function vim_langservers() {
+	sudo npm i -g bash-language-server
+	go get -u github.com/sourcegraph/go-langserver
 }
 
 install_tools

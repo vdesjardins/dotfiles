@@ -956,34 +956,23 @@ nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
 let g:asyncomplete_smart_completion = 1
 let g:asyncomplete_auto_popup = 1
 
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-
-call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-    \ 'name': 'buffer',
-    \ 'whitelist': ['*'],
-    \ 'blacklist': ['go'],
-    \ 'completor': function('asyncomplete#sources#buffer#completor'),
-    \ }))
-
-call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
-    \ 'name': 'gocode',
-    \ 'whitelist': ['go'],
-    \ 'completor': function('asyncomplete#sources#gocode#completor'),
-    \ 'config': {
-    \    'gocode_path': expand('~/.gotools/gocode')
-    \  },
-    \ }))
+if executable('go-langserver')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'go-langserver',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
+        \ 'whitelist': ['go'],
+        \ })
+else
+  echom "Please install go-langserver"
+endif
 
 if has('python3')
-    let g:UltiSnipsExpandTrigger="<c-l>"
-    call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-        \ 'name': 'ultisnips',
-        \ 'whitelist': ['*'],
-        \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-        \ }))
-  endif
+  call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+      \ 'name': 'ultisnips',
+      \ 'whitelist': ['*'],
+      \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+      \ }))
+endif
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necosyntax#get_source_options({
     \ 'name': 'necosyntax',
@@ -1005,10 +994,12 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
     \ }))
 
 if executable('bash-language-server')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'bash-language-server',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'bash-language-server start']},
-        \ 'whitelist': ['sh'],
-        \ })
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'bash-language-server',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'bash-language-server start']},
+      \ 'whitelist': ['sh'],
+      \ })
+else
+  echom "Please install bash-language-server"
 endif
 " }}}
