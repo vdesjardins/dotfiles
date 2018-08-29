@@ -136,6 +136,8 @@ function helm-switch() {
 	cat $temp_dir/payload | jq -r .data.issuing_ca >~/.helm/ca.pem
 	cat $temp_dir/payload | jq -r .data.private_key >~/.helm/key.pem
 
+	chmod 600 ~/.helm/key.pem
+
 	rm -rf ${temp_dir}
 }
 alias hsw=helm-switch
