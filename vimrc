@@ -956,15 +956,31 @@ nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
 let g:asyncomplete_smart_completion = 1
 let g:asyncomplete_auto_popup = 1
 
-if executable('go-langserver')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'go-langserver',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
-        \ 'whitelist': ['go'],
-        \ })
-else
-  echom "Please install go-langserver"
-endif
+call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'whitelist': ['*'],
+    \ 'blacklist': ['go'],
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ }))
+
+call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
+    \ 'name': 'gocode',
+    \ 'whitelist': ['go'],
+    \ 'completor': function('asyncomplete#sources#gocode#completor'),
+    \ 'config': {
+    \    'gocode_path': expand('~/.gotools/gocode')
+    \  },
+    \ }))
+
+" if executable('go-langserver')
+"     au User lsp_setup call lsp#register_server({
+"         \ 'name': 'go-langserver',
+"         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
+"         \ 'whitelist': ['go'],
+"         \ })
+" else
+"   echom "Please install go-langserver"
+" endif
 
 if has('python3')
   call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
