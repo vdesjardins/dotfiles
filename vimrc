@@ -101,12 +101,6 @@ if has('python3')
   Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 endif
 
-Plug 'Shougo/neco-syntax'
-Plug 'prabirshrestha/asyncomplete-necosyntax.vim'
-
-Plug 'Shougo/neco-vim'
-Plug 'prabirshrestha/asyncomplete-necovim.vim'
-
 Plug 'prabirshrestha/asyncomplete-file.vim'
 " END new auto complete
 
@@ -989,18 +983,6 @@ if has('python3')
       \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
       \ }))
 endif
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necosyntax#get_source_options({
-    \ 'name': 'necosyntax',
-    \ 'whitelist': ['*'],
-    \ 'completor': function('asyncomplete#sources#necosyntax#completor'),
-    \ }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#necovim#get_source_options({
-    \ 'name': 'necovim',
-    \ 'whitelist': ['vim'],
-    \ 'completor': function('asyncomplete#sources#necovim#completor'),
-    \ }))
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
     \ 'name': 'file',
