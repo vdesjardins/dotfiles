@@ -130,9 +130,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mattn/emmet-vim'
 Plug 'hail2u/vim-css3-syntax'
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/echodoc.vim'
-Plug 'vdesjardins/vim-langclient-java'
 Plug 'bfredl/nvim-miniyank'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'roxma/vim-tmux-clipboard'
@@ -879,8 +877,6 @@ function! neoformat#formatters#xml#tidy() abort
         \ }
 endfunction
 
-let g:langclient_java_autostart = 1
-
 augroup java_group
   autocmd!
   autocmd FileType java set makeprg=mvn\ compile\ -q\ -f\ pom.xml
@@ -888,16 +884,6 @@ augroup java_group
   autocmd FileType java set errorformat=\[ERROR]\ %f:[%l\\,%v]\ %m
   autocmd FileType java nmap <localleader>m :make<cr>
   autocmd BufWritePre * :Neoformat
-
-  autocmd FileType java nmap K :call LanguageClient_textDocument_hover()<CR>
-  autocmd FileType java nmap <C-]> :call LanguageClient_textDocument_definition()<CR>
-  autocmd FileType java nmap <localleader>e :call LanguageClient_textDocument_rename()<CR>
-  autocmd FileType java nmap <localleader>/ :call LanguageClient_textDocument_documentSymbol()<CR>
-  autocmd FileType java nmap <localleader>r :call LanguageClient_textDocument_references()<CR>
-  autocmd FileType java nmap <localleader>g :call LanguageClient_workspace_symbol()<CR>
-  autocmd FileType java nmap <localleader>a :call LanguageClient_textDocument_codeAction()<CR>
-  autocmd FileType java nmap <localleader>f :call LanguageClient_textDocument_formatting()<CR>
-  autocmd FileType java nmap <localleader>h :call LanguageClient_textDocument_signatureHelp()<CR>
 augroup END
 
 " }}}
