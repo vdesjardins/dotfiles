@@ -137,6 +137,7 @@ Plug 'roxma/vim-tmux-clipboard'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'hashivim/vim-terraform'
 Plug 'neomake/neomake'
+Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
 
@@ -174,7 +175,7 @@ endif
 " Permit extra key combinations
 let mapleader = ","
 let g:mapleader = ","
-let maplocalleader = "\\"
+let maplocalleader = "\<Space>"
 
 " Fast saving
 nnoremap <leader>w :w!<cr>
@@ -299,7 +300,6 @@ augroup END
 augroup myfiletypes_group
   " Clear old autocmds in group
   autocmd!
-  " autoindent with two spaces, always expand tabs
   autocmd FileType ruby,eruby,yaml,ru set ai sw=2 sts=2 et
   autocmd FileType python set ai sw=4 sts=4 et ts=8
   autocmd FileType sh set noet ci pi sts=0 sw=8 ts=8
@@ -414,14 +414,10 @@ nnoremap <leader>ack :Grepper -tool ack -cword -noprompt<cr>
 
 " Moving around, tabs and buffers ------------------------------------ {{{
 
-" Map space to / (search) and c-space to ? (backgwards search)
-noremap <space> /
-noremap <c-space> ?
-
 " Clear search highlighting
 noremap <silent> <leader><cr> :noh<cr>
 
-" Smart way to move btw. windows
+" Smart way to move between windows
 noremap <C-j> <C-W>j
 noremap <C-k> <C-W>k
 noremap <C-h> <C-W>h
@@ -670,8 +666,7 @@ augroup go_group
   autocmd!
   autocmd FileType go nmap <localleader>s <Plug>(go-implements)
   autocmd FileType go nmap <localleader>d <Plug>(go-def)
-  autocmd FileType go nmap <localleader>gd <Plug>(go-doc)
-  autocmd FileType go nmap <localleader>gv <Plug>(go-doc-vertical)
+  autocmd FileType go nmap <localleader>g <Plug>(go-doc-vertical)
   autocmd FileType go nmap <localleader>r <Plug>(go-run)
   autocmd FileType go nmap <localleader>b <Plug>(go-build)
   autocmd FileType go nmap <localleader>t <Plug>(go-test)
@@ -932,6 +927,11 @@ nnoremap <silent> {Right-Mapping} :TmuxNavigateRight<cr>
 nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
 " }}}
 
+" which key mapping ---------------------- {{{
+nnoremap <silent> <leader>      :<c-u>WhichKey ','<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  '<Space>'<CR>
+" }}}
+
 " asynccomplete registrations ---------------------- {{{
 let g:asyncomplete_smart_completion = 1
 let g:asyncomplete_auto_popup = 1
@@ -987,3 +987,4 @@ else
   echom "Please install bash-language-server"
 endif
 " }}}
+
