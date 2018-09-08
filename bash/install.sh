@@ -36,8 +36,7 @@ function install_pkgs() {
 }
 
 function vim_langservers() {
-	sudo npm i -g bash-language-server
-	go get -u github.com/sourcegraph/go-langserver
+	sudo npm i -g -unsafe-perm bash-language-server
 }
 
 install_tools
