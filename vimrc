@@ -73,7 +73,7 @@ call plug#begin(s:vimplugdir)
 
 Plug 'dracula/vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
-Plug 'vim-syntastic/syntastic'
+Plug 'w0rp/ale'
 Plug 'sjl/gundo.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -136,7 +136,6 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'hashivim/vim-terraform'
-Plug 'neomake/neomake'
 Plug 'liuchengxu/vim-which-key'
 
 call plug#end()
