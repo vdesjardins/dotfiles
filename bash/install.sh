@@ -6,6 +6,7 @@ function install_tools() {
 	install_sh_formatter
 	install_pkgs
 	vim_langservers
+	install_grv
 }
 
 function install_hostess() {
@@ -39,4 +40,8 @@ function vim_langservers() {
 	sudo npm i -g -unsafe-perm bash-language-server
 }
 
-install_tools
+function install_grv() {
+	wget -O grv https://github.com/rgburke/grv/releases/download/v0.2.0/grv_v0.2.0_linux64
+	chmod +x grv
+	sudo mv grv /usr/local/bin/grv
+}
