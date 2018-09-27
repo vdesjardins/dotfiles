@@ -40,6 +40,8 @@ alias kcccc="kubectl config current-context"
 alias kccuc="kubectl config use-context"
 alias kccgc="kubectl config get-contexts"
 
+alias kc-podrestart="kubectl get pods --all-namespaces --sort-by='.status.containerStatuses[0].restartCount'"
+
 function kcgpp() {
 	kubectl get pods -n ${1} -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{":\t"}{.ports[*].name}{":"}{.ports[*].containerPort}{""}{"\t"}{end}{end}' | sort | column -t -c $(tput cols)
 }
