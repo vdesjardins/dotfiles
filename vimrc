@@ -930,6 +930,10 @@ nnoremap <silent> <leader>      :<c-u>WhichKey ','<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey  '<Space>'<CR>
 " }}}
 
+" NERDTree ---------------------- {{{
+map <leader>u :NERDTreeFind<cr>:wincmd p<cr>
+" }}}
+
 " asynccomplete registrations ---------------------- {{{
 let g:asyncomplete_smart_completion = 1
 let g:asyncomplete_auto_popup = 1
