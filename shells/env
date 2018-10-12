@@ -10,10 +10,12 @@ export HISTFILESIZE=3000
 export PYTHONSTARTUP=~/.pythonrc
 export MANPATH=/usr/local/man:$MANPATH
 
+export GOPATH=~/go
+
 # cdargs
 if [ -f /usr/share/doc/cdargs/examples/cdargs-bash.sh ]; then
-  source /usr/share/doc/cdargs/examples/cdargs-bash.sh
+	source /usr/share/doc/cdargs/examples/cdargs-bash.sh
 fi
 
 # rvm
-if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi
+if [[ -s $HOME/.rvm/scripts/rvm ]]; then source $HOME/.rvm/scripts/rvm; fi
