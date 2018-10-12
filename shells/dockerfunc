@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function gcloud() {
+function dgcloud() {
 	docker run --rm -it \
 		-v "${HOME}/.config/gcloud:/.config/gcloud" \
 		-v "${HOME}/.ssh:/root/.ssh:ro" \
@@ -13,7 +13,7 @@ function gcloud() {
 		google/cloud-sdk:latest gcloud "$@"
 }
 
-function kubectl() {
+function dkubectl() {
 	docker run --rm -it \
 		-v "${HOME}/.config/gcloud:/.config/gcloud" \
 		-v "${HOME}/.kube:/.kube" \
