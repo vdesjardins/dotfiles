@@ -665,7 +665,7 @@ augroup go_group
   autocmd!
   autocmd FileType go nmap <localleader>s <Plug>(go-implements)
   autocmd FileType go nmap <localleader>d <Plug>(go-def)
-  autocmd FileType go nmap <localleader>g <Plug>(go-doc-vertical)
+  autocmd FileType go nmap <localleader>g <Plug>(go-doc)
   autocmd FileType go nmap <localleader>r <Plug>(go-run)
   autocmd FileType go nmap <localleader>b <Plug>(go-build)
   autocmd FileType go nmap <localleader>t <Plug>(go-test)
