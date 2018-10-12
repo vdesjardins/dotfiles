@@ -33,7 +33,7 @@ function install_sh_formatter() {
 }
 
 function install_pkgs() {
-	sudo apt install -y highlight
+	sudo apt install -y highlight htop glances exuberant-ctags
 }
 
 function vim_langservers() {
