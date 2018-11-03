@@ -406,8 +406,8 @@ endfunc
 " }}}
 
 " Grepper mapping ---------------------------------------- {{{
-nnoremap <leader>* :Grepper
-nnoremap <leader>a :Grepper -tool rg --vimgrep --no-heading<cr>
+nnoremap <leader>* :Grepper -tool rg -grepprg rg -H --no-heading --vimgrep --no-ignore<cr>
+nnoremap <leader>a :Grepper -tool rg<cr>
 nnoremap <leader>ack :Grepper -tool ack -cword -noprompt<cr>
 " }}}
 
@@ -556,18 +556,6 @@ augroup sh_group
   autocmd!
   autocmd FileType sh inoremap <buffer> $f #--- PH ----------------------------------------------<esc>FP2xi
 augroup END
-function! neoformat#formatters#sh#shfmt() abort
-  let s:sw = shiftwidth()
-  if &expandtab == 0
-    let s:sw = 0
-  endif
-
-  return {
-          \ 'exe': 'shfmt',
-          \ 'args': ['-i ' . 0],
-          \ 'stdin': 1,
-          \ }
-endfunction
 " }}}
 
 " Ruby section --------------------------------------------- {{{
@@ -683,6 +671,8 @@ let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_auto_type_info = 1
+
+let g:go_gocode_propose_source = 1
 " }}}
 
 " Vim grep ------------------------------------------ {{{
@@ -751,7 +741,7 @@ noremap <leader>m :FZFMarks<cr>
 
 command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
-      \   'rg --column --line-number --no-heading --color=always --ignore-case '.shellescape(<q-args>), 1,
+      \   'rg --column --line-number --color=always --ignore-case '.shellescape(<q-args>), 1,
       \   <bang>0 ? fzf#vim#with_preview('up:60%')
       \           : fzf#vim#with_preview('right:50%:hidden', '?'),
       \   <bang>0)
@@ -855,21 +845,6 @@ map <leader>v <Plug>TaskList
 " }}}
 "
 " Java --------------------------------------------- {{{
-function! neoformat#formatters#xml#tidy() abort
-  return {
-        \ 'exe': 'tidy',
-        \ 'args': ['-quiet',
-        \          '-xml',
-        \          '--indent auto',
-        \          '--indent-spaces ' . shiftwidth(),
-        \          '--vertical-space yes',
-        \          '--tidy-mark no',
-        \          '-utf8'
-        \         ],
-        \ 'stdin': 1,
-        \ }
-endfunction
-
 augroup java_group
   autocmd!
   autocmd FileType java set makeprg=mvn\ compile\ -q\ -f\ pom.xml
