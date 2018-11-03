@@ -181,6 +181,8 @@ alias glso="git ls-files -o"
 # edit dirty files
 alias edf="vim \$(git status -s -uno -z | sed 's/ M//g')"
 
+alias rgi="rg --no-ignore"
+
 stashgrep() {
 	for i in $(git stash list | awk -F ':' '{print $1}'); do
 		git stash show -p $i | grep -H --label="$i" "$1"
