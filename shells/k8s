@@ -8,7 +8,7 @@ alias kcgs="kc get services"
 alias kcgd="kc get deployments"
 alias kcgc="kc get configmaps"
 alias kcgss="kc get secrets"
-alias kcgn="kc get namespaces"
+alias kcgn="kc get namespaces --show-labels"
 alias kcgno="kc get nodes"
 alias kcgj="kc get jobs,cronjobs"
 alias kcge="kc get events"
@@ -43,238 +43,265 @@ alias kccgc="kubectl config get-contexts"
 alias kc-podrestart="kubectl get pods --all-namespaces --sort-by='.status.containerStatuses[0].restartCount'"
 
 function kcgpp() {
-	kubectl get pods -n ${1} -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{":\t"}{.ports[*].name}{":"}{.ports[*].containerPort}{""}{"\t"}{end}{end}' | sort | column -t -c $(tput cols)
+        kubectl get pods -n ${1} -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{":\t"}{.ports[*].name}{":"}{.ports[*].containerPort}{""}{"\t"}{end}{end}' | sort | column -t -c $(tput cols)
 }
 function podinfo() {
-	kubectl get po -n ${1} -o json | jq -r '.items[] | [(.metadata.name),([.spec.containers[].name] | join(",")),(.spec.nodeSelector["cloud.google.com/gke-nodepool"])] | @tsv'
+        kubectl get po -n ${1} -o json | jq -r '.items[] | [(.metadata.name),([.spec.containers[].name] | join(",")),(.spec.nodeSelector["cloud.google.com/gke-nodepool"])] | @tsv'
 }
 
 function cluster-switch() {
-	local cluster=${1}
+        local cluster=${1}
 
-	if [[ ${cluster} == "" ]]; then
-		cluster=$(set -o pipefail && kubectl config get-contexts | tail -n +2 | awk '{ print $2; }' | fzf-down)
-	fi
+        if [[ ${cluster} == "" ]]; then
+                cluster=$(set -o pipefail && kubectl config get-contexts | tail -n +2 | awk '{ print $2; }' | fzf-down)
+        fi
 
-	if [[ ${cluster} == "" ]]; then
-		echo "no cluster provided."
-		return 1
-	fi
+        if [[ ${cluster} == "" ]]; then
+                echo "no cluster provided."
+                return 1
+        fi
 
-	local session_name=shell-${cluster}
+        local session_name=shell-${cluster}
 
-	if tmux list-session | cut -d':' -f1 | grep ${session_name}; then
-		tmux switch-client -t ${session_name}
-		return
-	fi
+        if tmux list-session | cut -d':' -f1 | grep ${session_name}; then
+                tmux switch-client -t ${session_name}
+                return
+        fi
 
-	local dir=$(mktemp -d)
-	local kubeconfig=${dir}/config
-	local startup_script=${dir}/startup-script.sh
-	cp ~/.kube/config ${dir}/config
+        local dir=$(mktemp -d)
+        local kubeconfig=${dir}/config
+        local startup_script=${dir}/startup-script.sh
+        cp ~/.kube/config ${dir}/config
 
-	cat <<-EOT >${startup_script}
-		export KUBECONFIG=${kubeconfig}
-		kubectl config use-context ${cluster}
-		zsh
-	EOT
-	chmod +x ${startup_script}
+        cat <<-EOT >${startup_script}
+export KUBECONFIG=${kubeconfig}
+kubectl config use-context ${cluster}
+zsh
+EOT
+        chmod +x ${startup_script}
 
-	tmux new-session -d -s ${session_name} ${startup_script}
-	tmux setenv -t ${session_name} KUBECONFIG ${kubeconfig}
-	tmux switch-client -t ${session_name}
+        tmux new-session -d -s ${session_name} ${startup_script}
+        tmux setenv -t ${session_name} KUBECONFIG ${kubeconfig}
+        tmux switch-client -t ${session_name}
 }
 alias csw=cluster-switch
 
+function cluster-switch-local() {
+        local cluster=${1}
+
+        if [[ ${cluster} == "" ]]; then
+                cluster=$(set -o pipefail && kubectl config get-contexts | tail -n +2 | awk '{ print $2; }' | fzf-down)
+        fi
+
+        if [[ ${cluster} == "" ]]; then
+                echo "no cluster provided."
+                return 1
+        fi
+
+        kubectl config use-context ${cluster}
+}
+alias cswl=cluster-switch-local
+
 function namespace-switch() {
-	local ns=${1}
-	if [[ ${ns} == "" ]]; then
-		ns=$(set -o pipefail && kubectl get namespaces | tail -n +2 | awk '{ print $1; }' | fzf-down)
-	fi
+        local ns=${1}
+        if [[ ${ns} == "" ]]; then
+                ns=$(set -o pipefail && kubectl get namespaces | tail -n +2 | awk '{ print $1; }' | fzf-down)
+        fi
 
-	if [[ ${ns} == "" ]]; then
-		echo "no namespace provided."
-		return 1
-	fi
+        if [[ ${ns} == "" ]]; then
+                echo "no namespace provided."
+                return 1
+        fi
 
-	local COLOR='\033[0;34m'
-	local NC='\033[0m'
-	echo "Switching Default Namespace to ${COLOR}${ns}${NC}"
-	kubectl config set-context $(kubectl config current-context) --namespace="$ns"
+        local COLOR='\033[0;34m'
+        local NC='\033[0m'
+        echo "Switching Default Namespace to ${COLOR}${ns}${NC}"
+        kubectl config set-context $(kubectl config current-context) --namespace="$ns"
 }
 alias ksw=namespace-switch
 
 function helm-switch() {
-	local cluster=$1
+        local cluster=$1
 
-	vault token lookup >/dev/null 2>&1
+        vault token lookup >/dev/null 2>&1
 
-	if [[ $? != 0 ]]; then
-		if [[ -z ${VAULT_USERNAME} ]]; then
-			echo -n "Vault Username: "
-			read username
-			vault login -method=ldap -path=ad username=${username}
-		else
-			vault login -method=ldap -path=ad username=${VAULT_USERNAME}
-		fi
-		if [[ $? != 0 ]]; then
-			return 1
-		fi
-	fi
+        if [[ $? != 0 ]]; then
+                if [[ -z ${VAULT_USERNAME} ]]; then
+                        echo -n "Vault Username: "
+                        read username
+                        vault login -method=ldap -path=ad username=${username}
+                else
+                        vault login -method=ldap -path=ad username=${VAULT_USERNAME}
+                fi
+                if [[ $? != 0 ]]; then
+                        return 1
+                fi
+        fi
 
-	if [[ ${cluster} == "" ]]; then
-		cluster=$(set -o pipefail && vault secrets list | grep helm/clusters | cut -d'/' -f 3 | fzf-down)
-	fi
+        if [[ ${cluster} == "" ]]; then
+                cluster=$(set -o pipefail && vault secrets list | grep helm/clusters | cut -d'/' -f 3 | fzf-down)
+        fi
 
-	if [[ ${cluster} == "" ]]; then
-		echo "no helm cluster provided."
-		return 1
-	fi
+        if [[ ${cluster} == "" ]]; then
+                echo "no helm cluster provided."
+                return 1
+        fi
 
-	temp_dir=$(mktemp -d)
-	vault write -format=json helm/clusters/${cluster}/issue/default common_name=client-helm.lacapitale.com >$temp_dir/payload
+        temp_dir=$(mktemp -d)
+        vault write -format=json helm/clusters/${cluster}/issue/default common_name=client-helm.lacapitale.com >$temp_dir/payload
 
-	cat $temp_dir/payload | jq -r .data.certificate >~/.helm/cert.pem
-	cat $temp_dir/payload | jq -r .data.issuing_ca >~/.helm/ca.pem
-	cat $temp_dir/payload | jq -r .data.private_key >~/.helm/key.pem
+        cat $temp_dir/payload | jq -r .data.certificate >~/.helm/cert.pem
+        cat $temp_dir/payload | jq -r .data.issuing_ca >~/.helm/ca.pem
+        cat $temp_dir/payload | jq -r .data.private_key >~/.helm/key.pem
 
-	chmod 600 ~/.helm/key.pem
+        chmod 600 ~/.helm/key.pem
 
-	rm -rf ${temp_dir}
+        rm -rf ${temp_dir}
 }
 alias hsw=helm-switch
 
 # old function
 function kswitch() {
-	if [[ "$@" == "" ]]; then
-		echo -e "Missing namespace!"
-		return 1
-	fi
+        if [[ "$@" == "" ]]; then
+                echo -e "Missing namespace!"
+                return 1
+        fi
 
-	ns=$1
-	kubectl config set-context $(kubectl config current-context) --namespace="$ns"
+        ns=$1
+        kubectl config set-context $(kubectl config current-context) --namespace="$ns"
 }
 
 function k8s-internal-ips() {
-	kubectl get node -o json | jq '.items[] | "\(.metadata.name) \(.status.addresses | map(select(.type | contains("InternalIP"))) | .[].address)"' -Mr
+        kubectl get node -o json | jq '.items[] | "\(.metadata.name) \(.status.addresses | map(select(.type | contains("InternalIP"))) | .[].address)"' -Mr
 }
 
 function k8s-connect-to-nodes() {
-	local cluster_name=$(kubectl config current-context)
+        local cluster_name=$(kubectl config current-context)
 
-	local first=1
+        local first=1
 
-	for i in $(kubectl get node -o json | jq '.items[].status.addresses | map(select(.type | contains("InternalIP"))) | .[].address' -Mr); do
+        for i in $(kubectl get node -o json | jq '.items[].status.addresses | map(select(.type | contains("InternalIP"))) | .[].address' -Mr); do
 
-		if [[ ${first} == 1 ]]; then
-			cmd="tmux new-session -d -n k8s-hosts -s ssh-${cluster_name} ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}\; switch-client -t ssh-${cluster_name}"
-			first=0
-		else
-			cmd="${cmd}\; split-window ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}"
-		fi
-	done
+                if [[ ${first} == 1 ]]; then
+                        cmd="tmux new-session -d -n k8s-hosts -s ssh-${cluster_name} ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}\; switch-client -t ssh-${cluster_name}"
+                        first=0
+                else
+                        cmd="${cmd}\; split-window ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}"
+                fi
+        done
 
-	cmd="${cmd}\; select-layout tiled"
+        cmd="${cmd}\; select-layout tiled"
 
-	eval ${cmd}
+        eval ${cmd}
 }
 
-alias hl="helm ls --tls"
+function hl() {
+        helm list
+}
+
 function hm() {
-	helm "$@" --tls
+        helm "$@"
 }
+
+function hs() {
+        helm tiller stop
+        helm tiller start-ci
+}
+export HELM_HOST="localhost:44134"
 
 function hswitch() {
-	env=$1
+        env=$1
 
-	if [[ ${env} == "" ]]; then
-		echo "*** Known Helm Environnements in Vault ***"
-		vault secrets list | grep helm/clusters | cut -d'/' -f 3
-		return 0
-	fi
+        if [[ ${env} == "" ]]; then
+                echo "*** Known Helm Environnements in Vault ***"
+                vault secrets list | grep helm/clusters | cut -d'/' -f 3
+                return 0
+        fi
 
-	temp_dir=$(mktemp -d)
-	vault write -format=json helm/clusters/${env}/issue/default common_name=client-helm.lacapitale.com >$temp_dir/payload
+        temp_dir=$(mktemp -d)
+        vault write -format=json helm/clusters/${env}/issue/default common_name=client-helm.lacapitale.com >$temp_dir/payload
 
-	cat $temp_dir/payload | jq -r .data.certificate >~/.helm/cert.pem
-	cat $temp_dir/payload | jq -r .data.issuing_ca >~/.helm/ca.pem
-	cat $temp_dir/payload | jq -r .data.private_key >~/.helm/key.pem
+        cat $temp_dir/payload | jq -r .data.certificate >~/.helm/cert.pem
+        cat $temp_dir/payload | jq -r .data.issuing_ca >~/.helm/ca.pem
+        cat $temp_dir/payload | jq -r .data.private_key >~/.helm/key.pem
 
-	rm -rf ${temp_dir}
+        rm -rf ${temp_dir}
 }
 
 function getcrb() {
-	ns=$1
-	sa=$2
+        ns=$1
+        sa=$2
 
-	if [[ "$ns" == "" || "$sa" == "" ]]; then
-		echo "paramètres requis: namespace, serviceaccount"
-		return 1
-	fi
+        if [[ "$ns" == "" || "$sa" == "" ]]; then
+                echo "paramètres requis: namespace, serviceaccount"
+                return 1
+        fi
 
-	kubectl get clusterrolebindings -o json | jq -r $(
-		cat <<-EOT
-			      .items[] |
-			      select(
-			        .subjects // [] | .[] |
-			        [.kind,.namespace,.name] == ["ServiceAccount\","${ns}","${sa}"]
-			      ) |
-			      .metadata.name
-		EOT
-	)
+        kubectl get clusterrolebindings -o json | jq -r $(
+                cat <<-EOT
+      .items[] |
+      select(
+        .subjects // [] | .[] |
+        [.kind,.namespace,.name] == ["ServiceAccount\","${ns}","${sa}"]
+      ) |
+      .metadata.name
+EOT
+        )
 }
 
+alias kcgrb="kubectl get rolebindings,clusterrolebindings"
+
 function kcgrl() {
-	arg=$1
-	kubectl get pod -o json ${arg} | jq '.items[] | {pod: .metadata.name, namespace: .metadata.namespace, nodeName: .spec.nodeName, memory: [(.spec.containers[] | {container: .name, requests: .resources.requests.memory, limits: .resources.limits.memory} )], cpu: [(.spec.containers[] | {container: .name, requests: .resources.requests.cpu, limit: .resources.limits.cpu} )] }'
+        arg=$1
+        kubectl get pod -o json ${arg} | jq '.items[] | {pod: .metadata.name, namespace: .metadata.namespace, nodeName: .spec.nodeName, memory: [(.spec.containers[] | {container: .name, requests: .resources.requests.memory, limits: .resources.limits.memory} )], cpu: [(.spec.containers[] | {container: .name, requests: .resources.requests.cpu, limit: .resources.limits.cpu} )] }'
 }
 
 function k8s-master-addr() {
-	cluster=$1
-	if [[ ${cluster} == "" ]]; then
-		kubectl config view -o json | jq '.clusters[] | { name: .name, addr: .cluster.server} .addr' -Mr
-	else
-		kubectl config view -o json | jq '.clusters[] | { name: .name, addr: .cluster.server} | select(.name == "gke_corp-prod-gkeinfra_northamerica-northeast1-a_prod01") | .addr' -Mr
-	fi
+        cluster=$1
+        if [[ ${cluster} == "" ]]; then
+                kubectl config view -o json | jq '.clusters[] | { name: .name, addr: .cluster.server} .addr' -Mr
+        else
+                kubectl config view -o json | jq '.clusters[] | { name: .name, addr: .cluster.server} | select(.name == "gke_corp-prod-gkeinfra_northamerica-northeast1-a_prod01") | .addr' -Mr
+        fi
 }
 
 function k8s-dump-ca() {
-	kubectl config view --raw -o json | jq -r '.clusters[0].cluster."certificate-authority-data"' | tr -d '"' | base64 --decode
+        kubectl config view --raw -o json | jq -r '.clusters[0].cluster."certificate-authority-data"' | tr -d '"' | base64 --decode
 }
 
 # k8s search for resources
 function k8s-resource-picker() {
-	local name=$1
-	kubectl get ${name} --no-headers=true | awk '{ print $1; }' | fzf-down --tac
+        local name=$1
+        kubectl get ${name} --no-headers=true | awk '{ print $1; }' | fzf-down --tac
 }
 
 function k8s-resource-picker-n() {
-	k8s-resource-picker namespaces
+        k8s-resource-picker namespaces
 }
 
 function k8s-resource-picker-p() {
-	k8s-resource-picker pods
+        k8s-resource-picker pods
 }
 
 function k8s-resource-picker-c() {
-	k8s-resource-picker configmaps
+        k8s-resource-picker configmaps
 }
 
 function k8s-resource-picker-s() {
-	k8s-resource-picker services
+        k8s-resource-picker services
 }
 
 function k8s-resource-picker-d() {
-	k8s-resource-picker deploy
+        k8s-resource-picker deploy
 }
 
 function bind-k8s-helper() {
-	local c
-	for c in $@; do
-		eval "fzf-k$c-widget() { local result=\$(k8s-resource-picker-$c | join-lines); zle reset-prompt; LBUFFER+=\$result }"
-		eval "zle -N fzf-k$c-widget"
-		eval "bindkey '^[k^[$c' fzf-k$c-widget"
-	done
+        local c
+        for c in $@; do
+                eval "fzf-k$c-widget() { local result=\$(k8s-resource-picker-$c | join-lines); zle reset-prompt; LBUFFER+=\$result }"
+                eval "zle -N fzf-k$c-widget"
+                eval "bindkey '^[k^[$c' fzf-k$c-widget"
+        done
 }
 
 bind-k8s-helper d n p c s
