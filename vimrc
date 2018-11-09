@@ -96,13 +96,16 @@ Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-gocode.vim'
 
 if has('python3')
-  Plug 'SirVer/ultisnips'
-  Plug 'honza/vim-snippets'
   Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 endif
 
 Plug 'prabirshrestha/asyncomplete-file.vim'
 " END new auto complete
+
+if has('python3')
+  Plug 'SirVer/ultisnips'
+  Plug 'honza/vim-snippets'
+endif
 
 Plug 'vim-scripts/L9'
 Plug 'cespare/vim-toml'
@@ -651,6 +654,7 @@ augroup END
 " golang
 augroup go_group
   autocmd!
+  autocmd FileType go nmap <localleader>a <Plug>(go-alternate-edit)
   autocmd FileType go nmap <localleader>s <Plug>(go-implements)
   autocmd FileType go nmap <localleader>d <Plug>(go-def)
   autocmd FileType go nmap <localleader>g <Plug>(go-doc)
@@ -909,7 +913,7 @@ nnoremap <silent> <localleader> :<c-u>WhichKey  '<Space>'<CR>
 map <leader>u :NERDTreeFind<cr>:wincmd p<cr>
 " }}}
 
-" asynccomplete registrations ---------------------- {{{
+" " asynccomplete registrations ---------------------- {{{
 let g:asyncomplete_smart_completion = 1
 let g:asyncomplete_auto_popup = 1
 
@@ -920,24 +924,15 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
     \ 'completor': function('asyncomplete#sources#buffer#completor'),
     \ }))
 
-call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
-    \ 'name': 'gocode',
-    \ 'whitelist': ['go'],
-    \ 'completor': function('asyncomplete#sources#gocode#completor'),
-    \ 'config': {
-    \    'gocode_path': expand('~/.gotools/gocode')
-    \  },
-    \ }))
-
-" if executable('go-langserver')
-"     au User lsp_setup call lsp#register_server({
-"         \ 'name': 'go-langserver',
-"         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
-"         \ 'whitelist': ['go'],
-"         \ })
-" else
-"   echom "Please install go-langserver"
-" endif
+if executable('go-langserver')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'go-langserver',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
+        \ 'whitelist': ['go'],
+        \ })
+else
+  echom "Please install go-langserver"
+endif
 
 if has('python3')
   call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
