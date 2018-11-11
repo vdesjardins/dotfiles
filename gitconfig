@@ -1,6 +1,6 @@
 [user]
 	useConfigOnly = true
-	signingkey = CF7EEEA5FD1B11B8
+	# signingkey = CF7EEEA5FD1B11B8
 	#signingkey = 04C423B8C964B58C
 	name = Vincent Desjardins
 	email = vdesjardins@gmail.com
