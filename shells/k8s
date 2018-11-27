@@ -46,7 +46,8 @@ function kcgpp() {
         kubectl get pods -n ${1} -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{":\t"}{.ports[*].name}{":"}{.ports[*].containerPort}{""}{"\t"}{end}{end}' | sort | column -t -c $(tput cols)
 }
 function podinfo() {
-        kubectl get po -n ${1} -o json | jq -r '.items[] | [(.metadata.name),([.spec.containers[].name] | join(",")),(.spec.nodeSelector["cloud.google.com/gke-nodepool"])] | @tsv'
+        ns=${1}
+        kubectl get po -n ${ns} -o json | jq -r '.items[] | [(.metadata.name),([.spec.containers[].name] | join(",")),(.spec.nodeSelector["cloud.google.com/gke-nodepool"])] | @tsv'
 }
 
 function cluster-switch() {
@@ -306,5 +307,19 @@ function bind-k8s-helper() {
 
 bind-k8s-helper d n p c s
 unset -f bind-k8s-helper
+
+function k8s-get-images() {
+        kubectl get pods -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
+}
+
+function k8s-get-crd-objects() {
+        filter=${1:?error missing filter}
+
+        content="CRD NAMESPACE NAME\n"
+        for crd in $(kubectl get crd | grep ${filter} | awk '{print $1;}'); do
+                content=${content}"\n"$(kubectl get ${crd} --all-namespaces -o=jsonpath='{range .items[*]}{.kind}{" "}{.metadata.namespace}{" "}{.metadata.name}{"\n"}{end}')
+        done
+        echo ${content} | column -t
+}
 
 # vim: ft=sh
