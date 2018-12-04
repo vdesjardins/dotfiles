@@ -67,6 +67,7 @@
 
 [diff]
 	renameLimit = 3000
+	algorithm = patience
 
 [mergetool]
 	prompt = true
