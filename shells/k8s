@@ -34,7 +34,16 @@ alias kcmi="kcm ing"
 alias kcmss="kcm secret"
 alias kcpf="kc port-forward"
 alias mk=minikube
-alias kinspect="kubectl run --rm -i -t vince-d --image=gcr.io/google-containers/toolbox --restart=Never --labels 'istio-injection=disabled' --command /bin/bash"
+
+function kinspect() {
+        ns=${1}
+
+        if [[ ${ns} != "" ]]; then
+                nsarg="--namespace=${ns}"
+        fi
+
+        kubectl run --rm -i -t vince-d --image=gcr.io/google-containers/toolbox --restart=Never --labels 'istio-injection=disabled' ${nsarg} --command /bin/bash
+}
 
 alias kcccc="kubectl config current-context"
 alias kccuc="kubectl config use-context"
@@ -320,6 +329,69 @@ function k8s-get-crd-objects() {
                 content=${content}"\n"$(kubectl get ${crd} --all-namespaces -o=jsonpath='{range .items[*]}{.kind}{" "}{.metadata.namespace}{" "}{.metadata.name}{"\n"}{end}')
         done
         echo ${content} | column -t
+}
+
+function k8s-copy-ns() {
+        src=${1:?error source namespace not specified}
+        dst=${2:?error destination namespace not specified}
+
+        for res in $(kc api-resources --namespaced=true | cut -f1 -d' '); do
+                case ${res} in
+                endpoints) ;;
+                pods) ;;
+                replicasets) ;;
+                certificates)
+                        kubectl get ${res} -o json --namespace=${src} |
+                                jq ".items[].metadata.namespace = \"${dst}\"" 2>/dev/null >to-create-certificates.json
+                        echo "ATTENTION: File to process manually: to-create-certificates.json"
+                        ;;
+
+                ingresses)
+                        kubectl get ${res} -o json --namespace=${src} |
+                                jq ".items[].metadata.namespace = \"${dst}\"" 2>/dev/null >to-create-ingresses.json
+                        echo "ATTENTION: File to process manually: to-create-ingresses.json"
+                        ;;
+                *)
+                        kubectl get ${res} -o json --namespace=${src} | jq ".items[].metadata.namespace = \"${dst}\"" 2>/dev/null | kubectl create -f - 2>/dev/null
+                        ;;
+                esac
+        done
+        return 0
+}
+
+# istio
+
+function istio-endpoints() {
+        istioctl proxy-config endpoints $@
+}
+alias ie=istio-endpoints
+
+function istio-clusters() {
+        istioctl proxy-config clusters $@
+}
+alias ic=istio-clusters
+
+function istio-routes() {
+        istioctl proxy-config routes $@
+}
+alias ir=istio-routes
+
+function istio-listeners() {
+        istioctl proxy-config listeners $@
+}
+alias il=istio-listeners
+
+function istio-status() {
+        istioctl proxy-status $@
+}
+alias is=istio-status
+
+function envoy-dump-config() {
+        kubectl port-forward ${1} 15000:15000 &
+        kc_pid=$!
+        sleep 1
+        curl http://localhost:15000/config_dump
+        kill ${kc_pid}
 }
 
 # vim: ft=sh
