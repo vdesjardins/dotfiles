@@ -386,12 +386,36 @@ function istio-status() {
 }
 alias is=istio-status
 
-function envoy-dump-config() {
-        kubectl port-forward ${1} 15000:15000 &
+function envoy-call() {
+        local pod=${1}
+        local url_path=${2}
+        local method=${3:-GET}
+
+        kubectl port-forward ${pod} 15000:15000 &
         kc_pid=$!
         sleep 1
-        curl http://localhost:15000/config_dump
+        curl -X${method} http://localhost:15000/${url_path}
         kill ${kc_pid}
+}
+
+function envoy-dump-config() {
+        envoy-call $1 config_dump
+}
+
+function envoy-stats() {
+        envoy-call $1 stats
+}
+
+function envoy-help() {
+        envoy-call $1 help
+}
+
+function envoy-log-trace() {
+        envoy-call $1 "logging?level=trace" POST
+}
+
+function envoy-log-info() {
+        envoy-call $1 "logging?level=info" POST
 }
 
 # vim: ft=sh
