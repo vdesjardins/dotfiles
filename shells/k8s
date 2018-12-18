@@ -424,11 +424,21 @@ function envoy-help() {
 }
 
 function envoy-log-trace() {
-        envoy-call $1 "logging?level=trace" POST
+        local subsystem=${2:-level}
+
+        envoy-call $1 "logging?${subsystem}=trace" POST
+}
+
+function envoy-log-debug() {
+        local subsystem=${2:-level}
+
+        envoy-call $1 "logging?${subsystem}=debug" POST
 }
 
 function envoy-log-info() {
-        envoy-call $1 "logging?level=info" POST
+        local subsystem=${2:-level}
+
+        envoy-call $1 "logging?${subsystem}=info" POST
 }
 
 # vim: ft=sh
