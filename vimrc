@@ -71,7 +71,8 @@ endif
 
 call plug#begin(s:vimplugdir)
 
-Plug 'dracula/vim'
+Plug 'patstockwell/vim-monokai-tasty'
+
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 Plug 'w0rp/ale'
 Plug 'sjl/gundo.vim'
@@ -791,6 +792,7 @@ nnoremap <F8> :TagbarToggle<CR>
 
 " airline -------------------------------- {{{
 let g:airline_powerline_fonts = 1
+let g:airline_theme='monokai_tasty'
 " }}}
 
 " promptline -------------------------------- {{{
@@ -886,7 +888,10 @@ syntax on
 set t_Co=256
 set background=dark
 set termguicolors
-colorscheme dracula
+
+let g:vim_monokai_tasty_italic = 1
+colorscheme vim-monokai-tasty
+
 if MySys() ==? "windows"
   set guifont=Lucida_Console:h10:cANSI
 endif
