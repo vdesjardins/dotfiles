@@ -324,10 +324,19 @@ function k8s-get-images() {
 function k8s-get-crd-objects() {
         filter=${1:?error missing filter}
 
-        content="CRD NAMESPACE NAME\n"
-        for crd in $(kubectl get crd | grep ${filter} | awk '{print $1;}'); do
-                content=${content}"\n"$(kubectl get ${crd} --all-namespaces -o=jsonpath='{range .items[*]}{.kind}{" "}{.metadata.namespace}{" "}{.metadata.name}{"\n"}{end}')
+        if [[ ${2} == "all" ]]; then
+                ns="--all-namespaces"
+        fi
+
+        crds=()
+        for crd in $(kubectl get crd -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | grep ${filter}); do
+                crds+=("${crd}")
         done
+        crds=$(
+                IFS=,
+                echo "${crds[*]}"
+        )
+        content=$(kubectl get ${crds} ${ns} --no-headers=true)
         echo ${content} | column -t
 }
 
@@ -360,6 +369,10 @@ function k8s-copy-ns() {
 }
 
 # istio
+
+function istio-objects() {
+        k8s-get-crd-objects istio
+}
 
 function istio-endpoints() {
         istioctl proxy-config endpoints $@
