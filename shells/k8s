@@ -37,7 +37,8 @@ alias kcpf="kc port-forward"
 alias mk=minikube
 
 function kinspect() {
-        ns=${1}
+        local ns=${1}
+        local nsarg=""
 
         if [[ ${ns} != "" ]]; then
                 nsarg="--namespace=${ns}"
@@ -56,7 +57,7 @@ function kcgpp() {
         kubectl get pods -n ${1} -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{":\t"}{.ports[*].name}{":"}{.ports[*].containerPort}{""}{"\t"}{end}{end}' | sort | column -t -c $(tput cols)
 }
 function podinfo() {
-        ns=${1}
+        local ns=${1}
         kubectl get po -n ${ns} -o json | jq -r '.items[] | [(.metadata.name),([.spec.containers[].name] | join(",")),(.spec.nodeSelector["cloud.google.com/gke-nodepool"])] | @tsv'
 }
 
@@ -182,7 +183,7 @@ function kswitch() {
                 return 1
         fi
 
-        ns=$1
+        local ns=$1
         kubectl config set-context $(kubectl config current-context) --namespace="$ns"
 }
 
@@ -225,7 +226,7 @@ function hs() {
 export HELM_HOST="localhost:44134"
 
 function hswitch() {
-        env=$1
+        local env=$1
 
         if [[ ${env} == "" ]]; then
                 echo "*** Known Helm Environnements in Vault ***"
@@ -233,7 +234,7 @@ function hswitch() {
                 return 0
         fi
 
-        temp_dir=$(mktemp -d)
+        local temp_dir=$(mktemp -d)
         vault write -format=json helm/clusters/${env}/issue/default common_name=client-helm.lacapitale.com >$temp_dir/payload
 
         cat $temp_dir/payload | jq -r .data.certificate >~/.helm/cert.pem
@@ -244,8 +245,8 @@ function hswitch() {
 }
 
 function getcrb() {
-        ns=$1
-        sa=$2
+        local ns=$1
+        local sa=$2
 
         if [[ "$ns" == "" || "$sa" == "" ]]; then
                 echo "paramètres requis: namespace, serviceaccount"
@@ -267,12 +268,12 @@ EOT
 alias kcgrb="kubectl get rolebindings,clusterrolebindings"
 
 function kcgrl() {
-        arg=$1
+        local arg=$1
         kubectl get pod -o json ${arg} | jq '.items[] | {pod: .metadata.name, namespace: .metadata.namespace, nodeName: .spec.nodeName, memory: [(.spec.containers[] | {container: .name, requests: .resources.requests.memory, limits: .resources.limits.memory} )], cpu: [(.spec.containers[] | {container: .name, requests: .resources.requests.cpu, limit: .resources.limits.cpu} )] }'
 }
 
 function k8s-master-addr() {
-        cluster=$1
+        local cluster=$1
         if [[ ${cluster} == "" ]]; then
                 kubectl config view -o json | jq '.clusters[] | { name: .name, addr: .cluster.server} .addr' -Mr
         else
@@ -327,14 +328,14 @@ function k8s-get-images() {
 }
 
 function k8s-get-crd-objects() {
-        filter=${1:?error missing filter}
-        ns=""
+        local filter=${1:?error missing filter}
+        local ns=""
 
         if [[ ${2} == "all" ]]; then
                 ns="--all-namespaces"
         fi
 
-        crds=()
+        local crds=()
         for crd in $(kubectl get crd -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | grep ${filter}); do
                 crds+=("${crd}")
         done
@@ -347,8 +348,8 @@ function k8s-get-crd-objects() {
 }
 
 function k8s-copy-ns() {
-        src=${1:?error source namespace not specified}
-        dst=${2:?error destination namespace not specified}
+        local src=${1:?error source namespace not specified}
+        local dst=${2:?error destination namespace not specified}
 
         for res in $(kc api-resources --namespaced=true | cut -f1 -d' '); do
                 case ${res} in
@@ -374,8 +375,14 @@ function k8s-copy-ns() {
         return 0
 }
 
-# istio
+function k8s-search-configmap() {
+        local exp=$1
+        kubectl get configmap -o json | jq '.items[].data[]' -Sr | grep -P "${exp}"
+}
 
+alias kcsc=k8s-search-configmap
+
+# istio
 function istio-objects() {
         k8s-get-crd-objects istio
 }
@@ -411,7 +418,7 @@ function envoy-call() {
         local method=${3:-GET}
 
         kubectl port-forward ${pod} 15000:15000 &
-        kc_pid=$!
+        local kc_pid=$!
         sleep 1
         curl -X${method} http://localhost:15000/${url_path}
         kill ${kc_pid}
