@@ -43,7 +43,7 @@ function kinspect() {
                 nsarg="--namespace=${ns}"
         fi
 
-        kubectl run --rm -i -t vince-d --image=gcr.io/google-containers/toolbox --restart=Never --labels 'istio-injection=disabled' ${nsarg} --command /bin/bash
+        kubectl run --rm -i -t vince-d --image=gcr.io/google-containers/toolbox --restart=Never --labels 'sidecar.istio.io/inject=false' ${nsarg} --command /bin/bash
 }
 
 alias kcccc="kubectl config current-context"
