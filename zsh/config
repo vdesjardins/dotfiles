@@ -41,3 +41,9 @@ bindkey -e
 
 # clear line to the beginning
 bindkey \^U backward-kill-line
+
+# edit command line in editor
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
