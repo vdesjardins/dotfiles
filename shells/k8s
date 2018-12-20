@@ -328,6 +328,7 @@ function k8s-get-images() {
 
 function k8s-get-crd-objects() {
         filter=${1:?error missing filter}
+        ns=""
 
         if [[ ${2} == "all" ]]; then
                 ns="--all-namespaces"
