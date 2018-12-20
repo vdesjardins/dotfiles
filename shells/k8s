@@ -60,6 +60,10 @@ function podinfo() {
         kubectl get po -n ${ns} -o json | jq -r '.items[] | [(.metadata.name),([.spec.containers[].name] | join(",")),(.spec.nodeSelector["cloud.google.com/gke-nodepool"])] | @tsv'
 }
 
+function kcgp-problems() {
+        kcgp --all-namespaces | grep -v -P '(Running|Completed)'
+}
+
 function cluster-switch() {
         local cluster=${1}
 
