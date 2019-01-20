@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-alias ls='ls --color'
+if [[ $(uname) != "Darwin" ]]; then
+        alias ls='ls --color'
+fi
+
 alias grep="grep --color"
 alias a='ls -A'
 alias la='ls -A -l -G'
@@ -8,8 +11,8 @@ alias ll='ls -ltr'
 alias cdd='cd -'
 alias dl='dirs -v'
 function cdc() {
-	cd $1
-	ls
+        cd $1
+        ls
 }
 alias l="ls -ltrhG"
 alias h="history"
@@ -18,8 +21,8 @@ alias dus='du -ms * | sort -n'
 
 # find tmux pane from open file
 function tmux_find_pane() {
-	FNAME=$1
-	(tmux switch -t $(tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_tty}' | grep $(ps -o tty= -p $(lsof -t $FNAME))$ | awk '{ print $1 }'))
+        FNAME=$1
+        (tmux switch -t $(tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_tty}' | grep $(ps -o tty= -p $(lsof -t $FNAME))$ | awk '{ print $1 }'))
 }
 
 alias tre="source <(tmux show-environment -s)"
@@ -27,56 +30,56 @@ alias t="tmux attach -d"
 
 # Quick cd
 function cr() {
-	cd ~/projects/$*
+        cd ~/projects/$*
 }
 
 which nvim 2>/dev/null >/dev/null
 if [[ $? -eq 0 ]]; then
-	alias vi=nvim
-	export EDITOR=nvim
+        alias vi=nvim
+        export EDITOR=nvim
 fi
 
 # opening a file with docker container
 function e() {
-	set -e
-	# TODO: iterate to resolve all files with realpath before invoking
-	# for now just taking the first argument
-	docker run -it --rm \
-		-v $HOME:$HOME \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		-v /etc/localtime:/etc/localtime \
-		-e TZ=America/Montreal \
-		-e EUID=$UID \
-		-e EGID=$GID \
-		-e HOME=$HOME \
-		vdesjardins/neovim $(realpath $1)
+        set -e
+        # TODO: iterate to resolve all files with realpath before invoking
+        # for now just taking the first argument
+        docker run -it --rm \
+                -v $HOME:$HOME \
+                -v /var/run/docker.sock:/var/run/docker.sock \
+                -v /etc/localtime:/etc/localtime \
+                -e TZ=America/Montreal \
+                -e EUID=$UID \
+                -e EGID=$GID \
+                -e HOME=$HOME \
+                vdesjardins/neovim $(realpath $1)
 }
 
 function e_debug() {
-	docker run -it --rm \
-		-v $HOME:$HOME \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		-v /etc/localtime:/etc/localtime \
-		-e TZ=America/Montreal \
-		-e EUID=$UID \
-		-e EGID=$GID \
-		-e HOME=$HOME \
-		--entrypoint=/bin/bash \
-		vdesjardins/neovim
+        docker run -it --rm \
+                -v $HOME:$HOME \
+                -v /var/run/docker.sock:/var/run/docker.sock \
+                -v /etc/localtime:/etc/localtime \
+                -e TZ=America/Montreal \
+                -e EUID=$UID \
+                -e EGID=$GID \
+                -e HOME=$HOME \
+                --entrypoint=/bin/bash \
+                vdesjardins/neovim
 }
 
 function sf() {
-	if [ "$#" -lt 1 ]; then
-		echo "Supply string to search for!"
-		return 1
-	fi
-	# printf -v search "%q" "$*"
-	search="$1"
-	include="yml,js,json,php,md,styl,pug,jade,html,config,py,cpp,c,go,hs,rb,conf,fa,lst,java"
-	exclude=".config,.git,node_modules,vendor,build,yarn.lock,*.sty,*.bst,*.coffee,dist,*.class,*.war,*.jar"
-	rg_command='rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always" -g "*.{'$include'}" -g "!{'$exclude'}/*"'
-	files=$(eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}')
-	[[ -n "$files" ]] && ${EDITOR:-vim} $files
+        if [ "$#" -lt 1 ]; then
+                echo "Supply string to search for!"
+                return 1
+        fi
+        # printf -v search "%q" "$*"
+        search="$1"
+        include="yml,js,json,php,md,styl,pug,jade,html,config,py,cpp,c,go,hs,rb,conf,fa,lst,java"
+        exclude=".config,.git,node_modules,vendor,build,yarn.lock,*.sty,*.bst,*.coffee,dist,*.class,*.war,*.jar"
+        rg_command='rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always" -g "*.{'$include'}" -g "!{'$exclude'}/*"'
+        files=$(eval $rg_command $search | fzf --ansi --multi --reverse | awk -F ':' '{print $1":"$2":"$3}')
+        [[ -n "$files" ]] && ${EDITOR:-vim} $files
 }
 
 # Utility
@@ -98,59 +101,59 @@ alias dri="sudo docker run -it --rm"
 alias ansible-pr="docker run -it -v $HOME/.ssh:/root/.ssh -v $SSH_AUTH_SOCK:/tmp/ssh.sck -e SSH_AUTH_SOCK=/tmp/ssh.sck -v $(pwd):/ansible -v ~/gce:~/gce --rm=true ansible ansible-playbook -b -u $USER -i inventory.yml site.yml"
 
 function ansible-init() {
-	mkdir -p group_vars
-	mkdir -p host_vars
-	touch site.yml
+        mkdir -p group_vars
+        mkdir -p host_vars
+        touch site.yml
 }
 
 function ansible-role-init() {
-	dir=$1
-	mkdir -p roles/${dir}/tasks
-	mkdir -p roles/${dir}/handlers
-	mkdir -p roles/${dir}/templates
-	mkdir -p roles/${dir}/files
-	mkdir -p roles/${dir}/vars
-	mkdir -p roles/${dir}/defaults
-	mkdir -p roles/${dir}/meta
-	touch roles/${dir}/tasks/main.yml
+        dir=$1
+        mkdir -p roles/${dir}/tasks
+        mkdir -p roles/${dir}/handlers
+        mkdir -p roles/${dir}/templates
+        mkdir -p roles/${dir}/files
+        mkdir -p roles/${dir}/vars
+        mkdir -p roles/${dir}/defaults
+        mkdir -p roles/${dir}/meta
+        touch roles/${dir}/tasks/main.yml
 }
 
 function ansible-role-clean() {
-	find . -type d -empty
+        find . -type d -empty
 
-	echo "Do you wish to remove these directories?"
-	select yn in "Yes" "No"; do
-		case $yn in
-		Yes)
-			find . -type d -empty -exec rm -rf '{}' \; 2>/dev/null
-			break
-			;;
-		No) exit ;;
-		esac
-	done
+        echo "Do you wish to remove these directories?"
+        select yn in "Yes" "No"; do
+                case $yn in
+                Yes)
+                        find . -type d -empty -exec rm -rf '{}' \; 2>/dev/null
+                        break
+                        ;;
+                No) exit ;;
+                esac
+        done
 }
 
 function take() {
-	mkdir -p $1
-	cd $1
+        mkdir -p $1
+        cd $1
 }
 
 # ssh
 function settitle() {
-	printf "\033k$1\033\\"
+        printf "\033k$1\033\\"
 }
 
 function ssh() {
-	if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
-		settitle "$(echo $* | rev | cut -d ' ' -f1 | rev | cut -d . -f 1)"
-		command ssh "$@"
-	else
-		command ssh "$@"
-	fi
+        if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
+                settitle "$(echo $* | rev | cut -d ' ' -f1 | rev | cut -d . -f 1)"
+                command ssh "$@"
+        else
+                command ssh "$@"
+        fi
 
-	r=$?
-	settitle "${SHELL##*/}"
-	return $r
+        r=$?
+        settitle "${SHELL##*/}"
+        return $r
 }
 
 # Finder
@@ -184,9 +187,9 @@ alias edf="vim \$(git status -s -uno -z | sed 's/ M//g')"
 alias rgi="rg --no-ignore"
 
 stashgrep() {
-	for i in $(git stash list | awk -F ':' '{print $1}'); do
-		git stash show -p $i | grep -H --label="$i" "$1"
-	done
+        for i in $(git stash list | awk -F ':' '{print $1}'); do
+                git stash show -p $i | grep -H --label="$i" "$1"
+        done
 }
 
 # Emacs
@@ -195,8 +198,8 @@ alias emm="open -a Emacs ."
 
 # tags
 function ct() {
-	rm -f TAGS
-	etags --append --output=TAGS $*
+        rm -f TAGS
+        etags --append --output=TAGS $*
 }
 
 # Processes
@@ -205,10 +208,10 @@ alias tm='top -o vsize'
 
 # trace
 function stc() {
-	strace -f -s 4096 -o /tmp/trace.trc "$@"
+        strace -f -s 4096 -o /tmp/trace.trc "$@"
 }
 function stp() {
-	strace -f -s 4096 -o /tmp/trace.trc -p $1
+        strace -f -s 4096 -o /tmp/trace.trc -p $1
 }
 
 alias tf=terraform
@@ -236,33 +239,33 @@ alias aptsh='apt-cache show'
 
 # pretty print of environment variables for a running process
 function pp_env() {
-	if [ $(id -u) -eq 0 ]; then
-		sudo=""
-	else
-		sudo="sudo"
-	fi
-	$sudo bash -c "xargs --null --max-args=1 echo < /proc/$1/environ"
+        if [ $(id -u) -eq 0 ]; then
+                sudo=""
+        else
+                sudo="sudo"
+        fi
+        $sudo bash -c "xargs --null --max-args=1 echo < /proc/$1/environ"
 }
 
 # find ssh host using substring
 function fhost() {
-	local part=$1
+        local part=$1
 
-	[[ -f ~/.ssh/known_hosts ]] && hosts=$(awk '{print $1}' ~/.ssh/known_hosts | tr ',' '\n')
-	#[[ -f ~/.ssh/config ]] && hosts_config=$(grep ^Host ~/.ssh/config | sed s/Host\ // | egrep -v '^\*$')
-	#hosts=(${hosts[@]-} ${hosts_config[@]-})
+        [[ -f ~/.ssh/known_hosts ]] && hosts=$(awk '{print $1}' ~/.ssh/known_hosts | tr ',' '\n')
+        #[[ -f ~/.ssh/config ]] && hosts_config=$(grep ^Host ~/.ssh/config | sed s/Host\ // | egrep -v '^\*$')
+        #hosts=(${hosts[@]-} ${hosts_config[@]-})
 
-	SAVE_IFS=$IFS
-	IFS="\n"
-	hosts_str="${hosts[*]}"
-	IFS=$SAVE_IFS
+        SAVE_IFS=$IFS
+        IFS="\n"
+        hosts_str="${hosts[*]}"
+        IFS=$SAVE_IFS
 
-	echo $hosts_str | grep $part
+        echo $hosts_str | grep $part
 }
 
 # ssl
 function ssl_dump() {
-	host=$1
-	port=$2
-	true | openssl s_client -showcerts -connect ${host}:${port} -servername ${host} | openssl x509 -noout -text
+        host=$1
+        port=$2
+        true | openssl s_client -showcerts -connect ${host}:${port} -servername ${host} | openssl x509 -noout -text
 }

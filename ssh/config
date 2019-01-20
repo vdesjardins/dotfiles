@@ -7,4 +7,5 @@ Host *
 	ForwardAgent yes
 	#IdentityFile ~/.ssh/keys/id_rsa_%r
 	#IdentityFile ~/.ssh/id_rsa
+	RemoteForward /home/<user>/.gnupg/S.gpg-agent /home/<user>/.gnupg/S.gpg-agent.extra
 

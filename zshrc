@@ -1,4 +1,4 @@
-if [ "$(uname)" = "Linux" ]; then
+if [[ "$(uname)" == "Linux" || $(uname) == "Darwin" ]]; then
         export ZPLUG_HOME=~/.zplug
         export ZPLUG_LOADFILE=~/dotfiles/zsh/packages.zsh
 
