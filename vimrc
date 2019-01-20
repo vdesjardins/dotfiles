@@ -137,7 +137,6 @@ Plug 'Shougo/echodoc.vim'
 Plug 'bfredl/nvim-miniyank'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'roxma/vim-tmux-clipboard'
-Plug 'christoomey/vim-tmux-navigator'
 Plug 'hashivim/vim-terraform'
 Plug 'liuchengxu/vim-which-key'
 
