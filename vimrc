@@ -146,6 +146,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'styled-components/vim-styled-components'
 Plug 'elzr/vim-json'
+Plug 'mogelbrod/vim-jsonpath'
 
 call plug#end()
 
