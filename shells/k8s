@@ -47,6 +47,17 @@ function kinspect() {
         kubectl run --rm -i -t vince-d --image=gcr.io/google-containers/toolbox --restart=Never --labels 'sidecar.istio.io/inject=false' ${nsarg} --command /bin/bash
 }
 
+function kgcloud() {
+        local ns=${1}
+        local nsarg=""
+
+        if [[ ${ns} != "" ]]; then
+                nsarg="--namespace=${ns}"
+        fi
+
+        kubectl run --rm -i -t vince-d-gcloud --image=google/cloud-sdk --restart=Never --labels 'sidecar.istio.io/inject=false' ${nsarg} --command /bin/bash
+}
+
 alias kcccc="kubectl config current-context"
 alias kccuc="kubectl config use-context"
 alias kccgc="kubectl config get-contexts"
@@ -198,6 +209,8 @@ function k8s-connect-to-nodes() {
 
         for i in $(kubectl get node -o json | jq '.items[].status.addresses | map(select(.type | contains("InternalIP"))) | .[].address' -Mr); do
 
+                echo "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}"
+
                 if [[ ${first} == 1 ]]; then
                         cmd="tmux new-session -d -n k8s-hosts -s ssh-${cluster_name} ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}\; switch-client -t ssh-${cluster_name}"
                         first=0
@@ -324,7 +337,7 @@ bind-k8s-helper d n p c s
 unset -f bind-k8s-helper
 
 function k8s-get-images() {
-        kubectl get pods -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' | sort
+        kubectl get pods -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' $@ | sort
 }
 
 function k8s-get-crd-objects() {
@@ -336,7 +349,7 @@ function k8s-get-crd-objects() {
         fi
 
         local crds=()
-        for crd in $(kubectl get crd -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | grep ${filter}); do
+        for crd in $(kubectl get customresourcedefinition -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | grep ${filter}); do
                 crds+=("${crd}")
         done
         crds=$(
@@ -413,11 +426,33 @@ function istio-status() {
 alias is=istio-status
 
 function envoy-call() {
-        local pod=${1}
-        local url_path=${2}
-        local method=${3:-GET}
+        local ns=""
+        local pod=""
+        local url_path=""
+        local method="GET"
 
-        kubectl port-forward ${pod} 15000:15000 &
+        for p in "$@"; do
+                case ${p} in
+                -n=* | --namespace=*)
+                        ns="${p#*=}"
+                        ;;
+                -p=* | --pod=*)
+                        pod="${p#*=}"
+                        ;;
+                -u=* | --url=*)
+                        url_path=${p#*=}
+                        ;;
+                -m=* | --method=*)
+                        method=${p#*=}
+                        ;;
+                esac
+        done
+
+        if [[ ${ns} != "" ]]; then
+                ns="-n=${ns}"
+        fi
+
+        kubectl port-forward ${pod} ${ns} 15000:15000 1>&2 &
         local kc_pid=$!
         sleep 1
         curl -X${method} http://localhost:15000/${url_path}
@@ -425,33 +460,33 @@ function envoy-call() {
 }
 
 function envoy-dump-config() {
-        envoy-call $1 config_dump
+        envoy-call --url=config_dump $@
 }
 
 function envoy-stats() {
-        envoy-call $1 stats
+        envoy-call --url=stats $@
 }
 
 function envoy-help() {
-        envoy-call $1 help
+        envoy-call --url=help $@
 }
 
 function envoy-log-trace() {
-        local subsystem=${2:-level}
+        local subsystem=level
 
-        envoy-call $1 "logging?${subsystem}=trace" POST
+        envoy-call --url="logging?${subsystem}=trace" --method=POST $@
 }
 
 function envoy-log-debug() {
-        local subsystem=${2:-level}
+        local subsystem=level
 
-        envoy-call $1 "logging?${subsystem}=debug" POST
+        envoy-call --url="logging?${subsystem}=debug" --method=POST $@
 }
 
 function envoy-log-info() {
-        local subsystem=${2:-level}
+        local subsystem=level
 
-        envoy-call $1 "logging?${subsystem}=info" POST
+        envoy-call --url="logging?${subsystem}=info" --method=POST $@
 }
 
 # vim: ft=sh
