@@ -144,7 +144,7 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'leafgarland/typescript-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'styled-components/vim-styled-components'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'elzr/vim-json'
 Plug 'mogelbrod/vim-jsonpath'
 
