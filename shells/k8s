@@ -12,6 +12,7 @@ alias kcgn="kc get namespaces --show-labels"
 alias kcgno="kc get nodes"
 alias kcgj="kc get jobs,cronjobs"
 alias kcge="kc get events"
+alias kcgi="kc get ingress"
 alias kcdp="kc describe pods"
 alias kcd="kc describe"
 alias kcdel="kc delete"
@@ -20,11 +21,13 @@ alias kcdd="kc describe deployments"
 alias kcdno="kc describe nodes"
 alias kcdc="kc describe configmaps"
 alias kcdss="kc describe secrets"
+alias kcdi="kc describe ingress"
 alias kce="kc exec -it"
 alias kcl="kc logs"
 alias kca="kc apply"
-alias kcdelp="kc delete pod"
-alias kcdeld="kc delete deploy"
+alias kcr="kc delete"
+alias kcrp="kc delete pod"
+alias kcrd="kc delete deploy"
 alias kced="kc edit"
 alias kcm="kc edit"
 alias kcmc="kcm configmap"
@@ -88,6 +91,9 @@ function cluster-switch() {
                 return 1
         fi
 
+        # idx=$(kubectl config get-contexts --no-headers | grep -n ${cluster} | cut -d':' -f1)
+        # helm_port=$((44000 + ${idx}))
+
         local session_name=shell-${cluster}
 
         if tmux list-session | cut -d':' -f1 | grep ${session_name}; then
@@ -103,12 +109,15 @@ function cluster-switch() {
         cat <<-EOT >${startup_script}
 export KUBECONFIG=${kubeconfig}
 kubectl config use-context ${cluster}
+#export HELM_HOST="localhost:${helm_port}"
+#nohup ~/.helm/plugins/helm-tiller/bin/tiller --storage=secret --listen=localhost:${helm_port} &
 zsh
 EOT
         chmod +x ${startup_script}
 
         tmux new-session -d -s ${session_name} ${startup_script}
         tmux setenv -t ${session_name} KUBECONFIG ${kubeconfig}
+        # tmux setenv -t ${session_name} HELM_HOST localhost:${helm_port}
         tmux switch-client -t ${session_name}
 }
 alias csw=cluster-switch
@@ -222,6 +231,12 @@ function k8s-connect-to-nodes() {
         cmd="${cmd}\; select-layout tiled"
 
         eval ${cmd}
+}
+
+function helm() {
+        command helm tiller stop 2>&1 >/dev/null
+        command helm tiller start-ci 2>&1 >/dev/null
+        command helm $@
 }
 
 function hl() {
@@ -403,22 +418,38 @@ function istio-objects() {
 function istio-endpoints() {
         istioctl proxy-config endpoints $@
 }
+function istio-endpoints-json() {
+        istioctl proxy-config endpoints $@ -ojson | jq
+}
 alias ie=istio-endpoints
+alias iej=istio-endpoints-json
 
 function istio-clusters() {
         istioctl proxy-config clusters $@
 }
+function istio-clusters-json() {
+        istioctl proxy-config clusters $@ -ojson | jq
+}
 alias ic=istio-clusters
+alias icj=istio-clusters-json
 
 function istio-routes() {
         istioctl proxy-config routes $@
 }
+function istio-routes-json() {
+        istioctl proxy-config routes $@ -ojson | jq
+}
 alias ir=istio-routes
+alias irj=istio-routes-json
 
 function istio-listeners() {
         istioctl proxy-config listeners $@
 }
+function istio-listeners-json() {
+        istioctl proxy-config listeners $@ -ojson | jq
+}
 alias il=istio-listeners
+alias ilj=istio-listeners-json
 
 function istio-status() {
         istioctl proxy-status $@
