@@ -95,6 +95,7 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-gocode.vim'
+Plug 'yami-beta/asyncomplete-omni.vim'
 
 if has('python3')
   Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
@@ -138,6 +139,7 @@ Plug 'bfredl/nvim-miniyank'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'hashivim/vim-terraform'
+Plug 'juliosueiras/vim-terraform-completion'
 Plug 'liuchengxu/vim-which-key'
 
 " javascript
@@ -927,7 +929,7 @@ map <leader>u :NERDTreeFind<cr>:wincmd p<cr>
 let g:EmacsCommandLineSearchCommandLineDisable = 1
 " }}}
 
-" asynccomplete registrations ---------------------- {{{
+" asyncomplete registrations ---------------------- {{{
 let g:asyncomplete_smart_completion = 1
 let g:asyncomplete_auto_popup = 1
 
@@ -938,15 +940,24 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
     \ 'completor': function('asyncomplete#sources#buffer#completor'),
     \ }))
 
-if executable('go-langserver')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'go-langserver',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
-        \ 'whitelist': ['go'],
-        \ })
-else
-  echom "Please install go-langserver"
-endif
+" if executable('go-langserver')
+"     au User lsp_setup call lsp#register_server({
+"         \ 'name': 'go-langserver',
+"         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
+"         \ 'whitelist': ['go'],
+"         \ })
+" else
+"   echom "Please install go-langserver"
+" endif
+
+call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
+    \ 'name': 'gocode',
+    \ 'whitelist': ['go'],
+    \ 'completor': function('asyncomplete#sources#gocode#completor'),
+    \ 'config': {
+    \    'gocode_path': expand('~/.gotools/gocode-gomod')
+    \  },
+    \ }))
 
 if has('python3')
   call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
@@ -972,5 +983,13 @@ if executable('bash-language-server')
 else
   echom "Please install bash-language-server"
 endif
+
+call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
+\ 'name': 'omni',
+\ 'whitelist': ['terraform'],
+\ 'refresh_pattern': '[^ *\t"{=$]\w*',
+\ 'completor': function('asyncomplete#sources#omni#completor')
+\  }))
+
 " }}}
 
