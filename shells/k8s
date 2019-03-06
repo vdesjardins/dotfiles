@@ -13,6 +13,7 @@ alias kcgno="kc get nodes"
 alias kcgj="kc get jobs,cronjobs"
 alias kcge="kc get events"
 alias kcgi="kc get ingress"
+alias kcgct="kc get certificates"
 alias kcdp="kc describe pods"
 alias kcd="kc describe"
 alias kcdel="kc delete"
@@ -22,6 +23,7 @@ alias kcdno="kc describe nodes"
 alias kcdc="kc describe configmaps"
 alias kcdss="kc describe secrets"
 alias kcdi="kc describe ingress"
+alias kcdct="kc describe certificates"
 alias kce="kc exec -it"
 alias kcl="kc logs"
 alias kca="kc apply"
@@ -240,7 +242,7 @@ function helm() {
 }
 
 function hl() {
-        helm list
+        helm list $@
 }
 
 function hm() {
@@ -409,6 +411,11 @@ function k8s-search-configmap() {
 }
 
 alias kcsc=k8s-search-configmap
+
+function k8s-dump-secret() {
+        local secret=$1
+        kubectl get secret ${secret} -o json | jq '.data[]' -Sr
+}
 
 # istio
 function istio-objects() {
