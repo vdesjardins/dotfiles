@@ -149,6 +149,8 @@ Plug 'mxw/vim-jsx'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'elzr/vim-json'
 Plug 'mogelbrod/vim-jsonpath'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tpope/vim-dispatch'
 
 call plug#end()
 
