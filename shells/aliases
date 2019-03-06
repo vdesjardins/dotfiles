@@ -239,6 +239,11 @@ alias aptsh='apt-cache show'
 
 # pretty print of environment variables for a running process
 function pp_env() {
+        if [[ $(uname) == "Darwin" ]]; then
+                ps eww $1
+                return
+        fi
+
         if [ $(id -u) -eq 0 ]; then
                 sudo=""
         else
