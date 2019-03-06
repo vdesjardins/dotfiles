@@ -1,7 +1,7 @@
 [user]
 	useConfigOnly = true
 	# signingkey = CF7EEEA5FD1B11B8
-	#signingkey = 04C423B8C964B58C
+	signingkey = 04C423B8C964B58C
 	name = Vincent Desjardins
 	email = vdesjardins@gmail.com
 [mirror]
@@ -36,6 +36,8 @@
 	aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /'
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
         sl = log --pretty=format:"%h%x09%an%x09%ad%x09%s" --date=short
+	t = tag -s
+	tl = tag
 
 [color]
 	diff = auto
@@ -88,4 +90,10 @@
 [github]
 	user = vdesjardins
 [commit]
-	#gpgsign = true
+	gpgsign = true
+[tag]
+	gpgsign = true
+[gpg]
+	program = /usr/local/bin/gpg
+[http]
+	cookiefile = /Users/inf10906/.gitcookies
