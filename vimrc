@@ -92,6 +92,7 @@ Plug 'mhinz/vim-grepper'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 " END auto complete
 
+Plug 'ncm2/float-preview.nvim'
 
 if has('python3')
   Plug 'SirVer/ultisnips'
@@ -818,6 +819,9 @@ endfunction
 set statusline+=%#warningmsg#
 set statusline=%{LinterStatus()}
 set statusline+=%*
+
+let g:ale_virtualtext_cursor=1
+
 " }}}
 
 " ZoomWin -------------------------------- {{{
