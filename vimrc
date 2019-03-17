@@ -324,6 +324,7 @@ if has("autocmd")
 endif
 " }}}
 
+autocmd FileType json syntax match Comment +\/\/.\+$+
 " Visual mode related --------------------------- {{{
 " Really useful!
 "  In visual mode when you press * or # to search for the current selection
