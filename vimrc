@@ -920,6 +920,13 @@ nnoremap <silent> <localleader> :<c-u>WhichKey  '<Space>'<CR>
 map <leader>u :NERDTreeFind<cr>:wincmd p<cr>
 " }}}
 
+" Terraform section -------------------------------------------- {{{
+augroup terraform_group
+  autocmd!
+  autocmd FileType terraform inoremap <buffer> $f #--- PH ----------------------------------------------<esc>FP2xi
+augroup END
+" }}}
+
 " Emacs Command Line ---------------------- {{{
 " keep C-r for accessing registers
 let g:EmacsCommandLineSearchCommandLineDisable = 1
