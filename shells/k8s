@@ -420,6 +420,11 @@ function k8s-dump-secret() {
         kubectl get secret ${secret} -o json | jq '.data[]' -Sr
 }
 
+function k8s-dump-cert() {
+        local secret=$1
+        kubectl get secret ${secret} -o json | jq '.data["tls.crt"]' -Sr | base64 -D | openssl x509 -text -noout
+}
+
 # istio
 function istio-objects() {
         k8s-get-crd-objects istio
