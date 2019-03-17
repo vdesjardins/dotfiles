@@ -103,10 +103,11 @@ function cluster-switch() {
                 return
         fi
 
-        local dir=$(mktemp -d)
-        local kubeconfig=${dir}/config
+        local dir=~/.config/my-kubeconfig/
+        mkdir -p ${dir}
+        local kubeconfig=${dir}/${cluster}-config
         local startup_script=${dir}/startup-script.sh
-        cp ~/.kube/config ${dir}/config
+        cp ~/.kube/config ${kubeconfig}
 
         cat <<-EOT >${startup_script}
 export KUBECONFIG=${kubeconfig}
