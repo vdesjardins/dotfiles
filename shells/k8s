@@ -158,6 +158,8 @@ function namespace-switch() {
         kubectl config set-context $(kubectl config current-context) --namespace="$ns"
 }
 alias ksw=namespace-switch
+alias kswi="namespace-switch istio-system"
+alias kswk="namespace-switch kube-system"
 
 function helm-switch() {
         local cluster=$1
