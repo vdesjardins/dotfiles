@@ -23,6 +23,7 @@ ln -s ~/dotfiles/ssh/config ~/.ssh/config
 mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/vimrc ~/.config/nvim/init.vim
 ln -s ~/dotfiles/vim/UltiSnips ~/.config/nvim/
+ln -s ~/dotfiles/vim/coc-settings.json ~/.config/nvim/
 
 # docker
 mkdir ~/.docker

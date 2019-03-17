@@ -88,21 +88,10 @@ Plug 'airblade/vim-rooter'
 Plug 'houtsnip/vim-emacscommandline'
 Plug 'mhinz/vim-grepper'
 
-" BEGIN new auto complete
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/asyncomplete-buffer.vim'
-Plug 'prabirshrestha/asyncomplete-gocode.vim'
-Plug 'yami-beta/asyncomplete-omni.vim'
+" BEGIN auto complete
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+" END auto complete
 
-if has('python3')
-  Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
-endif
-
-Plug 'prabirshrestha/asyncomplete-file.vim'
-" END new auto complete
 
 if has('python3')
   Plug 'SirVer/ultisnips'
@@ -929,69 +918,5 @@ map <leader>u :NERDTreeFind<cr>:wincmd p<cr>
 " Emacs Command Line ---------------------- {{{
 " keep C-r for accessing registers
 let g:EmacsCommandLineSearchCommandLineDisable = 1
-" }}}
-
-" asyncomplete registrations ---------------------- {{{
-let g:asyncomplete_smart_completion = 1
-let g:asyncomplete_auto_popup = 1
-
-call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-    \ 'name': 'buffer',
-    \ 'whitelist': ['*'],
-    \ 'blacklist': ['go'],
-    \ 'completor': function('asyncomplete#sources#buffer#completor'),
-    \ }))
-
-" if executable('go-langserver')
-"     au User lsp_setup call lsp#register_server({
-"         \ 'name': 'go-langserver',
-"         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'go-langserver -gocodecompletion']},
-"         \ 'whitelist': ['go'],
-"         \ })
-" else
-"   echom "Please install go-langserver"
-" endif
-
-call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
-    \ 'name': 'gocode',
-    \ 'whitelist': ['go'],
-    \ 'completor': function('asyncomplete#sources#gocode#completor'),
-    \ 'config': {
-    \    'gocode_path': expand('~/.gotools/gocode-gomod')
-    \  },
-    \ }))
-
-if has('python3')
-  call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-      \ 'name': 'ultisnips',
-      \ 'whitelist': ['*'],
-      \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-      \ }))
-endif
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'whitelist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
-
-if executable('bash-language-server')
-  au User lsp_setup call lsp#register_server({
-      \ 'name': 'bash-language-server',
-      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'bash-language-server start']},
-      \ 'whitelist': ['sh'],
-      \ })
-else
-  echom "Please install bash-language-server"
-endif
-
-call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
-\ 'name': 'omni',
-\ 'whitelist': ['terraform'],
-\ 'refresh_pattern': '[^ *\t"{=$]\w*',
-\ 'completor': function('asyncomplete#sources#omni#completor')
-\  }))
-
 " }}}
 
