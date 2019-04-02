@@ -33,17 +33,17 @@ install_sh_formatter() {
 }
 
 install_pkgs() {
-        sudo apt install -y highlight htop glances exuberant-ctags
+        sudo apt install -y zsh highlight htop glances exuberant-ctags tmux neovim luarocks npm curl
 }
 
 vim_langservers() {
-        npm install -g -unsafe-perm bash-language-server
+        sudo npm install -g -unsafe-perm bash-language-server
 
-        npm install -g dockerfile-language-server-nodejs
+        sudo npm install -g dockerfile-language-server-nodejs
 
-        luarocks install --server=http://luarocks.org/dev lua-lsp
-        luarocks install luacheck
-        luarocks install lcf
+        sudo luarocks install --server=http://luarocks.org/dev lua-lsp
+        sudo luarocks install luacheck
+        sudo luarocks install lcf
 
         go get -u github.com/saibing/bingo
 }
