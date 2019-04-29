@@ -1,0 +1,5 @@
+#!/bin/bash
+
+alias eag="$EDITOR ~/dotfiles/shells/gcp; source ~/dotfiles/shells/gcp"
+
+alias gpl="gcloud projects list"
