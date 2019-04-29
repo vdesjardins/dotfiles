@@ -89,7 +89,7 @@ Plug 'houtsnip/vim-emacscommandline'
 Plug 'mhinz/vim-grepper'
 
 " BEGIN auto complete
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 " END auto complete
 
 Plug 'ncm2/float-preview.nvim'
@@ -249,6 +249,10 @@ set so=7
 set wildmenu "Turn on WiLd menu
 set wildmode=longest,list:longest
 set wildignore=*.swp,*.bak,*.pyc,*.class
+if has("nvim-0.4")
+  set wildoptions=pum
+  set pumblend=20
+endif
 
 set ruler "Always show current position
 
