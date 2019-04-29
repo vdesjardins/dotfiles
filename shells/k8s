@@ -6,6 +6,7 @@ alias kcg="kc get"
 alias kcgp="kc get pods --show-labels"
 alias kcgs="kc get services"
 alias kcgd="kc get deployments"
+alias kcgst="kc get statefulsets"
 alias kcgc="kc get configmaps"
 alias kcgss="kc get secrets"
 alias kcgn="kc get namespaces --show-labels"
@@ -14,16 +15,28 @@ alias kcgj="kc get jobs,cronjobs"
 alias kcge="kc get events"
 alias kcgi="kc get ingress"
 alias kcgct="kc get certificates"
-alias kcdp="kc describe pods"
-alias kcd="kc describe"
+
 alias kcdel="kc delete"
-alias kcds="kc describe services"
-alias kcdd="kc describe deployments"
-alias kcdno="kc describe nodes"
-alias kcdc="kc describe configmaps"
-alias kcdss="kc describe secrets"
-alias kcdi="kc describe ingress"
-alias kcdct="kc describe certificates"
+alias kcr="kc delete"
+alias kcrp="kcr pod"
+alias kcrs="kcr services"
+alias kcrd="kcr deployments"
+alias kcrst="kcr statefulsets"
+alias kcrc="kcr configmaps"
+alias kcrss="kcr secrets"
+alias kcri="kcr ingress"
+alias kcrct="kcr certificates"
+
+alias kcd="kc describe"
+alias kcdp="kc describe pods"
+alias kcds="kcd services"
+alias kcdd="kcd deployments"
+alias kcdst="kcd statefulsets"
+alias kcdno="kcd nodes"
+alias kcdc="kcd configmaps"
+alias kcdss="kcd secrets"
+alias kcdi="kcd ingress"
+alias kcdct="kcd certificates"
 alias kce="kc exec -it"
 alias kcl="kc logs"
 alias kca="kc apply"
@@ -34,6 +47,7 @@ alias kced="kc edit"
 alias kcm="kc edit"
 alias kcmc="kcm configmap"
 alias kcmd="kcm deploy"
+alias kcmst="kcm statefulset"
 alias kcms="kcm service"
 alias kcmi="kcm ing"
 alias kcmp="kcm pod"
@@ -66,18 +80,31 @@ function kgcloud() {
 alias kcccc="kubectl config current-context"
 alias kccuc="kubectl config use-context"
 alias kccgc="kubectl config get-contexts"
+function k8s-current-namespace() {
+        kubectl config get-contexts | grep '^*' | awk '{print $5;}'
+}
+alias kcgcn=k8s-current-namespace
 
-alias kc-podrestart="kubectl get pods --all-namespaces --sort-by='.status.containerStatuses[0].restartCount'"
+alias pod-restart="kubectl get pods --all-namespaces --sort-by='.status.containerStatuses[0].restartCount'"
 
 function kcgpp() {
         kubectl get pods -n ${1} -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{":\t"}{.ports[*].name}{":"}{.ports[*].containerPort}{""}{"\t"}{end}{end}' | sort | column -t -c $(tput cols)
 }
-function podinfo() {
+function pod-info() {
         local ns=${1}
+
+        if [[ ${ns} == "" ]]; then
+                ns=$(k8s-current-namespace)
+        fi
+
         kubectl get po -n ${ns} -o json | jq -r '.items[] | [(.metadata.name),([.spec.containers[].name] | join(",")),(.spec.nodeSelector["cloud.google.com/gke-nodepool"])] | @tsv'
 }
 
-function kcgp-problems() {
+function pod-policy() {
+        kubectl get pods --all-namespaces -o=jsonpath='{range .items[*]}{. as $parent}{"\n"}{.metadata.namespace}{"/"}{.metadata.name}{"\t"}{range .spec.containers[*]}{. as $container}{.name}{"\t"}{.imagePullPolicy}{"\t"}{range $parent.status.containerStatuses[*]}{select(.name == $container.name).restartCount}{end}{"\t"}{end}{end}' | sort | column -t -c $(tput cols)
+}
+
+function pod-problems() {
         kcgp --all-namespaces | grep -v -P '(Running|Completed)'
 }
 
@@ -219,11 +246,13 @@ function k8s-internal-ips() {
 function k8s-connect-to-nodes() {
         local cluster_name=$(kubectl config current-context)
 
+        local user=${1}
+
         local first=1
 
         for i in $(kubectl get node -o json | jq '.items[].status.addresses | map(select(.type | contains("InternalIP"))) | .[].address' -Mr); do
 
-                echo "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}"
+                echo "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${user}@${i}"
 
                 if [[ ${first} == 1 ]]; then
                         cmd="tmux new-session -d -n k8s-hosts -s ssh-${cluster_name} ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}\; switch-client -t ssh-${cluster_name}"
