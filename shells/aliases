@@ -237,6 +237,9 @@ alias apti='sudo apt-get install'
 alias apts='apt-cache search'
 alias aptsh='apt-cache show'
 
+# rg
+alias rgi='rg -g vendor'
+
 # pretty print of environment variables for a running process
 function pp_env() {
         if [[ $(uname) == "Darwin" ]]; then
