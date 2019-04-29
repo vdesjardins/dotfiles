@@ -1,23 +1,26 @@
 #!/bin/bash
 
+alias ead='nvim ~/dotfiles/shells/dockerfunc; source ~/dotfiles/shells/dockerfunc'
+alias dr="docker run -it --rm"
+
 function dgcloud() {
-	docker run --rm -it \
-		-v "${HOME}/.config/gcloud:/.config/gcloud" \
-		-v "${HOME}/.ssh:/root/.ssh:ro" \
-		-v "$(which docker):/usr/bin/docker" \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		-v "${HOME}/.kube:/.kube" \
-		-v "${HOME}/.docker:/.docker" \
-		--user ${UID} \
-		--name gcloud \
-		google/cloud-sdk:latest gcloud "$@"
+        docker run --rm -it \
+                -v "${HOME}/.config/gcloud:/.config/gcloud" \
+                -v "${HOME}/.ssh:/root/.ssh:ro" \
+                -v "$(which docker):/usr/bin/docker" \
+                -v /var/run/docker.sock:/var/run/docker.sock \
+                -v "${HOME}/.kube:/.kube" \
+                -v "${HOME}/.docker:/.docker" \
+                --user ${UID} \
+                --name gcloud \
+                google/cloud-sdk:latest gcloud "$@"
 }
 
 function dkubectl() {
-	docker run --rm -it \
-		-v "${HOME}/.config/gcloud:/.config/gcloud" \
-		-v "${HOME}/.kube:/.kube" \
-		--user ${UID} \
-		--name kubectl \
-		google/cloud-sdk:latest kubectl "$@"
+        docker run --rm -it \
+                -v "${HOME}/.config/gcloud:/.config/gcloud" \
+                -v "${HOME}/.kube:/.kube" \
+                --user ${UID} \
+                --name kubectl \
+                google/cloud-sdk:latest kubectl "$@"
 }
