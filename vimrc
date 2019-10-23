@@ -920,6 +920,7 @@ nnoremap <silent> <localleader> :<c-u>WhichKey  '<Space>'<CR>
 
 " NERDTree ---------------------- {{{
 map <leader>u :NERDTreeFind<cr>:wincmd p<cr>
+map <leader>d :NERDTreeToggle<cr>
 " }}}
 
 " Terraform section -------------------------------------------- {{{
