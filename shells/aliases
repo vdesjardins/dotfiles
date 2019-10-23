@@ -10,6 +10,7 @@ alias la='ls -A -l -G'
 alias ll='ls -ltr'
 alias cdd='cd -'
 alias dl='dirs -v'
+
 function cdc() {
         cd $1
         ls
@@ -21,8 +22,14 @@ alias dus='du -ms * | sort -n'
 
 # find tmux pane from open file
 function tmux_find_pane() {
-        FNAME=$1
-        (tmux switch -t $(tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_tty}' | grep $(ps -o tty= -p $(lsof -t $FNAME))$ | awk '{ print $1 }'))
+        FNAME=$(echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")")
+        PID=$(lsof -t ${FNAME})
+        echo "*** ${PID}"
+        PID_TTY=$(ps -o tty= -p ${PID})
+        echo "*** ${PID_TTY}"
+        # tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_tty}' | grep $(ps -o tty= -p $(lsof -t $FNAME))$ | awk '{ print $1 }'
+        # tmux switch -t $(tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_tty}' | grep $(ps -o tty= -p $(lsof -t $FNAME)) | awk '{ print $1 }')
+        tmux switch -t $(tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{pane_tty}' | grep ${PID_TTY} | awk '{ print $1 }')
 }
 
 alias tre="source <(tmux show-environment -s)"
