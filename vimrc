@@ -142,6 +142,8 @@ Plug 'mogelbrod/vim-jsonpath'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-dispatch'
 
+Plug 'towolf/vim-helm'
+
 call plug#end()
 
 " }}}
