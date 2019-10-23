@@ -15,6 +15,17 @@ alias kcgj="kc get jobs,cronjobs"
 alias kcge="kc get events"
 alias kcgi="kc get ingress"
 alias kcgct="kc get certificates"
+alias kcgvw="kc get validatingwebhookconfiguration"
+alias kcgmw="kc get mutatingwebhookconfiguration"
+alias kcgvs="kc get virtualservice"
+alias kcgg="kc get gateway"
+alias kcgdr="kc get destinationrule"
+alias kcgse="kc get serviceentry"
+alias kcgcr="kc get clusterrole"
+alias kcgr="kc get role"
+alias kcgcrb="kc get clusterrolebinding"
+alias kcgrb="kc get rolebinding"
+alias kcgrbac="kc get rolebindings,clusterrolebindings"
 
 alias kcdel="kc delete"
 alias kcr="kc delete"
@@ -26,6 +37,12 @@ alias kcrc="kcr configmaps"
 alias kcrss="kcr secrets"
 alias kcri="kcr ingress"
 alias kcrct="kcr certificates"
+alias kcrvw="kcr validatingwebhookconfiguration"
+alias kcrmw="kcr mutatingwebhookconfiguration"
+alias kcrvs="kcr virtualservice"
+alias kcrg="kcr gateway"
+alias kcrdr="kcr destinationrule"
+alias kcrse="kcr serviceentry"
 
 alias kcd="kc describe"
 alias kcdp="kc describe pods"
@@ -37,14 +54,18 @@ alias kcdc="kcd configmaps"
 alias kcdss="kcd secrets"
 alias kcdi="kcd ingress"
 alias kcdct="kcd certificates"
+alias kcdvs="kcd virtualservice"
+alias kcdg="kcd gateway"
+alias kcddr="kcd destinationrule"
+alias kcdse="kcd serviceentry"
+
 alias kce="kc exec -it"
 alias kcl="kc logs"
-alias kca="kc apply"
-alias kcr="kc delete"
-alias kcrp="kc delete pod"
-alias kcrd="kc delete deploy"
-alias kced="kc edit"
+alias kca="kc apply -f"
 alias kcm="kc edit"
+alias kcpf="kc port-forward"
+alias mk=minikube
+
 alias kcmc="kcm configmap"
 alias kcmd="kcm deploy"
 alias kcmst="kcm statefulset"
@@ -52,8 +73,24 @@ alias kcms="kcm service"
 alias kcmi="kcm ing"
 alias kcmp="kcm pod"
 alias kcmss="kcm secret"
-alias kcpf="kc port-forward"
-alias mk=minikube
+alias kcmn="kcm ns"
+alias kcmvs="kcm virtualservice"
+alias kcmg="kcm gateway"
+alias kcmdr="kcm destinationrule"
+alias kcmse="kcm serviceentry"
+
+alias kctp="kc top pods"
+alias kctn="kc top nodes"
+
+alias k8s-get-certs="kubectl get certificates --all-namespaces -o jsonpath='{range .items[?(@.spec.commonName!=\"\")]}{.spec.commonName}{\"\t\"}{.status.notAfter}{\"\n\"}' | sort"
+
+alias i="istioctl"
+
+function kcani() {
+        ns=$1
+        sa=$2
+        kubectl auth can-i list pods --as=system:serviceaccount:${ns}:${sa}
+}
 
 function kinspect() {
         local ns=${1}
@@ -90,6 +127,7 @@ alias pod-restart="kubectl get pods --all-namespaces --sort-by='.status.containe
 function kcgpp() {
         kubectl get pods -n ${1} -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{":\t"}{.ports[*].name}{":"}{.ports[*].containerPort}{""}{"\t"}{end}{end}' | sort | column -t -c $(tput cols)
 }
+
 function pod-info() {
         local ns=${1}
 
@@ -255,13 +293,14 @@ function k8s-connect-to-nodes() {
                 echo "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${user}@${i}"
 
                 if [[ ${first} == 1 ]]; then
-                        cmd="tmux new-session -d -n k8s-hosts -s ssh-${cluster_name} ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}\; switch-client -t ssh-${cluster_name}"
+                        cmd="tmux new-session -d -n k8s-hosts -s ssh-${cluster_name} zsh -ic \"ssh -vvvvv -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i};zsh -i\"\; switch-client -t ssh-${cluster_name}"
                         first=0
                 else
-                        cmd="${cmd}\; split-window ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i}"
+                        cmd="${cmd}\; split-window zsh -ic \"ssh -vvvvv -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${i};zsh -i\""
                 fi
         done
 
+        echo ${cmd}
         cmd="${cmd}\; select-layout tiled"
 
         eval ${cmd}
@@ -326,8 +365,6 @@ function getcrb() {
 EOT
         )
 }
-
-alias kcgrb="kubectl get rolebindings,clusterrolebindings"
 
 function kcgrl() {
         local arg=$1
@@ -409,6 +446,10 @@ function k8s-get-crd-objects() {
         echo ${content} | column -t
 }
 
+function k8s-get-ns-objects() {
+        kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found
+}
+
 function k8s-copy-ns() {
         local src=${1:?error source namespace not specified}
         local dst=${2:?error destination namespace not specified}
@@ -421,13 +462,13 @@ function k8s-copy-ns() {
                 certificates)
                         kubectl get ${res} -o json --namespace=${src} |
                                 jq ".items[].metadata.namespace = \"${dst}\"" 2>/dev/null >to-create-certificates.json
-                        echo "ATTENTION: File to process manually: to-create-certificates.json"
+                        echo "WARNING: File to process manually: to-create-certificates.json"
                         ;;
 
                 ingresses)
                         kubectl get ${res} -o json --namespace=${src} |
                                 jq ".items[].metadata.namespace = \"${dst}\"" 2>/dev/null >to-create-ingresses.json
-                        echo "ATTENTION: File to process manually: to-create-ingresses.json"
+                        echo "WARNING: File to process manually: to-create-ingresses.json"
                         ;;
                 *)
                         kubectl get ${res} -o json --namespace=${src} | jq ".items[].metadata.namespace = \"${dst}\"" 2>/dev/null | kubectl create -f - 2>/dev/null
@@ -451,7 +492,9 @@ function k8s-dump-secret() {
 
 function k8s-dump-cert() {
         local secret=$1
-        kubectl get secret ${secret} -o json | jq '.data["tls.crt"]' -Sr | base64 -D | openssl x509 -text -noout
+        local key=${2:-tls.crt}
+
+        kubectl get secret ${secret} -o json | jq ".data[\"${key}\"]" -Sr | base64 -D | openssl x509 -text -noout
 }
 
 # istio
@@ -490,7 +533,7 @@ function istio-listeners() {
         istioctl proxy-config listeners $@
 }
 function istio-listeners-json() {
-        istioctl proxy-config listeners $@ -ojson | jq
+        istioctl proxy-config listeners "$@" -ojson | jq
 }
 alias il=istio-listeners
 alias ilj=istio-listeners-json
@@ -531,6 +574,39 @@ function envoy-call() {
         local kc_pid=$!
         sleep 1
         curl -X${method} http://localhost:15000/${url_path}
+        kill ${kc_pid}
+}
+
+function pilot-adsz() {
+        pilot-dump debug/adsz
+}
+function pilot-edsz() {
+        pilot-dump debug/edsz
+}
+function pilot-edsz-push() {
+        pilot-dump debug/edsz '?push=1'
+}
+function pilot-cdsz() {
+        pilot-dump debug/cdsz
+}
+function pilot-registryz() {
+        pilot-dump debug/registryz
+}
+function pilot-endpointz() {
+        pilot-dump debug/endpointz
+}
+function pilot-configz() {
+        pilot-dump debug/configz
+}
+
+function pilot-dump() {
+        local url_path=$1
+        local cmd=$2
+
+        kubectl port-forward service/istio-pilot -n istio-system 15014:15014 1>&2 &
+        local kc_pid=$!
+        sleep 1
+        curl http://localhost:15014/${url_path}${cmd}
         kill ${kc_pid}
 }
 
