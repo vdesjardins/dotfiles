@@ -8,7 +8,7 @@ Host *
 	#IdentityFile ~/.ssh/id_rsa
 
 Host vm-vince-d
-	HostName 10.251.17.3
+	HostName 10.242.4.69
 	User vincent.desjardins
 	LocalForward 30000 localhost:8000
 	LocalForward 30001 localhost:8001
