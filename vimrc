@@ -451,13 +451,6 @@ noremap <leader>bp :bp<cr>
 noremap <right> :bn<cr>
 noremap <left> :bp<cr>
 
-" Tab configuration
-noremap <leader>tn :tabnew %<cr>
-noremap <leader>te :tabedit
-noremap <leader>tc :tabclose<cr>
-noremap <leader>tm :tabmove
-noremap <leader>tz :tablast
-
 " When pressing <leader>ccd switch working directory to the directory of the open buffer
 noremap <leader>ccd :cd %:p:h<cr>
 
