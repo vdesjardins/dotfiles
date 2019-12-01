@@ -13,6 +13,7 @@
 	c  = commit
 	co = checkout
 	ps = push
+	psf = push --force-with-lease
 	pl = pull --rebase
 	br = branch
 	bra = branch -a
