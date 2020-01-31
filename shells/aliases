@@ -188,6 +188,9 @@ alias egg="$EDITOR ~/.gitconfig"
 alias gsm="git merge --squash -s subtree --no-commit"
 alias glso="git ls-files -o"
 
+# Make
+alias m=make
+
 # edit dirty files
 alias edf="vim \$(git status -s -uno -z | sed 's/ M//g')"
 
