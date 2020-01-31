@@ -80,6 +80,7 @@ alias kcmdr="kcm destinationrule"
 alias kcmse="kcm serviceentry"
 
 alias kctp="kc top pods"
+alias kctc="kc top pods --containers=true"
 alias kctn="kc top nodes"
 
 alias k8s-get-certs="kubectl get certificates --all-namespaces -o jsonpath='{range .items[?(@.spec.commonName!=\"\")]}{.spec.commonName}{\"\t\"}{.status.notAfter}{\"\n\"}' | sort"
@@ -123,6 +124,10 @@ function k8s-current-namespace() {
 alias kcgcn=k8s-current-namespace
 
 alias pod-restart="kubectl get pods --all-namespaces --sort-by='.status.containerStatuses[0].restartCount'"
+
+function deployment-evict() {
+        kubectl patch deployment $1 -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"$(date +'%s')\"}}}}}"
+}
 
 function kcgpp() {
         kubectl get pods -n ${1} -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.name}{":\t"}{.ports[*].name}{":"}{.ports[*].containerPort}{""}{"\t"}{end}{end}' | sort | column -t -c $(tput cols)
@@ -371,6 +376,14 @@ function kcgrl() {
         kubectl get pod -o json ${arg} | jq '.items[] | {pod: .metadata.name, namespace: .metadata.namespace, nodeName: .spec.nodeName, memory: [(.spec.containers[] | {container: .name, requests: .resources.requests.memory, limits: .resources.limits.memory} )], cpu: [(.spec.containers[] | {container: .name, requests: .resources.requests.cpu, limit: .resources.limits.cpu} )] }'
 }
 
+function k8s-search-with-role() {
+        local role=$1
+        echo "clusterrolebinding: "
+        kubectl get clusterrolebinding -o json | jq '[ .items[] | select(.roleRef.name | contains("${role}"))] | .[] | .metadata.name'
+        echo "rolebinding: "
+        kubectl get rolebinding -o json | jq '[ .items[] | select(.roleRef.name | contains("${role}"))] | .[] | .metadata.name'
+}
+
 function k8s-master-addr() {
         local cluster=$1
         if [[ ${cluster} == "" ]]; then
@@ -423,7 +436,7 @@ bind-k8s-helper d n p c s
 unset -f bind-k8s-helper
 
 function k8s-get-images() {
-        kubectl get pods -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' $@ | sort
+        kubectl get pods "$@" -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' $@ | sort
 }
 
 function k8s-get-crd-objects() {
@@ -597,6 +610,9 @@ function pilot-endpointz() {
 }
 function pilot-configz() {
         pilot-dump debug/configz
+}
+function pilot-syncz() {
+        pilot-dump debug/syncz
 }
 
 function pilot-dump() {
