@@ -277,7 +277,11 @@ function fhost() {
 
 # ssl
 function ssl_dump() {
-        host=$1
-        port=$2
-        true | openssl s_client -showcerts -connect ${host}:${port} -servername ${host} | openssl x509 -noout -text
+        local host=$1
+        local port=$2
+        local server_name=$3
+        if [[ ${server_name} == "" ]]; then
+                server_name=${host}
+        fi
+        true | openssl s_client -showcerts -connect ${host}:${port} -servername ${server_name} | openssl x509 -noout -text
 }
