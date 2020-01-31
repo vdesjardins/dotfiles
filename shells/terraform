@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+alias tf=terraform
+
+function terraform-helm-switch() {
+        hs
+        terraform "$@"
+}
+alias tf=terraform-helm-switch
+
+function terraform-apply() {
+        hs
+        terraform apply -target=$1
+}
+alias tfa=terraform-apply
+
+function terraform-plan() {
+        hs
+        terraform plan -target=$1
+}
+alias tfp=terraform-plan

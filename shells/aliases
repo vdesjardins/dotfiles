@@ -220,8 +220,6 @@ function stp() {
         strace -f -s 4096 -o /tmp/trace.trc -p $1
 }
 
-alias tf=terraform
-
 # Rails
 alias r="rake"
 alias rmig="rake db:migrate"
