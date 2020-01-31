@@ -45,6 +45,7 @@ function dhelm() {
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
                 -e HELM_REPO_UPDATE=no \
                 -e TILLERLESS=${TILLERLESS} \
+                -e HELM_REPO_DEFAULT_INIT=yes \
                 --user ${UID} \
                 -w $(pwd) \
                 --name helm3 \
