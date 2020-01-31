@@ -141,8 +141,10 @@ Plug 'elzr/vim-json'
 Plug 'mogelbrod/vim-jsonpath'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-abolish'
 
 Plug 'towolf/vim-helm'
+Plug 'markcornick/vim-bats'
 
 call plug#end()
 
