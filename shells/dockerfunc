@@ -1,15 +1,22 @@
 #!/bin/bash
 
+export docker_base_repo_url=${docker_base_repo_url:-gcr.io/corp-prod-gkeinfra/gcp}
+export docker_root_mount_path=${docker_root_mount_path:-${HOME}/projects}
+
 alias ead='nvim ~/dotfiles/shells/dockerfunc; source ~/dotfiles/shells/dockerfunc'
+alias d="docker"
 alias dr="docker run -it --rm"
 
 function dgcloud() {
+        cfgname=$(refresh-docker-kubeconfig)
+
         docker run --rm -it \
                 -v "${HOME}/.config/gcloud:/.config/gcloud" \
                 -v "${HOME}/.ssh:/root/.ssh:ro" \
                 -v "$(which docker):/usr/bin/docker" \
                 -v /var/run/docker.sock:/var/run/docker.sock \
-                -v "${HOME}/.kube:/.kube" \
+                -v "${cfgname}:/.kube/config" \
+                -v "${HOME}/.config/docker-kube:/.kube" \
                 -v "${HOME}/.docker:/.docker" \
                 --user ${UID} \
                 --name gcloud \
@@ -17,10 +24,74 @@ function dgcloud() {
 }
 
 function dkubectl() {
+        cfgname=$(refresh-docker-kubeconfig)
+
         docker run --rm -it \
                 -v "${HOME}/.config/gcloud:/.config/gcloud" \
-                -v "${HOME}/.kube:/.kube" \
+                -v "${cfgname}:/.kube/config" \
                 --user ${UID} \
                 --name kubectl \
                 google/cloud-sdk:latest kubectl "$@"
+}
+
+function dhelm() {
+        cfgname=$(refresh-docker-kubeconfig)
+
+        docker run --rm -it \
+                -v "${HOME}/.config/gcloud:/.config/gcloud" \
+                -v "${cfgname}:/.kube/config" \
+                -v "$HOME/.docker-data/helm/config:/.config/helm" \
+                -v "$HOME/.docker-data/helm/cache/repository:/.cache/helm/repository" \
+                -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
+                -e HELM_REPO_UPDATE=no \
+                -e TILLERLESS=${TILLERLESS} \
+                --user ${UID} \
+                -w $(pwd) \
+                --name helm3 \
+                ${docker_base_repo_url}/helm "$@"
+}
+
+function dterraform() {
+        cfgname=$(refresh-docker-kubeconfig)
+
+        docker run --rm -it \
+                -v "${HOME}/.ssh:/.ssh:ro" \
+                -v "$(which docker):/usr/bin/docker" \
+                -v "/var/run/docker.sock:/var/run/docker.sock" \
+                -v "${HOME}/.config/gcloud:/.config/gcloud" \
+                -v "${cfgname}:/.kube/config" \
+                -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
+                -v "${HOME}/.vault-token:/.vault-token" \
+                -v "$HOME/.docker-data/helm/config:/.config/helm" \
+                -v "$HOME/.docker-data/helm/cache/repository:/.cache/helm/repository" \
+                --user ${UID} \
+                --name terraform-helm3 \
+                -w $(pwd) \
+                -e VAULT_ADDR=${VAULT_ADDR} \
+                -e TF_INIT=no \
+                -e TF_LOG=${TF_LOG} \
+                ${docker_base_repo_url}/terraform-helm "$@"
+}
+
+#--- helpers ----------------------------------------------
+function refresh-docker-kubeconfig() {
+        local kubecfg=${HOME}/.kube/config
+        if [[ ${KUBECONFIG} != "" ]]; then
+                kubecfg=$KUBECONFIG
+        fi
+
+        if [[ ! -d ~/.config/docker-kube ]]; then
+                mkdir -p ~/.config/docker-kube
+                cp -r ~/.kube ~/.config/docker-kube
+        fi
+
+        local cfgname=~/.config/docker-kube/$(kubectl config current-context)
+
+        if [[ $(uname -s) == "Darwin" ]]; then
+                sed -e 's|/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin/gcloud|/builder/google-cloud-sdk/bin/gcloud|g' ${kubecfg} >${cfgname}
+        else
+                cp ${kubecfg} ${cfgname}
+        fi
+
+        echo ${cfgname}
 }
