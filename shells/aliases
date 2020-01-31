@@ -100,10 +100,6 @@ alias ef='$EDITOR $(fzf)'
 # weather
 alias weather="curl http://wttr.in/quebec_city"
 
-# docker
-alias d="sudo docker"
-alias dri="sudo docker run -it --rm"
-
 # ansible
 alias ansible-pr="docker run -it -v $HOME/.ssh:/root/.ssh -v $SSH_AUTH_SOCK:/tmp/ssh.sck -e SSH_AUTH_SOCK=/tmp/ssh.sck -v $(pwd):/ansible -v ~/gce:~/gce --rm=true ansible ansible-playbook -b -u $USER -i inventory.yml site.yml"
 
