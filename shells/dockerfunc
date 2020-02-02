@@ -38,10 +38,10 @@ function dhelm() {
         cfgname=$(refresh-docker-kubeconfig)
 
         docker run --rm -it \
-                -v "${HOME}/.config/gcloud:/.config/gcloud" \
-                -v "${cfgname}:/.kube/config" \
-                -v "$HOME/.docker-data/helm/config:/.config/helm" \
-                -v "$HOME/.docker-data/helm/cache/repository:/.cache/helm/repository" \
+                -v "${HOME}/.config/gcloud:/root/.config/gcloud" \
+                -v "${cfgname}:/root/.kube/config" \
+                -v "$HOME/.docker-data/helm/config:/root/.config/helm" \
+                -v "$HOME/.docker-data/helm/cache/repository:/root/.cache/helm/repository" \
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
                 -e HELM_REPO_UPDATE=no \
                 -e TILLERLESS=${TILLERLESS} \
@@ -56,15 +56,15 @@ function dterraform() {
         cfgname=$(refresh-docker-kubeconfig)
 
         docker run --rm -it \
-                -v "${HOME}/.ssh:/.ssh:ro" \
+                -v "${HOME}/.ssh:/root/.ssh:ro" \
                 -v "$(which docker):/usr/bin/docker" \
                 -v "/var/run/docker.sock:/var/run/docker.sock" \
-                -v "${HOME}/.config/gcloud:/.config/gcloud" \
-                -v "${cfgname}:/.kube/config" \
+                -v "${HOME}/.config/gcloud:/root/.config/gcloud" \
+                -v "${cfgname}:/root/.kube/config" \
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
-                -v "${HOME}/.vault-token:/.vault-token" \
-                -v "$HOME/.docker-data/helm/config:/.config/helm" \
-                -v "$HOME/.docker-data/helm/cache/repository:/.cache/helm/repository" \
+                -v "${HOME}/.vault-token:/root/.vault-token" \
+                -v "$HOME/.docker-data/helm/config:/root/.config/helm" \
+                -v "$HOME/.docker-data/helm/cache/repository:/root/.cache/helm/repository" \
                 --user ${UID} \
                 --name terraform-helm3 \
                 -w $(pwd) \
