@@ -1,0 +1,51 @@
+FROM golang:1.13.6 as builder
+
+WORKDIR /workspace
+
+RUN git clone https://github.com/terraform-providers/terraform-provider-helm.git && \
+    cd terraform-provider-helm && \
+    git fetch origin +refs/pull/378/merge && \
+    git checkout FETCH_HEAD && \
+    make build
+
+# see https://github.com/GoogleCloudPlatform/cloud-builders-community/tree/master/terraform
+# see https://github.com/GoogleCloudPlatform/cloud-builders-community/tree/master/helm
+FROM gcr.io/cloud-builders/gcloud
+
+ENV TERRAFORM_VERSION=0.12.20
+ENV TERRAFORM_VERSION_SHA256SUM=46bd906f8cb9bbb871905ecb23ae7344af8017d214d735fbb6d6c8e0feb20ff3
+
+ENV HELM_VERSION=v3.0.3
+ENV GCS_PLUGIN_VERSION=0.3.0
+
+ENV XDG_CACHE_HOME=/builder/home/.cache
+ENV XDG_CONFIG_HOME=/builder/home/.config
+ENV XDG_DATA_HOME=/builder/home/.local/share
+
+RUN /builder/google-cloud-sdk/bin/gcloud -q components update && \
+    apt-get update && \
+    apt-get -y install curl unzip ca-certificates && \
+    apt-get --purge -y autoremove && \
+    apt-get clean && \
+    curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+      > terraform_linux_amd64.zip && \
+    echo "${TERRAFORM_VERSION_SHA256SUM} terraform_linux_amd64.zip" > terraform_SHA256SUMS && \
+    sha256sum -c terraform_SHA256SUMS --status && \
+    unzip terraform_linux_amd64.zip -d /builder/terraform && \
+    rm -f terraform_linux_amd64.zip
+
+COPY --from=builder /workspace/terraform-provider-helm/terraform-provider-helm /builder/terraform/terraform-provider-helm
+
+RUN mkdir -p /builder/helm && \
+  curl -SL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz && \
+  tar zxvf helm.tar.gz --strip-components=1 -C /builder/helm linux-amd64/helm && \
+  rm helm.tar.gz && \
+  rm -rf /var/lib/apt/lists/* && \
+  /builder/helm/helm plugin install https://github.com/nouney/helm-gcs --version ${GCS_PLUGIN_VERSION}
+
+ENV PATH=/builder/terraform/:/builder/helm/:$PATH
+
+COPY entrypoint.bash /builder/entrypoint.bash
+
+ENTRYPOINT ["/builder/entrypoint.bash"]
+
