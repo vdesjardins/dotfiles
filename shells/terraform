@@ -1,21 +1,9 @@
 #!/usr/bin/env bash
 
-alias tf=terraform
+alias et="$EDITOR ~/dotfiles/shells/terraform; source ~/dotfiles/shells/terraform"
 
-function terraform-helm-switch() {
-        hs
-        terraform "$@"
-}
-alias tf=terraform-helm-switch
+alias tf=dterraform
 
-function terraform-apply() {
-        hs
-        terraform apply -target=$1
-}
-alias tfa=terraform-apply
-
-function terraform-plan() {
-        hs
-        terraform plan -target=$1
-}
-alias tfp=terraform-plan
+alias tfa="dterraform apply"
+alias tfat="dterraform apply -target="
+alias tfpt="dterraform plan -target="

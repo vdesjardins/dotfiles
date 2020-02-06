@@ -1,9 +1,9 @@
 #!/bin/bash
 
-export docker_base_repo_url=${docker_base_repo_url:-gcr.io/corp-prod-gkeinfra/gcp}
+alias ead="$EDITOR ~/dotfiles/shells/dockerfunc; source ~/dotfiles/shells/dockerfunc"
+
 export docker_root_mount_path=${docker_root_mount_path:-${HOME}/projects}
 
-alias ead='nvim ~/dotfiles/shells/dockerfunc; source ~/dotfiles/shells/dockerfunc'
 alias d="docker"
 alias dr="docker run -it --rm"
 
@@ -35,42 +35,46 @@ function dkubectl() {
 }
 
 function dhelm() {
+        local docker_base_repo_url=${DOCKER_REGISTRY_PATH:-local}
         cfgname=$(refresh-docker-kubeconfig)
 
         docker run --rm -it \
-                -v "${HOME}/.config/gcloud:/root/.config/gcloud" \
-                -v "${cfgname}:/root/.kube/config" \
-                -v "$HOME/.docker-data/helm/config:/root/.config/helm" \
-                -v "$HOME/.docker-data/helm/cache/repository:/root/.cache/helm/repository" \
+                -v "${HOME}/.config/gcloud:/builder/home/.config/gcloud" \
+                -v "${cfgname}:/builder/home/.kube/config" \
+                -v "$HOME/.docker-data/helm/config:/builder/home/.config/helm" \
+                -v "$HOME/.docker-data/helm/cache/repository:/builder/home/.cache/helm/repository" \
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
                 -e HELM_REPO_UPDATE=no \
                 -e TILLERLESS=${TILLERLESS} \
                 -e HELM_REPO_DEFAULT_INIT=yes \
+                -e HOME=/builder/home \
                 --user ${UID} \
                 -w $(pwd) \
-                --name helm3 \
+                --name helm \
                 ${docker_base_repo_url}/helm "$@"
 }
 
 function dterraform() {
+        local docker_base_repo_url=${DOCKER_REGISTRY_PATH:-local}
         cfgname=$(refresh-docker-kubeconfig)
 
         docker run --rm -it \
-                -v "${HOME}/.ssh:/root/.ssh:ro" \
+                -v "${HOME}/.ssh:/builder/home/.ssh:ro" \
                 -v "$(which docker):/usr/bin/docker" \
                 -v "/var/run/docker.sock:/var/run/docker.sock" \
-                -v "${HOME}/.config/gcloud:/root/.config/gcloud" \
-                -v "${cfgname}:/root/.kube/config" \
+                -v "${HOME}/.config/gcloud:/builder/home/.config/gcloud" \
+                -v "${cfgname}:/builder/home/.kube/config" \
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
-                -v "${HOME}/.vault-token:/root/.vault-token" \
-                -v "$HOME/.docker-data/helm/config:/root/.config/helm" \
-                -v "$HOME/.docker-data/helm/cache/repository:/root/.cache/helm/repository" \
-                --user ${UID} \
-                --name terraform-helm3 \
+                -v "${HOME}/.vault-token:/builder/home/.vault-token" \
+                -v "$HOME/.docker-data/helm/config:/builder/home/.config/helm" \
+                -v "$HOME/.docker-data/helm/cache/repository:/builder/home/.cache/helm/repository" \
                 -w $(pwd) \
                 -e VAULT_ADDR=${VAULT_ADDR} \
                 -e TF_INIT=no \
-                -e TF_LOG=${TF_LOG} \
+                -e TF_LOG="${TF_LOG}" \
+                -e HOME=/builder/home \
+                --user ${UID} \
+                --name terraform-helm \
                 ${docker_base_repo_url}/terraform-helm "$@"
 }
 

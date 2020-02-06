@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 alias eak="$EDITOR ~/dotfiles/shells/k8s; source ~/dotfiles/shells/k8s"
+
 alias kc="kubectl"
 alias kcg="kc get"
 alias kcgp="kc get pods --show-labels"

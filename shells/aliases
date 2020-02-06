@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+alias ea="$EDITOR ~/dotfiles/shells/aliases; source ~/dotfiles/shells/aliases"
+
 if [[ $(uname) != "Darwin" ]]; then
         alias ls='ls --color'
 fi
@@ -89,10 +91,7 @@ function sf() {
         [[ -n "$files" ]] && ${EDITOR:-vim} $files
 }
 
-# Utility
-alias reload="source ~/dotfiles/shells/aliases"
-alias ea="$EDITOR ~/dotfiles/shells/aliases; reload"
-alias ee="$EDITOR ~/dotfiles/shells/env; source ~/dotfiles/shells/env"
+# Utilities
 alias eal="$EDITOR ~/.local.aliases; source ~/.local.aliases"
 alias eel="$EDITOR ~/.local.env"
 alias ef='$EDITOR $(fzf)'
