@@ -1,13 +1,3 @@
-FROM golang:1.13.6 as builder
-
-WORKDIR /workspace
-
-RUN git clone https://github.com/terraform-providers/terraform-provider-helm.git && \
-    cd terraform-provider-helm && \
-    git fetch origin +refs/pull/378/merge && \
-    git checkout FETCH_HEAD && \
-    make build
-
 # see https://github.com/GoogleCloudPlatform/cloud-builders-community/tree/master/terraform
 # see https://github.com/GoogleCloudPlatform/cloud-builders-community/tree/master/helm
 FROM gcr.io/cloud-builders/gcloud
@@ -33,8 +23,6 @@ RUN /builder/google-cloud-sdk/bin/gcloud -q components update && \
     sha256sum -c terraform_SHA256SUMS --status && \
     unzip terraform_linux_amd64.zip -d /builder/terraform && \
     rm -f terraform_linux_amd64.zip
-
-COPY --from=builder /workspace/terraform-provider-helm/terraform-provider-helm /builder/terraform/terraform-provider-helm
 
 RUN mkdir -p /builder/helm && \
   curl -SL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz && \
