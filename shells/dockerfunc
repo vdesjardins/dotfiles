@@ -8,7 +8,8 @@ alias d="docker"
 alias dr="docker run -it --rm"
 
 function dgcloud() {
-        cfgname=$(refresh-docker-kubeconfig)
+        local cfgname=$(refresh-docker-kubeconfig /usr/bin/gcloud)
+        trap "rm ${cfgname}" EXIT
 
         docker run --rm -it \
                 -v "${HOME}/.config/gcloud:/.config/gcloud" \
@@ -18,25 +19,29 @@ function dgcloud() {
                 -v "${cfgname}:/.kube/config" \
                 -v "${HOME}/.config/docker-kube:/.kube" \
                 -v "${HOME}/.docker:/.docker" \
+                -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
+                -w $(pwd) \
                 --user ${UID} \
-                --name gcloud \
                 google/cloud-sdk:latest gcloud "$@"
 }
 
 function dkubectl() {
-        cfgname=$(refresh-docker-kubeconfig)
+        local cfgname=$(refresh-docker-kubeconfig /usr/bin/gcloud)
+        trap "rm ${cfgname}" EXIT
 
         docker run --rm -it \
                 -v "${HOME}/.config/gcloud:/.config/gcloud" \
                 -v "${cfgname}:/.kube/config" \
+                -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
+                -w $(pwd) \
                 --user ${UID} \
-                --name kubectl \
                 google/cloud-sdk:latest kubectl "$@"
 }
 
 function dhelm() {
         local docker_base_repo_url=${DOCKER_REGISTRY_PATH:-local}
-        cfgname=$(refresh-docker-kubeconfig)
+        local cfgname=$(refresh-docker-kubeconfig)
+        trap "rm ${cfgname}" EXIT
 
         docker run --rm -it \
                 -v "${HOME}/.config/gcloud:/builder/home/.config/gcloud" \
@@ -50,13 +55,13 @@ function dhelm() {
                 -e HOME=/builder/home \
                 --user ${UID} \
                 -w $(pwd) \
-                --name helm \
                 ${docker_base_repo_url}/helm "$@"
 }
 
 function dterraform() {
         local docker_base_repo_url=${DOCKER_REGISTRY_PATH:-local}
-        cfgname=$(refresh-docker-kubeconfig)
+        local cfgname=$(refresh-docker-kubeconfig)
+        trap "rm ${cfgname}" EXIT
 
         docker run --rm -it \
                 -v "${HOME}/.ssh:/builder/home/.ssh:ro" \
@@ -74,26 +79,22 @@ function dterraform() {
                 -e TF_LOG="${TF_LOG}" \
                 -e HOME=/builder/home \
                 --user ${UID} \
-                --name terraform-helm \
                 ${docker_base_repo_url}/terraform-helm "$@"
 }
 
 #--- helpers ----------------------------------------------
 function refresh-docker-kubeconfig() {
+        local gcloud_bin=${1:-/builder/google-cloud-sdk/bin/gcloud}
         local kubecfg=${HOME}/.kube/config
+
         if [[ ${KUBECONFIG} != "" ]]; then
                 kubecfg=$KUBECONFIG
         fi
 
-        if [[ ! -d ~/.config/docker-kube ]]; then
-                mkdir -p ~/.config/docker-kube
-                cp -r ~/.kube ~/.config/docker-kube
-        fi
-
-        local cfgname=~/.config/docker-kube/$(kubectl config current-context)
+        local cfgname=$(mktemp ${TMPDIR}/kubeconfig.XXXXXX)
 
         if [[ $(uname -s) == "Darwin" ]]; then
-                sed -e 's|/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin/gcloud|/builder/google-cloud-sdk/bin/gcloud|g' ${kubecfg} >${cfgname}
+                sed -e "s|/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin/gcloud|${gcloud_bin}|g" ${kubecfg} >${cfgname}
         else
                 cp ${kubecfg} ${cfgname}
         fi
