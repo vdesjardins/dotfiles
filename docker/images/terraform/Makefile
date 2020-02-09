@@ -4,6 +4,12 @@ TF_VERSION ?= 0.12.20
 
 .DEFAULT_GOAL := help
 
+SHELL := /bin/bash
+
+ifndef REGISTRY_PATH
+$(error REGISTRY_PATH is not set)
+endif
+
 .PHONY: build
 ## build: build image
 build:
