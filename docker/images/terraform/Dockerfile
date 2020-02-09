@@ -24,6 +24,9 @@ RUN /builder/google-cloud-sdk/bin/gcloud -q components update && \
     unzip terraform_linux_amd64.zip -d /builder/terraform && \
     rm -f terraform_linux_amd64.zip
 
+COPY certs/ /usr/local/share/ca-certificates/
+RUN update-ca-certificates
+
 RUN mkdir -p /builder/helm && \
   curl -SL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz && \
   tar zxvf helm.tar.gz --strip-components=1 -C /builder/helm linux-amd64/helm && \

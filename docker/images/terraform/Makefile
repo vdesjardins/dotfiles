@@ -13,6 +13,10 @@ endif
 .PHONY: build
 ## build: build image
 build:
+	if [[ -d ~/.config/my-cacerts/ ]]; then \
+		cp ~/.config/my-cacerts/* certs/; \
+	fi
+
 	docker build -t ${REGISTRY_PATH}/terraform-helm .
 
 .PHONY: sha256sum
