@@ -2,7 +2,7 @@
 
 alias eak="$EDITOR ~/dotfiles/shells/k8s; source ~/dotfiles/shells/k8s"
 
-alias kc="kubectl"
+alias kc="dkubectl"
 alias kcg="kc get"
 alias kcgp="kc get pods --show-labels"
 alias kcgs="kc get services"
@@ -85,8 +85,6 @@ alias kctc="kc top pods --containers=true"
 alias kctn="kc top nodes"
 
 alias k8s-get-certs="kubectl get certificates --all-namespaces -o jsonpath='{range .items[?(@.spec.commonName!=\"\")]}{.spec.commonName}{\"\t\"}{.status.notAfter}{\"\n\"}' | sort"
-
-alias i="istioctl"
 
 function kcani() {
         ns=$1
@@ -510,151 +508,3 @@ function k8s-dump-cert() {
 
         kubectl get secret ${secret} -o json | jq ".data[\"${key}\"]" -Sr | base64 -D | openssl x509 -text -noout
 }
-
-# istio
-function istio-objects() {
-        k8s-get-crd-objects istio
-}
-
-function istio-endpoints() {
-        istioctl proxy-config endpoints $@
-}
-function istio-endpoints-json() {
-        istioctl proxy-config endpoints $@ -ojson | jq
-}
-alias ie=istio-endpoints
-alias iej=istio-endpoints-json
-
-function istio-clusters() {
-        istioctl proxy-config clusters $@
-}
-function istio-clusters-json() {
-        istioctl proxy-config clusters $@ -ojson | jq
-}
-alias ic=istio-clusters
-alias icj=istio-clusters-json
-
-function istio-routes() {
-        istioctl proxy-config routes $@
-}
-function istio-routes-json() {
-        istioctl proxy-config routes $@ -ojson | jq
-}
-alias ir=istio-routes
-alias irj=istio-routes-json
-
-function istio-listeners() {
-        istioctl proxy-config listeners $@
-}
-function istio-listeners-json() {
-        istioctl proxy-config listeners "$@" -ojson | jq
-}
-alias il=istio-listeners
-alias ilj=istio-listeners-json
-
-function istio-status() {
-        istioctl proxy-status $@
-}
-alias is=istio-status
-
-function envoy-call() {
-        local ns=""
-        local pod=""
-        local url_path=""
-        local method="GET"
-
-        for p in "$@"; do
-                case ${p} in
-                -n=* | --namespace=*)
-                        ns="${p#*=}"
-                        ;;
-                -p=* | --pod=*)
-                        pod="${p#*=}"
-                        ;;
-                -u=* | --url=*)
-                        url_path=${p#*=}
-                        ;;
-                -m=* | --method=*)
-                        method=${p#*=}
-                        ;;
-                esac
-        done
-
-        if [[ ${ns} != "" ]]; then
-                ns="-n=${ns}"
-        fi
-
-        kubectl port-forward ${pod} ${ns} 15000:15000 1>&2 &
-        local kc_pid=$!
-        sleep 1
-        curl -X${method} http://localhost:15000/${url_path}
-        kill ${kc_pid}
-}
-
-function pilot-adsz() {
-        pilot-dump debug/adsz
-}
-function pilot-edsz() {
-        pilot-dump debug/edsz
-}
-function pilot-edsz-push() {
-        pilot-dump debug/edsz '?push=1'
-}
-function pilot-cdsz() {
-        pilot-dump debug/cdsz
-}
-function pilot-registryz() {
-        pilot-dump debug/registryz
-}
-function pilot-endpointz() {
-        pilot-dump debug/endpointz
-}
-function pilot-configz() {
-        pilot-dump debug/configz
-}
-function pilot-syncz() {
-        pilot-dump debug/syncz
-}
-
-function pilot-dump() {
-        local url_path=$1
-        local cmd=$2
-
-        kubectl port-forward service/istio-pilot -n istio-system 15014:15014 1>&2 &
-        local kc_pid=$!
-        sleep 1
-        curl http://localhost:15014/${url_path}${cmd}
-        kill ${kc_pid}
-}
-
-function envoy-dump-config() {
-        envoy-call --url=config_dump $@
-}
-
-function envoy-stats() {
-        envoy-call --url=stats $@
-}
-
-function envoy-help() {
-        envoy-call --url=help $@
-}
-
-function envoy-log-trace() {
-        local subsystem=level
-
-        envoy-call --url="logging?${subsystem}=trace" --method=POST $@
-}
-
-function envoy-log-debug() {
-        local subsystem=level
-
-        envoy-call --url="logging?${subsystem}=debug" --method=POST $@
-}
-
-function envoy-log-info() {
-        local subsystem=level
-
-        envoy-call --url="logging?${subsystem}=info" --method=POST $@
-}
-
-# vim: ft=sh
