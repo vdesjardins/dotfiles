@@ -163,4 +163,7 @@ function envoy-log-info() {
         envoy-call --url="logging?${subsystem}=info" --method=POST $@
 }
 
+function istio-auth() {
+        istioctl authn tls-check "$@"
+}
 # vim: ft=sh
