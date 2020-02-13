@@ -19,5 +19,4 @@ if [ -f /usr/share/doc/cdargs/examples/cdargs-bash.sh ]; then
         source /usr/share/doc/cdargs/examples/cdargs-bash.sh
 fi
 
-# rvm
-if [[ -s $HOME/.rvm/scripts/rvm ]]; then source $HOME/.rvm/scripts/rvm; fi
+export SPACESHIP_KUBECTL_SHOW=true
