@@ -28,6 +28,8 @@ alias kcgcrb="kc get clusterrolebinding"
 alias kcgrb="kc get rolebinding"
 alias kcgrbac="kc get rolebindings,clusterrolebindings"
 
+alias kcgci="kc get clusterissuer"
+
 alias kcdel="kc delete"
 alias kcr="kc delete"
 alias kcrp="kcr pod"
