@@ -11,6 +11,16 @@ function dgcloud() {
         local cfgname=$(refresh-docker-kubeconfig /usr/bin/gcloud)
         trap "rm ${cfgname}" EXIT
 
+        case $1 in
+        bq | gsutil | gcloud | kubectl)
+                local cmd=$1
+                shift
+                ;;
+        *)
+                cmd=gcloud
+                ;;
+        esac
+
         docker run --rm -it \
                 -v "${HOME}/.config/gcloud:/.config/gcloud" \
                 -v "${HOME}/.ssh:/root/.ssh:ro" \
@@ -22,21 +32,26 @@ function dgcloud() {
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
                 -w $(pwd) \
                 --user ${UID} \
-                google/cloud-sdk:latest gcloud "$@"
+                ${docker_base_repo_url}/cloud-sdk:latest ${cmd} "$@"
 }
+# TODO: not working
+# complete -o nospace -o default -F _python_argcomplete "dgcloud"
+
+function dbq() {
+        dgcloud bq "$@"
+}
+complete -o default -F _bq_completer dbq
+
+function dgsutil() {
+        dgcloud gsutil "$@"
+}
+# TODO: not working
+# complete -o nospace -F _python_argcomplete dgsutil
 
 function dkubectl() {
-        local cfgname=$(refresh-docker-kubeconfig /usr/bin/gcloud)
-        trap "rm ${cfgname}" EXIT
-
-        docker run --rm -it \
-                -v "${HOME}/.config/gcloud:/.config/gcloud" \
-                -v "${cfgname}:/.kube/config" \
-                -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
-                -w $(pwd) \
-                --user ${UID} \
-                google/cloud-sdk:latest kubectl "$@"
+        dgcloud kubectl "$@"
 }
+complete -o default -F __start_kubectl dkubectl
 
 function dhelm() {
         local docker_base_repo_url=${DOCKER_REGISTRY_PATH:-local}
@@ -57,6 +72,7 @@ function dhelm() {
                 -w $(pwd) \
                 ${docker_base_repo_url}/helm "$@"
 }
+complete -o default -F __start_helm dhelm
 
 function dterraform() {
         local docker_base_repo_url=${DOCKER_REGISTRY_PATH:-local}
@@ -81,6 +97,7 @@ function dterraform() {
                 --user ${UID} \
                 ${docker_base_repo_url}/terraform-helm "$@"
 }
+compdef _terraform dterraform
 
 #--- helpers ----------------------------------------------
 function refresh-docker-kubeconfig() {
@@ -91,7 +108,7 @@ function refresh-docker-kubeconfig() {
                 kubecfg=$KUBECONFIG
         fi
 
-        local cfgname=$(mktemp ${TMPDIR}/kubeconfig.XXXXXX)
+        local cfgname=$(mktemp /tmp/kubeconfig.XXXXXX)
 
         if [[ $(uname -s) == "Darwin" ]]; then
                 sed -e "s|/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin/gcloud|${gcloud_bin}|g" ${kubecfg} >${cfgname}
@@ -99,5 +116,28 @@ function refresh-docker-kubeconfig() {
                 cp ${kubecfg} ${cfgname}
         fi
 
+        # for kind cluster we map docker ip in kubeconfig instead of localhost
+        local ctx=$(kubectl config current-context)
+        if [[ ${ctx} == "kind-kind" ]]; then
+                local docker_ip_addr=$(docker inspect --format "{{ json .NetworkSettings.Networks }}" kind-control-plane | jq '.[] | .IPAddress' -Mr)
+
+                local cluster=$(kubectl config view -o json | jq ".contexts[] | select(.name == \"$(kubectl config current-context)\") | .context.cluster" -Mr)
+                if [[ ${cluster} != "" ]]; then
+                        local server_ip_addr=$(kubectl config view -o json | jq ".clusters[] | select(.name == \"${cluster}\") | .cluster.server" -Mr)
+                        server=$(echo ${server} | sed -re 's|^https://([0-9.:]+)$|\1|')
+                fi
+
+                sed -ie "s|${server_ip_addr}|https://${docker_ip_addr}:6443|g" ${cfgname}
+        fi
+
         echo ${cfgname}
+}
+
+function kube-get-api-server-hostport() {
+        cluster=$(kubectl config view -o json | jq ".contexts[] | select(.name == \"$(kubectl config current-context)\") | .context.cluster" -Mr)
+        if [[ ${cluster} != "" ]]; then
+                server=$(kubectl config view -o json | jq ".clusters[] | select(.name == \"${cluster}\") | .cluster.server" -Mr)
+        fi
+
+        echo ${server} | sed -re 's|^https://([0-9.:]+)$|\1|'
 }
