@@ -82,5 +82,3 @@ autoload -U +X bashcompinit && bashcompinit
 command -v vault >/dev/null 2>&1 && complete -o nospace -C /usr/local/bin/vault vault
 
 # vim: ft=sh
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
