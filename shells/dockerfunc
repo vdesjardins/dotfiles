@@ -34,24 +34,22 @@ function dgcloud() {
                 --user ${UID} \
                 ${docker_base_repo_url}/cloud-sdk:latest ${cmd} "$@"
 }
-# TODO: not working
-# complete -o nospace -o default -F _python_argcomplete "dgcloud"
+complete -o nospace -o default -F _dgcloud_complete "dgcloud"
 
 function dbq() {
         dgcloud bq "$@"
 }
-complete -o default -F _bq_completer dbq
+compdef dbq=bq
 
 function dgsutil() {
         dgcloud gsutil "$@"
 }
-# TODO: not working
-# complete -o nospace -F _python_argcomplete dgsutil
+complete -o nospace -o default -F _dgsutil_complete "dgsutil"
 
 function dkubectl() {
         dgcloud kubectl "$@"
 }
-complete -o default -F __start_kubectl dkubectl
+compdef dkubectl=kubectl
 
 function dhelm() {
         local docker_base_repo_url=${DOCKER_REGISTRY_PATH:-local}
@@ -72,7 +70,7 @@ function dhelm() {
                 -w $(pwd) \
                 ${docker_base_repo_url}/helm "$@"
 }
-complete -o default -F __start_helm dhelm
+compdef dhelm=helm
 
 function dterraform() {
         local docker_base_repo_url=${DOCKER_REGISTRY_PATH:-local}
@@ -97,7 +95,7 @@ function dterraform() {
                 --user ${UID} \
                 ${docker_base_repo_url}/terraform-helm "$@"
 }
-compdef _terraform dterraform
+compdef dterraform=terraform
 
 #--- helpers ----------------------------------------------
 function refresh-docker-kubeconfig() {
@@ -140,4 +138,20 @@ function kube-get-api-server-hostport() {
         fi
 
         echo ${server} | sed -re 's|^https://([0-9.:]+)$|\1|'
+}
+
+#--- completion ----------------------------------------------
+_dgcloud_complete() {
+        shift
+
+        COMP_LINE="${COMP_LINE/dgcloud/gcloud}"
+
+        _python_argcomplete "gcloud" "$@"
+}
+_dgsutil_complete() {
+        shift
+
+        COMP_LINE="${COMP_LINE/dgsutil/gsutil}"
+
+        _python_argcomplete "gsutil" "$@"
 }
