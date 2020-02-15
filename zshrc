@@ -1,40 +1,38 @@
-if [[ "$(uname)" == "Linux" || $(uname) == "Darwin" ]]; then
-        export ZPLUG_HOME=~/.zplug
-        export ZPLUG_LOADFILE=~/dotfiles/zsh/packages.zsh
+source ~/dotfiles/zsh/config
 
-        if [[ ! -d ~/.zplug ]]; then
-                git clone https://github.com/zplug/zplug $ZPLUG_HOME
-        fi
+# zplug
+export ZPLUG_HOME=~/.zplug
+export ZPLUG_LOADFILE=~/dotfiles/zsh/packages.zsh
 
-        source ~/.zplug/init.zsh
-
-        if ! zplug check --verbose; then
-                echo
-                zplug install
-        fi
-
-        zplug load
-
-        # Watch other user login/out
-        watch=notme
-        export LOGCHECK=60
-
-        source ~/dotfiles/zsh/config
-
-        # source helpers
-        for f in $(ls -1 ~/dotfiles/shells/*); do
-                source ${f}
-        done
-
-        # use .localzshrc for settings specific to one system
-        [[ -f ~/.localzshrc ]] && . ~/.localzshrc
-
-        # load bash local config too.
-        [[ -f ~/.local.env ]] && source ~/.local.env
-        [[ -f ~/.local.config ]] && source ~/.local.config
-        [[ -f ~/.local.aliases ]] && source ~/.local.aliases
-
+if [[ ! -d ~/.zplug ]]; then
+        git clone https://github.com/zplug/zplug $ZPLUG_HOME
 fi
+
+source ~/.zplug/init.zsh
+
+if ! zplug check --verbose; then
+        echo
+        zplug install
+fi
+
+zplug load
+
+# Watch other user login/out
+watch=notme
+export LOGCHECK=60
+
+# source helpers
+for f in $(ls -1 ~/dotfiles/shells/*); do
+        source ${f}
+done
+
+# use .localzshrc for settings specific to one system
+[[ -f ~/.localzshrc ]] && . ~/.localzshrc
+
+# load bash local config too.
+[[ -f ~/.local.env ]] && source ~/.local.env
+[[ -f ~/.local.config ]] && source ~/.local.config
+[[ -f ~/.local.aliases ]] && source ~/.local.aliases
 
 # add platform specific zshrc
 if [ -f $HOME/.zshrc-$(uname) ]; then
@@ -54,31 +52,18 @@ if [[ -d ${HOME}/.rbenv ]]; then
         export PATH="$HOME/.rbenv/bin:$PATH"
 fi
 
-# disable auto correct
-unsetopt correct_all
-
-# set key timeout to 10 ms
-export KEYTIEMOUT=1
-
 # load custom completions
 if [[ -d ~/dotfiles/zsh/completions/ ]]; then
-        for f in ~/dotfiles/zsh/completions/*.zsh; do
+        for f in $(find ~/dotfiles/zsh/completions/ -mindepth 1); do
                 source $f
         done
 fi
-# The next line updates PATH for the Google Cloud SDK.
-if [[ -d $HOME/google-cloud-sdk ]]; then
-        source "$HOME/google-cloud-sdk/path.zsh.inc"
-        source "$HOME/google-cloud-sdk/completion.zsh.inc"
-fi
-
-# The next line enables shell command completion for gcloud.
-[[ -d $HOME/google-cloud-sdk ]] && source "$HOME/google-cloud-sdk/completion.zsh.inc"
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-autoload -U +X bashcompinit && bashcompinit
-command -v vault >/dev/null 2>&1 && complete -o nospace -C /usr/local/bin/vault vault
+export FZF_COMPLETION_TRIGGER=''
+bindkey '^T' fzf-completion
+bindkey '^I' $fzf_default_completion
 
 # vim: ft=sh
