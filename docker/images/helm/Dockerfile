@@ -1,9 +1,8 @@
 FROM gcr.io/cloud-builders/gcloud
 
-ARG HELM_VERSION=v3.0.2
-ARG GCS_PLUGIN_VERSION=0.3.0
-ARG DIFF_PLUGIN_VERSION=v3.0.0-rc.7
-ARG TILLER_VERSION=v2.16.1
+ARG HELM_VERSION=v3.1.0
+ARG GCS_PLUGIN_VERSION=0.3.1
+ARG DIFF_PLUGIN_VERSION=v3.1.0
 
 COPY helm.bash /builder/helm.bash
 
@@ -23,12 +22,7 @@ RUN chmod +x /builder/helm.bash && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
   /builder/helm/helm plugin install https://github.com/nouney/helm-gcs --version ${GCS_PLUGIN_VERSION} && \
-  /builder/helm/helm plugin install https://github.com/databus23/helm-diff --version ${DIFF_PLUGIN_VERSION} && \
-  /builder/helm/helm plugin install https://github.com/helm/helm-2to3 && \
-  /builder/helm/helm plugin install https://github.com/rimusz/helm-tiller && \
-  curl -SL https://storage.googleapis.com/kubernetes-helm/helm-${TILLER_VERSION}-linux-amd64.tar.gz -o helm-tiller.tar.gz && \
-  tar xvf helm-tiller.tar.gz -C /builder/helm/ --strip=1 linux-amd64/tiller > /dev/null && \
-  rm -f helm-tiller.tar.gz
+  /builder/helm/helm plugin install https://github.com/databus23/helm-diff --version ${DIFF_PLUGIN_VERSION}
 
 ENV PATH=/builder/helm/:$PATH
 

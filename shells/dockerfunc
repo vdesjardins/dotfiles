@@ -63,7 +63,6 @@ function dhelm() {
                 -v "$HOME/.docker-data/helm/cache/repository:/builder/home/.cache/helm/repository" \
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
                 -e HELM_REPO_UPDATE=no \
-                -e TILLERLESS=${TILLERLESS} \
                 -e HELM_REPO_DEFAULT_INIT=yes \
                 -e HOME=/builder/home \
                 --user ${UID} \
