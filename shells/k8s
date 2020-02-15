@@ -173,9 +173,6 @@ function cluster-switch() {
                 return 1
         fi
 
-        # idx=$(kubectl config get-contexts --no-headers | grep -n ${cluster} | cut -d':' -f1)
-        # helm_port=$((44000 + ${idx}))
-
         local session_name=shell-${cluster}
 
         if tmux list-session | cut -d':' -f1 | grep ${session_name}; then
@@ -192,15 +189,12 @@ function cluster-switch() {
         cat <<-EOT >${startup_script}
 export KUBECONFIG=${kubeconfig}
 kubectl config use-context ${cluster}
-#export HELM_HOST="localhost:${helm_port}"
-#nohup ~/.helm/plugins/helm-tiller/bin/tiller --storage=secret --listen=localhost:${helm_port} &
 zsh
 EOT
         chmod +x ${startup_script}
 
         tmux new-session -d -s ${session_name} ${startup_script}
         tmux setenv -t ${session_name} KUBECONFIG ${kubeconfig}
-        # tmux setenv -t ${session_name} HELM_HOST localhost:${helm_port}
         tmux switch-client -t ${session_name}
 }
 alias csw=cluster-switch
@@ -241,57 +235,6 @@ alias ksw=namespace-switch
 alias kswi="namespace-switch istio-system"
 alias kswk="namespace-switch kube-system"
 
-function helm-switch() {
-        local cluster=$1
-
-        vault token lookup >/dev/null 2>&1
-
-        if [[ $? != 0 ]]; then
-                if [[ -z ${VAULT_USERNAME} ]]; then
-                        echo -n "Vault Username: "
-                        read username
-                        vault login -method=ldap -path=ad username=${username}
-                else
-                        vault login -method=ldap -path=ad username=${VAULT_USERNAME}
-                fi
-                if [[ $? != 0 ]]; then
-                        return 1
-                fi
-        fi
-
-        if [[ ${cluster} == "" ]]; then
-                cluster=$(set -o pipefail && vault secrets list | grep helm/clusters | cut -d'/' -f 3 | fzf-down)
-        fi
-
-        if [[ ${cluster} == "" ]]; then
-                echo "no helm cluster provided."
-                return 1
-        fi
-
-        temp_dir=$(mktemp -d)
-        vault write -format=json helm/clusters/${cluster}/issue/default common_name=client-helm.lacapitale.com >$temp_dir/payload
-
-        cat $temp_dir/payload | jq -r .data.certificate >~/.helm/cert.pem
-        cat $temp_dir/payload | jq -r .data.issuing_ca >~/.helm/ca.pem
-        cat $temp_dir/payload | jq -r .data.private_key >~/.helm/key.pem
-
-        chmod 600 ~/.helm/key.pem
-
-        rm -rf ${temp_dir}
-}
-alias hsw=helm-switch
-
-# old function
-function kswitch() {
-        if [[ "$@" == "" ]]; then
-                echo -e "Missing namespace!"
-                return 1
-        fi
-
-        local ns=$1
-        kubectl config set-context $(kubectl config current-context) --namespace="$ns"
-}
-
 function k8s-internal-ips() {
         kubectl get node -o json | jq '.items[] | "\(.metadata.name) \(.status.addresses | map(select(.type | contains("InternalIP"))) | .[].address)"' -Mr
 }
@@ -322,9 +265,7 @@ function k8s-connect-to-nodes() {
 }
 
 function helm() {
-        command helm tiller stop 2>&1 >/dev/null
-        command helm tiller start-ci 2>&1 >/dev/null
-        command helm $@
+        dhelm $@
 }
 
 function hl() {
@@ -333,31 +274,6 @@ function hl() {
 
 function hm() {
         helm "$@"
-}
-
-function hs() {
-        helm tiller stop
-        helm tiller start-ci
-}
-export HELM_HOST="localhost:44134"
-
-function hswitch() {
-        local env=$1
-
-        if [[ ${env} == "" ]]; then
-                echo "*** Known Helm Environnements in Vault ***"
-                vault secrets list | grep helm/clusters | cut -d'/' -f 3
-                return 0
-        fi
-
-        local temp_dir=$(mktemp -d)
-        vault write -format=json helm/clusters/${env}/issue/default common_name=client-helm.lacapitale.com >$temp_dir/payload
-
-        cat $temp_dir/payload | jq -r .data.certificate >~/.helm/cert.pem
-        cat $temp_dir/payload | jq -r .data.issuing_ca >~/.helm/ca.pem
-        cat $temp_dir/payload | jq -r .data.private_key >~/.helm/key.pem
-
-        rm -rf ${temp_dir}
 }
 
 function getcrb() {
