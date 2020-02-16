@@ -58,6 +58,7 @@ if [[ -d ~/dotfiles/zsh/completions/ ]]; then
                 source $f
         done
 fi
+export FPATH=~/dotfiles/zsh/completions/:$FPATH
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
