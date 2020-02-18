@@ -88,6 +88,7 @@ function dterraform() {
                 -v "$HOME/.docker-data/helm/cache/repository:/builder/home/.cache/helm/repository" \
                 -w $(pwd) \
                 -e VAULT_ADDR=${VAULT_ADDR} \
+                -e VAULT_TOKEN=${VAULT_TOKEN} \
                 -e TF_INIT=no \
                 -e TF_LOG="${TF_LOG}" \
                 -e HOME=/builder/home \
