@@ -14,7 +14,7 @@ ENV XDG_DATA_HOME=/builder/home/.local/share
 
 RUN /builder/google-cloud-sdk/bin/gcloud -q components update && \
     apt-get update && \
-    apt-get -y install curl unzip ca-certificates && \
+    apt-get -y install curl unzip ca-certificates jq && \
     apt-get --purge -y autoremove && \
     apt-get clean && \
     curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
