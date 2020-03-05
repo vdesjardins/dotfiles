@@ -11,13 +11,17 @@
 [alias]
 	st = status
 	c = commit
+	ca = commit --amend
 	cm = commit -m
 	co = checkout
+	cob = checkout -b
 	ps = push
 	psf = push --force-with-lease
 	pl = pull --rebase
 	br = branch
 	bra = branch -a
+	brd = branch -d
+	brD = branch -D
 	bi = bisect
 	a = add
 	d = diff
@@ -81,8 +85,6 @@
 	cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED
 
 [push]
-	# for now since git at work doesn't support simple.
-	#default = simple
 	default = current
 	followTags = true
 [pull]
