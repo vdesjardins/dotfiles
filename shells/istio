@@ -92,7 +92,7 @@ function envoy-call() {
 
         kubectl port-forward ${pod} ${ns} 15000:15000 1>&2 &
         local kc_pid=$!
-        sleep 1
+        sleep 2
         curl -X${method} http://localhost:15000/${url_path}
         kill ${kc_pid}
 }
@@ -122,14 +122,18 @@ function pilot-syncz() {
         pilot-dump debug/syncz
 }
 
+function pilot-dump-config() {
+        pilot-dump "debug/config_dump?proxyID=$1"
+}
+
 function pilot-dump() {
         local url_path=$1
         local cmd=$2
 
         kubectl port-forward service/istio-pilot -n istio-system 15014:15014 1>&2 &
         local kc_pid=$!
-        sleep 1
-        curl http://localhost:15014/${url_path}${cmd}
+        sleep 2
+        curl -s http://localhost:15014/${url_path}${cmd}
         kill ${kc_pid}
 }
 
@@ -166,4 +170,31 @@ function envoy-log-info() {
 function istio-auth() {
         istioctl authn tls-check "$@"
 }
+
+function istio-desc() {
+        istioctl x describe "$@"
+}
+
+function istio-analyze() {
+        istioctl x analyze "$@"
+}
+
+function istio-proxy-listener-servernames() {
+        pod=$1
+        listener=${2:-0.0.0.0_443}
+        pilot-dump-config $pod | jq ".configs[] | select(.dynamicActiveListeners!=null) | .dynamicActiveListeners[] | select(.listener.name==\"${listener}\") | .listener.filterChains[] | select(.filterChainMatch.serverNames!=null) | .filterChainMatch.serverNames[]" -Mr
+}
+
+function istio-proxy-listener-chainmatches() {
+        pod=$1
+        listener=${2:-0.0.0.0_443}
+        pilot-dump-config $pod | jq ".configs[] | select(.dynamicActiveListeners!=null) | .dynamicActiveListeners[] | select(.listener.name==\"${listener}\") | .listener.filterChains[] | select(.filterChainMatch!=null) | .filterChainMatch" -Mr
+}
+
+function envoy-proxy-listener-servernames() {
+        pod=$1
+        listener=${2:-0.0.0.0_443}
+        envoy-dump-config -p=$pod | jq ".configs[] | select(.dynamicActiveListeners!=null) | .dynamicActiveListeners[] | select(.listener.name==\"${listener}\") | .listener.filterChains[] | select(.filterChainMatch.serverNames!=null) | .filterChainMatch.serverNames[]" -Mr
+}
+
 # vim: ft=sh
