@@ -8,6 +8,7 @@ alias d="docker"
 alias dr="docker run -it --rm"
 
 function dgcloud() {
+        local docker_base_repo_url=${DOCKER_REGISTRY_PATH:-local}
         local cfgname=$(refresh-docker-kubeconfig /usr/bin/gcloud)
         trap "rm ${cfgname}" EXIT
 
@@ -21,7 +22,11 @@ function dgcloud() {
                 ;;
         esac
 
-        docker run --rm -it \
+        if [[ -t 1 ]]; then
+                local tty="-t"
+        fi
+
+        docker run --rm -i ${tty} \
                 -v "${HOME}/.config/gcloud:/.config/gcloud" \
                 -v "${HOME}/.ssh:/root/.ssh:ro" \
                 -v "$(which docker):/usr/bin/docker" \
@@ -56,7 +61,7 @@ function dhelm() {
         local cfgname=$(refresh-docker-kubeconfig)
         trap "rm ${cfgname}" EXIT
 
-        docker run --rm -it \
+        docker run --rm -i \
                 -v "${HOME}/.config/gcloud:/builder/home/.config/gcloud" \
                 -v "${cfgname}:/builder/home/.kube/config" \
                 -v "$HOME/.docker-data/helm/config:/builder/home/.config/helm" \
@@ -76,7 +81,7 @@ function dterraform() {
         local cfgname=$(refresh-docker-kubeconfig)
         trap "rm ${cfgname}" EXIT
 
-        docker run --rm -it \
+        docker run --rm -i \
                 -v "${HOME}/.ssh:/builder/home/.ssh:ro" \
                 -v "$(which docker):/usr/bin/docker" \
                 -v "/var/run/docker.sock:/var/run/docker.sock" \
