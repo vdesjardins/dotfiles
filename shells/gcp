@@ -23,7 +23,7 @@ function gcp-list-ip() {
 function gke-resolve-project() {
         local env=$1
         if [[ ${env} == "" ]]; then
-                echo "Argument Cluster GKE necessaire"
+                echo "Missing argument cluster"
                 return 1
         fi
 
