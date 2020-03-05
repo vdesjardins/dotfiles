@@ -94,6 +94,7 @@ alias kcmg="kcm gateway"
 alias kcmdr="kcm destinationrule"
 alias kcmse="kcm serviceentry"
 alias kcmsa="kcm serviceaccount"
+alias kcmct="kcm certificate"
 
 alias kctp="kc top pods"
 alias kctc="kc top pods --containers=true"
@@ -115,7 +116,7 @@ function kinspect() {
                 nsarg="--namespace=${ns}"
         fi
 
-        dkubectl run --rm -i -t vince-d --image=gcr.io/google-containers/toolbox --restart=Never --labels 'sidecar.istio.io/inject=false' ${nsarg} --command /bin/bash
+        dkubectl run --rm -i -t vince-d --image=gcr.io/google-containers/toolbox --restart=Never --labels 'app=vince-d' ${nsarg} --command /bin/bash
 }
 
 function kgcloud() {
