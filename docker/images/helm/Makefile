@@ -14,6 +14,7 @@ endif
 ## build: build image
 build:
 	docker build \
+		--pull \
 		--build-arg HELM_VERSION=${HELM_VERSION} \
 		--build-arg GCS_PLUGIN_VERSION=${GCS_PLUGIN_VERSION} \
 		--build-arg DIFF_PLUGIN_VERSION=${DIFF_PLUGIN_VERSION} \
