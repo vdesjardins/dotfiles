@@ -9,7 +9,7 @@ endif
 .PHONY: build
 ## build: build image
 build:
-	docker build -t ${REGISTRY_PATH}/cloud-sdk:latest .
+	docker build --pull -t ${REGISTRY_PATH}/cloud-sdk:latest .
 
 .PHONY: help
 ## help: Prints this help message

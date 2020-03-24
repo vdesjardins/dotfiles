@@ -1,8 +1,12 @@
-FROM google/cloud-sdk:latest
+FROM google/cloud-sdk:alpine
 
-RUN apt-get update && \
-  apt-get install -y vim-nox && \
-  apt-get --purge -y autoremove && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/*
+ENV HOME=/
 
+RUN apk add neovim && \
+    gcloud -q components install kubectl docker-credential-gcr
+
+ENV PATH=$PATH:/.krew/bin
+
+COPY init.sh /init.sh
+
+ENTRYPOINT ["/init.sh"]
