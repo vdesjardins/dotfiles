@@ -18,6 +18,7 @@ build: sha256sum
 	fi
 
 	@docker build \
+		--pull \
 		--build-arg TF_VERSION=${TF_VERSION} \
 		--build-arg TF_SHA256SUM=${TF_SHA256SUM} \
 		-t ${REGISTRY_PATH}/terraform-helm .
