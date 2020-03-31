@@ -3,6 +3,7 @@
 alias ei="$EDITOR ~/dotfiles/shells/istio; source ~/dotfiles/shells/istio"
 
 alias i="istioctl"
+alias ida="istioctl dashboard"
 
 function istio-objects() {
         k8s-get-crd-objects istio
