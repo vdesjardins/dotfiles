@@ -9,7 +9,7 @@ alias dr="docker run -it --rm"
 
 function dgcloud() {
         local docker_base_repo_url=${DOCKER_REGISTRY_PATH:-local}
-        local cfgname=$(refresh-docker-kubeconfig /usr/bin/gcloud)
+        local cfgname=$(refresh-docker-kubeconfig)
         trap "rm ${cfgname}" EXIT
 
         case $1 in
@@ -34,6 +34,8 @@ function dgcloud() {
                 -v "${cfgname}:/.kube/config" \
                 -v "${HOME}/.config/docker-kube:/.kube" \
                 -v "${HOME}/.docker:/.docker" \
+                -v "${HOME}/.docker-data/krew:/.krew" \
+                -v "${HOME}/.docker-data/local:/.local" \
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
                 -w $(pwd) \
                 --user ${UID} \
@@ -62,14 +64,14 @@ function dhelm() {
         trap "rm ${cfgname}" EXIT
 
         docker run --rm -i \
-                -v "${HOME}/.config/gcloud:/builder/home/.config/gcloud" \
-                -v "${cfgname}:/builder/home/.kube/config" \
-                -v "$HOME/.docker-data/helm/config:/builder/home/.config/helm" \
-                -v "$HOME/.docker-data/helm/cache/repository:/builder/home/.cache/helm/repository" \
+                -v "${HOME}/.config/gcloud:/home/.config/gcloud" \
+                -v "${cfgname}:/home/.kube/config" \
+                -v "$HOME/.docker-data/helm/config:/home/.config/helm" \
+                -v "$HOME/.docker-data/helm/cache/repository:/home/.cache/helm/repository" \
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
                 -e HELM_REPO_UPDATE=no \
                 -e HELM_REPO_DEFAULT_INIT=yes \
-                -e HOME=/builder/home \
+                -e HOME=/home \
                 --user ${UID} \
                 -w $(pwd) \
                 ${docker_base_repo_url}/helm "$@"
@@ -82,21 +84,21 @@ function dterraform() {
         trap "rm ${cfgname}" EXIT
 
         docker run --rm -i \
-                -v "${HOME}/.ssh:/builder/home/.ssh:ro" \
+                -v "${HOME}/.ssh:/home/.ssh:ro" \
                 -v "$(which docker):/usr/bin/docker" \
                 -v "/var/run/docker.sock:/var/run/docker.sock" \
-                -v "${HOME}/.config/gcloud:/builder/home/.config/gcloud" \
-                -v "${cfgname}:/builder/home/.kube/config" \
+                -v "${HOME}/.config/gcloud:/home/.config/gcloud" \
+                -v "${cfgname}:/home/.kube/config" \
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
-                -v "${HOME}/.vault-token:/builder/home/.vault-token" \
-                -v "$HOME/.docker-data/helm/config:/builder/home/.config/helm" \
-                -v "$HOME/.docker-data/helm/cache/repository:/builder/home/.cache/helm/repository" \
+                -v "${HOME}/.vault-token:/home/.vault-token" \
+                -v "$HOME/.docker-data/helm/config:/home/.config/helm" \
+                -v "$HOME/.docker-data/helm/cache/repository:/home/.cache/helm/repository" \
                 -w $(pwd) \
                 -e VAULT_ADDR=${VAULT_ADDR} \
                 -e VAULT_TOKEN=${VAULT_TOKEN} \
                 -e TF_INIT=no \
                 -e TF_LOG="${TF_LOG}" \
-                -e HOME=/builder/home \
+                -e HOME=/home \
                 --user ${UID} \
                 ${docker_base_repo_url}/terraform-helm "$@"
 }
@@ -104,7 +106,7 @@ compdef dterraform=terraform
 
 #--- helpers ----------------------------------------------
 function refresh-docker-kubeconfig() {
-        local gcloud_bin=${1:-/builder/google-cloud-sdk/bin/gcloud}
+        local gcloud_bin=${1:-/google-cloud-sdk/bin/gcloud}
         local kubecfg=${HOME}/.kube/config
 
         if [[ ${KUBECONFIG} != "" ]]; then
