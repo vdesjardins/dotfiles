@@ -19,4 +19,5 @@ if [ -f /usr/share/doc/cdargs/examples/cdargs-bash.sh ]; then
         source /usr/share/doc/cdargs/examples/cdargs-bash.sh
 fi
 
+export SPACESHIP_KUBECTL_VERSION_SHOW=false
 export SPACESHIP_KUBECTL_SHOW=true
