@@ -24,6 +24,8 @@ mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/vimrc ~/.config/nvim/init.vim
 ln -s ~/dotfiles/vim/UltiSnips ~/.config/nvim/
 ln -s ~/dotfiles/vim/coc-settings.json ~/.config/nvim/
+mkdir -p ~/.config/coc/extensions
+ln -s ~/dotfiles/vim/package.json ~/.config/coc/extensions/package.json
 
 # docker
 mkdir ~/.docker
