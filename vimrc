@@ -146,6 +146,10 @@ Plug 'tpope/vim-abolish'
 Plug 'towolf/vim-helm'
 Plug 'markcornick/vim-bats'
 
+" window resize animation
+Plug 'camspiers/animate.vim'
+Plug 'camspiers/lens.vim'
+
 call plug#end()
 
 " }}}
