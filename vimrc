@@ -266,6 +266,12 @@ set ruler "Always show current position
 
 set cmdheight=2 "The commandbar height
 
+set nobackup
+set nowritebackup
+set updatetime=300
+set shortmess+=c
+set signcolumn=yes
+
 set hid "Change buffer - without saving
 
 " Set backspace config
@@ -302,6 +308,9 @@ set winaltkeys=no
 
 " Remove Info(Preview) window
 set completeopt-=preview
+
+" format everything
+autocmd BufWritePre * :Neoformat
 
 " Vimscript file settings ---------------------- {{{
 augroup vim_group
@@ -424,8 +433,7 @@ endfunc
 " }}}
 
 " Grepper mapping ---------------------------------------- {{{
-nnoremap <leader>* :Grepper -tool rg -grepprg rg -H --no-heading --vimgrep --no-ignore<cr>
-nnoremap <leader>a :Grepper -tool rg<cr>
+nnoremap <leader>* :Grepper -tool rg<cr>
 nnoremap <leader>ack :Grepper -tool ack -cword -noprompt<cr>
 " }}}
 
@@ -663,16 +671,9 @@ augroup END
 augroup go_group
   autocmd!
   autocmd FileType go nmap <localleader>a <Plug>(go-alternate-edit)
-  autocmd FileType go nmap <localleader>s <Plug>(go-implements)
-  autocmd FileType go nmap <localleader>d <Plug>(go-def)
-  autocmd FileType go nmap <localleader>g <Plug>(go-doc)
   autocmd FileType go nmap <localleader>r <Plug>(go-run)
   autocmd FileType go nmap <localleader>b <Plug>(go-build)
   autocmd FileType go nmap <localleader>t <Plug>(go-test)
-  autocmd FileType go nmap <localleader>c <Plug>(go-coverage)
-  autocmd FileType go nmap <localleader>e <Plug>(go-rename)
-  autocmd FileType go nmap <localleader>i <Plug>(go-imports)
-  autocmd FileType go nmap <localleader>m :make<cr>
 augroup END
 
 let g:go_bin_path = expand("~/.gotools")
@@ -685,6 +686,104 @@ let g:go_highlight_build_constraints = 1
 let g:go_auto_type_info = 1
 let g:go_info_mode = 'gopls'
 let g:go_def_mode='gopls'
+" }}}
+"
+" coc ------------------------------------------------ {{{
+" coc
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup coc-group
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current line.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Introduce function text object
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" Use <TAB> for selections ranges.
+" NOTE: Requires 'textDocument/selectionRange' support from the language server.
+" coc-tsserver, coc-python are the examples of servers that support it.
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Mappings using CoCList:
+" Show all diagnostics.
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
 " }}}
 
 " Vim grep ------------------------------------------ {{{
@@ -867,7 +966,6 @@ augroup java_group
   autocmd BufNewFile,BufRead pom.xml set makeprg=mvn\ compile\ -q\ -f\ pom.xml
   autocmd FileType java set errorformat=\[ERROR]\ %f:[%l\\,%v]\ %m
   autocmd FileType java nmap <localleader>m :make<cr>
-  autocmd BufWritePre * :Neoformat
 augroup END
 
 " }}}
