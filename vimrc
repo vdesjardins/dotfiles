@@ -146,6 +146,8 @@ Plug 'tpope/vim-abolish'
 Plug 'towolf/vim-helm'
 Plug 'markcornick/vim-bats'
 
+Plug 'rust-lang/rust.vim'
+
 " window resize animation
 Plug 'camspiers/animate.vim'
 Plug 'camspiers/lens.vim'
