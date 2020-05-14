@@ -27,20 +27,12 @@
         "lua"
       ]
     },
-    "golang": {
-      "command": "bingo",
-      "args": [
-        "--diagnostics-style=instant"
-      ],
-      "rootPatterns": [
-        "go.mod",
-        ".vim/",
-        ".git/",
-        ".hg/"
-      ],
+    "terraform": {
+      "command": "terraform-lsp",
       "filetypes": [
-        "go"
-      ]
+        "terraform"
+      ],
+      "initializationOptions": {}
     },
     "ccls": {
       "command": "ccls",
