@@ -14,6 +14,7 @@ alias kcgn="kc get namespaces --show-labels"
 alias kcgno="kc get nodes"
 alias kcgj="kc get jobs,cronjobs"
 alias kcge="kc get events"
+alias kcgen="kc get endpoints"
 alias kcgi="kc get ingress"
 alias kcgct="kc get certificates"
 alias kcgvw="kc get validatingwebhookconfiguration"
@@ -95,6 +96,8 @@ alias kcmdr="kcm destinationrule"
 alias kcmse="kcm serviceentry"
 alias kcmsa="kcm serviceaccount"
 alias kcmct="kcm certificate"
+alias kcmvw="kcm validatingwebhookconfiguration"
+alias kcmmw="kcm mutatingwebhookconfiguration"
 
 alias kctp="kc top pods"
 alias kctc="kc top pods --containers=true"
@@ -109,14 +112,7 @@ function kcani() {
 }
 
 function kinspect() {
-        local ns=${1}
-        local nsarg=""
-
-        if [[ ${ns} != "" ]]; then
-                nsarg="--namespace=${ns}"
-        fi
-
-        dkubectl run --rm -i -t vince-d --image=gcr.io/google-containers/toolbox --restart=Never --labels 'app=vince-d' ${nsarg} --command /bin/bash
+        dkubectl run --rm -i -t vince-d --image=gcr.io/google-containers/toolbox --restart=Never --labels 'app=vince-d' "$@" --command /bin/bash
 }
 
 function kgcloud() {
@@ -431,7 +427,9 @@ alias kcsc=k8s-search-configmap
 
 function k8s-dump-secret() {
         local secret=$1
-        kubectl get secret ${secret} -o json | jq '.data[]' -Sr
+        local key=$2
+
+        kubectl get secret ${secret} -o json | jq ".data[\"${key}\"]" -Sr | base64 -D
 }
 
 function k8s-dump-cert() {
