@@ -5,11 +5,16 @@ alias et="$EDITOR ~/dotfiles/shells/terraform; source ~/dotfiles/shells/terrafor
 alias tf=dterraform
 
 alias tfa="dterraform apply"
-alias tfp="dterraform apply"
+alias tfp="dterraform plan"
+alias tfd="dterraform plan"
+alias tfi="dterraform init"
 
 function tfat() {
         dterraform apply -target="$@"
 }
 function tfpt() {
         dterraform plan -target="$@"
+}
+function tfdt() {
+        dterraform destroy -target="$@"
 }
