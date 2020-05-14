@@ -73,7 +73,6 @@ call plug#begin(s:vimplugdir)
 
 Plug 'patstockwell/vim-monokai-tasty'
 
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
 Plug 'w0rp/ale'
 Plug 'sjl/gundo.vim'
 Plug 'tpope/vim-fugitive'
@@ -129,7 +128,6 @@ Plug 'bfredl/nvim-miniyank'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'hashivim/vim-terraform'
-Plug 'juliosueiras/vim-terraform-completion'
 Plug 'liuchengxu/vim-which-key'
 
 " javascript
@@ -668,28 +666,6 @@ augroup gitcommit_group
 augroup END
 " }}}
 
-" go ------------------------------------------------ {{{
-" golang
-augroup go_group
-  autocmd!
-  autocmd FileType go nmap <localleader>a <Plug>(go-alternate-edit)
-  autocmd FileType go nmap <localleader>r <Plug>(go-run)
-  autocmd FileType go nmap <localleader>b <Plug>(go-build)
-  autocmd FileType go nmap <localleader>t <Plug>(go-test)
-augroup END
-
-let g:go_bin_path = expand("~/.gotools")
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_types = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
-let g:go_auto_type_info = 1
-let g:go_info_mode = 'gopls'
-let g:go_def_mode='gopls'
-" }}}
-"
 " coc ------------------------------------------------ {{{
 " coc
 " Use `[g` and `]g` to navigate diagnostics
