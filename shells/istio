@@ -54,6 +54,15 @@ function istio-listeners-json() {
 alias il=istio-listeners
 alias ilj=istio-listeners-json
 
+function istio-secrets() {
+        istioctl proxy-config secret $@
+}
+function istio-secrets-json() {
+        istioctl proxy-config secret "$@" -ojson | jq
+}
+alias iss=istio-secrets
+alias issj=istio-secrets-json
+
 function istio-status() {
         istioctl proxy-status $@
 }
