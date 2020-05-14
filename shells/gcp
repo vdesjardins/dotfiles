@@ -7,6 +7,11 @@ alias gpl="gcloud projects list"
 alias gbl="gcloud builds list --project corp-admin --ongoing"
 alias gblog="gcloud builds log --project corp-admin"
 
+function gcp-project-id() {
+        local project=${1:?project name madatory}
+        gcloud projects list | grep ${project} | awk '{ print $1; }'
+}
+
 function gcp-list-ip() {
         for p in $(gcloud projects list --format 'table[no-heading](projectId)'); do
                 gcloud services list --project $p | grep compute.googleapis.com >/dev/null 2>&1
@@ -21,22 +26,13 @@ function gcp-list-ip() {
 }
 
 function gke-resolve-project() {
-        local env=$1
+        local env=${1:?error cluster name mandatory}
         if [[ ${env} == "" ]]; then
                 echo "Missing argument cluster"
                 return 1
         fi
 
         case "$1" in
-        'prod01')
-                echo "corp-prod-gkeinfra"
-                ;;
-        'prod02')
-                echo "corp-prod-gke"
-                ;;
-        'devl01')
-                echo "corp-devl-gke"
-                ;;
         'prod1')
                 echo "prod-gke-230115"
                 ;;
@@ -53,40 +49,28 @@ function gke-resolve-project() {
 }
 
 function gke-info() {
-        local PROJECT
-        local cluster
-        cluster=$1
+        local cluster=${1:?Error cluster name mandatory}
 
-        PROJECT=$(gke-resolve-project ${cluster})
+        local PROJECT=$(gke-resolve-project ${cluster})
         if [[ $? != 0 ]]; then
-                echo >&2 "Argument invalide"
+                echo >&2 "invalid argument"
                 return 1
         fi
 
         gcloud container clusters list --project $PROJECT --format="table[box,title='Master ($PROJECT)'](NAME, MASTER_VERSION, MASTER_IP, NUM_NODES, STATUS)"
-        if [[ ${env} == "prod01" ]] || [[ ${env} == "prod02" ]] || [[ ${env} == "devl01" ]]; then
-                gcloud container node-pools list --cluster ${cluster} --project $PROJECT --zone "northamerica-northeast1-a" --format="table[box,title='Nodepools ($1)'](NAME, MACHINE_TYPE, DISK_SIZE_GB, NODE_VERSION)"
-        else
-                gcloud container node-pools list --cluster ${cluster} --project $PROJECT --region "northamerica-northeast1" --format="table[box,title='Nodepools ($1)'](NAME, MACHINE_TYPE, DISK_SIZE_GB, NODE_VERSION)"
-        fi
+
+        gcloud container node-pools list --cluster ${cluster} --project $PROJECT --region "northamerica-northeast1" --format="table[box,title='Nodepools ($1)'](NAME, MACHINE_TYPE, DISK_SIZE_GB, NODE_VERSION)"
 }
 
 function gke-nodepool-info() {
-        local PROJECT
-        local cluster
-
-        cluster=$1
+        local cluster=${1:?error cluster name madatory}
         shift
 
-        PROJECT=$(gke-resolve-project ${cluster})
+        local PROJECT=$(gke-resolve-project ${cluster})
         if [[ $? != 0 ]]; then
-                echo >&2 "Argument invalide"
+                echo >&2 "invalid argument"
                 return 1
         fi
 
-        if [[ ${env} == "prod01" ]] || [[ ${env} == "prod02" ]] || [[ ${env} == "devl01" ]]; then
-                gcloud container node-pools describe --cluster ${cluster} --project $PROJECT --zone "northamerica-northeast1-a" "$@"
-        else
-                gcloud container node-pools describe --cluster ${cluster} --project $PROJECT --region "northamerica-northeast1" "$@"
-        fi
+        gcloud container node-pools describe --cluster ${cluster} --project $PROJECT --region "northamerica-northeast1" "$@"
 }
