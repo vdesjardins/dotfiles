@@ -99,7 +99,5 @@
 	gpgsign = true
 [tag]
 	gpgsign = true
-[gpg]
-	program = /usr/local/bin/gpg
 [http]
 	cookiefile = /Users/inf10906/.gitcookies
