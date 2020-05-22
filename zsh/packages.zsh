@@ -27,6 +27,3 @@ zplug "plugins/terraform", from:oh-my-zsh, defer:2
 zplug "plugins/gcloud", from:oh-my-zsh, defer:2
 
 zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
-
-# # Theme!
-zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme

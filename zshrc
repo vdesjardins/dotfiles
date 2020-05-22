@@ -63,4 +63,6 @@ export FPATH=~/dotfiles/zsh/completions/:$FPATH
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+eval "$(starship init zsh)"
+
 # vim: ft=sh
