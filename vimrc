@@ -88,7 +88,7 @@ Plug 'houtsnip/vim-emacscommandline'
 Plug 'mhinz/vim-grepper'
 
 " BEGIN auto complete
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " END auto complete
 
 Plug 'ncm2/float-preview.nvim'
