@@ -11,6 +11,7 @@ function gcp-project-id() {
         local project=${1:?project name madatory}
         gcloud projects list | grep ${project} | awk '{ print $1; }'
 }
+alias gpi=gcp-project-id
 
 function gcp-list-ip() {
         for p in $(gcloud projects list --format 'table[no-heading](projectId)'); do
