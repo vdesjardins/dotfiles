@@ -73,7 +73,7 @@ call plug#begin(s:vimplugdir)
 
 Plug 'patstockwell/vim-monokai-tasty'
 
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'sjl/gundo.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
