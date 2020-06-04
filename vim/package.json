@@ -3,7 +3,7 @@
     "coc-go": ">=0.7.0",
     "coc-gocode": ">=1.2.4",
     "coc-json": ">=1.2.6",
-    "coc-rust-analyzer": ">=0.7.1",
+    "coc-rust-analyzer": ">=0.7.2",
     "coc-ultisnips": "^1.2.3",
     "coc-yaml": ">=1.0.4"
   }
