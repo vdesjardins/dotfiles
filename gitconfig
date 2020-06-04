@@ -46,6 +46,7 @@
 	tl = tag
 	ta = tag -s -a
 	tls = for-each-ref --format='%(refname:short) %(taggerdate) %(subject)' refs/tags
+	sli = stash list --format='%gd (%cr): %gs'
 
 [color]
 	diff = auto
