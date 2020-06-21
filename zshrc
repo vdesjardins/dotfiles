@@ -26,6 +26,10 @@ for f in $(ls -1 ~/dotfiles/shells/*); do
         source ${f}
 done
 
+if [[ -d /home/linuxbrew ]]; then
+	eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+fi
+
 # use .localzshrc for settings specific to one system
 [[ -f ~/.localzshrc ]] && . ~/.localzshrc
 
