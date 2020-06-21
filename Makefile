@@ -2,6 +2,8 @@ SHELL := /bin/bash
 
 .DEFAULT_GOAL := help
 
+GPG_EXTRA_SOCKET := $(shell gpgconf --list-dir agent-extra-socket)
+
 .PHONY: brew-dump
 ## brew-dump: dump brew installed packages in Brewfile
 brew-dump:
@@ -32,7 +34,8 @@ help:
 setup-ssh-config:
 	@mkdir -p ~/.ssh
 	@chmod 700 ~/.ssh
-	@ln -sf ~/dotfiles/ssh/config ~/.ssh/config
+	@rm ~/.ssh/config 2>/dev/null
+	@sed -e "s|gpg_extra_socket|$(GPG_EXTRA_SOCKET)|g" ~/dotfiles/ssh/config >~/.ssh/config
 
 setup-vim-ultisnips:
 	@mkdir -p ~/.vim

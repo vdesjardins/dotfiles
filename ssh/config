@@ -4,8 +4,6 @@ Host *
 	PermitLocalCommand yes
 	HashKnownHosts no
 	ForwardAgent yes
-	#IdentityFile ~/.ssh/keys/id_rsa_%r
-	#IdentityFile ~/.ssh/id_rsa
 
 Host vm-vince-d
 	HostName 10.242.4.69
@@ -17,10 +15,12 @@ Host vm-vince-d
 	LocalForward 30004 localhost:8004
 	LocalForward 30005 localhost:8005
 	LocalForward 38080 localhost:8080
-	RemoteForward /home/<user>/.gnupg/S.gpg-agent /home/<user>/.gnupg/S.gpg-agent.extra
+	RemoteForward /home/inf10906/.gnupg/S.gpg-agent gpg_extra_socket
 	DynamicForward localhost:5000
 
-Host vm-home-server
-	HostName 192.168.50.96
-	User vdesjardins
-	RemoteForward /home/<user>/.gnupg/S.gpg-agent /home/<user>/.gnupg/S.gpg-agent.extra
+Host vince-dev
+	HostName 35.203.28.10
+	User vince
+	RemoteForward /run/user/1002/gnupg/S.gpg-agent gpg_extra_socket
+	DynamicForward localhost:5000
+
