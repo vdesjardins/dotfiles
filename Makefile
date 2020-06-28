@@ -23,7 +23,7 @@ install-coc-extensions: setup-neovim
 
 .PHONY: symlinks
 ## symlinks: link dotfiles config files in home directory
-symlinks: setup-symlinks setup-ssh-config setup-vim-ultisnips setup-neovim setup-docker setup-vim
+symlinks: setup-symlinks setup-ssh-config setup-vim-ultisnips setup-neovim setup-docker setup-vim setup-default-python
 
 .PHONY: help
 ## help: Prints this help message
@@ -62,6 +62,10 @@ setup-starship:
 	@mkdir -p ~/.config
 	@ln -sf ~/dotfiles/starship.toml ~/.config/starship.toml
 
+# this is necessary for zplug that assume that python executable exists
+setup-default-python:
+	mkdir -p ~/bin
+	ln -s $(which python3) ~/bin/python
 
 setup-symlinks:
 	@cfg_list=(zshrc tmux.conf vimrc pythonrc pryrc gitconfig bashrc editorconfig gitexcludes)
