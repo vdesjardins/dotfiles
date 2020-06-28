@@ -25,5 +25,8 @@ zplug "plugins/vault", from:oh-my-zsh, defer:2
 zplug "plugins/helm", from:oh-my-zsh, defer:2
 zplug "plugins/terraform", from:oh-my-zsh, defer:2
 zplug "plugins/gcloud", from:oh-my-zsh, defer:2
+zplug "plugins/rust", from:oh-my-zsh, defer:2
+zplug "plugins/cargo", from:oh-my-zsh, defer:2
+zplug "plugins/rustup", from:oh-my-zsh, defer:2
 
 zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf
