@@ -7,6 +7,7 @@ GPG_EXTRA_SOCKET := $(shell gpgconf --list-dir agent-extra-socket)
 .PHONY: brew-dump
 ## brew-dump: dump brew installed packages in Brewfile
 brew-dump:
+	@rm Brewfile
 	@brew bundle dump
 
 .PHONY: brew-install
@@ -28,7 +29,7 @@ symlinks: setup-symlinks setup-ssh-config setup-vim-ultisnips setup-neovim setup
 .PHONY: help
 ## help: Prints this help message
 help:
-	@echo "Usage: \n"
+	@echo "Usage: "
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
 setup-ssh-config:
