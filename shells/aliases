@@ -7,11 +7,16 @@ if [[ $(uname) != "Darwin" ]]; then
 fi
 
 alias grep="grep --color"
-alias a='ls -A'
-alias la='ls -A -l -G'
-alias ll='ls -ltr'
 alias cdd='cd -'
 alias dl='dirs -v'
+
+if [[ -x $(whence exa) ]]; then
+        alias la='exa -la'
+        alias ll='exa -l'
+else
+        alias la='ls -A -l -G'
+        alias ll='ls -ltr'
+fi
 
 function cdc() {
         cd $1
