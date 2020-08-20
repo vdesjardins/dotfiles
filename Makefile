@@ -86,12 +86,11 @@ setup-default-python:
 	ln -s $(which python3) ~/bin/python
 
 setup-symlinks:
-	@cfg_list=(zshrc tmux.conf vimrc pythonrc pryrc gitconfig bashrc editorconfig gitexcludes spacemacs)
-
-	@for f in ${cfg_list[@]}; do \
-		if ! [[ -L ~/.${f} ]]; then \
-			mv ~/.${f} ~/.${f}.bck; \
+	@cfg_list=(zshrc tmux.conf vimrc pythonrc pryrc gitconfig bashrc editorconfig gitexcludes spacemacs); \
+	for f in $${cfg_list[@]}; do \
+		if ! [[ -L ~/.$${f} ]]; then \
+			mv ~/.$${f} ~/.$${f}.bck; \
 		fi; \
-		rm ~/.${f}; \
-		ln -sf ~/dotfiles/${f} ~/.${f}; \
+		rm ~/.$${f}; \
+		ln -sf ~/dotfiles/$${f} ~/.$${f}; \
 	done
