@@ -32,13 +32,12 @@ values."
    dotspacemacs-configuration-layers
    '(go
      rust
+     terraform
      helm
      treemacs
      better-defaults
      html
      dash
-     powerline
-     nyan-mode
      themes-megapack
      ;; auto-completion
      lsp
@@ -54,7 +53,7 @@ values."
      ;; syntax-checking
      (version-control :variables
                       version-control-diff-side 'left
-					  version-control-diff-tool 'git-gutter+
+					  version-control-diff-tool 'diff-hl
                       version-control-global-margin t)
      )
    ;; List of additional packages that will be installed without being
