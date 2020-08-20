@@ -2,7 +2,7 @@
 
 alias ee="$EDITOR ~/dotfiles/shells/env; source ~/dotfiles/shells/env"
 
-export PATH="/snap/bin:$HOME/.gotools:$HOME/tools/bin:$HOME/go/bin:$HOME/bin:${KREW_ROOT:-$HOME/.krew}/bin:/usr/local/go/bin:/usr/local/opt/grep/libexec/gnubin:/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="/snap/bin:$HOME/.gotools:$HOME/tools/bin:$HOME/go/bin:$HOME/bin:${KREW_ROOT:-$HOME/.krew}/bin:/usr/local/go/bin:/usr/local/opt/grep/libexec/gnubin:/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:$HOME/.local/bin:$PATH"
 
 export CLICOLOR="YES"
 
