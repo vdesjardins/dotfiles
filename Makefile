@@ -22,9 +22,26 @@ install-coc-extensions: setup-neovim
 	@cd ~/.config/coc/extensions
 	@npm install --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
 
-.PHONY: symlinks
-## symlinks: link dotfiles config files in home directory
-symlinks: setup-symlinks setup-ssh-config setup-vim-ultisnips setup-neovim setup-docker setup-vim setup-default-python
+.PHONY: setup
+## setup: link dotfiles config files in home directory
+setup: setup-symlinks setup-ssh-config setup-vim-ultisnips setup-neovim setup-docker setup-vim setup-default-python setup-rust-analyzer setup-go-pls setup-spacemacs
+
+## setup-rust-analyzer: update rust-analyzer binary
+setup-rust-analyzer:
+	@mkdir -p ~/.local/bin
+	@curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o ~/.local/bin/rust-analyzer
+	@chmod +x ~/.local/bin/rust-analyzer
+
+## setup-go-pls: update go gls
+setup-go-pls:
+	@go get golang.org/x/tools/gopls
+
+## setup-spacemacs: install spacemacs
+setup-spacemacs:
+	@if ! [[ -d ~/.emacs.d ]]; then \
+	  git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d; \
+	fi; \
+    cd ~/.emacs.d && git checkout develop && git pull
 
 .PHONY: help
 ## help: Prints this help message
@@ -69,7 +86,7 @@ setup-default-python:
 	ln -s $(which python3) ~/bin/python
 
 setup-symlinks:
-	@cfg_list=(zshrc tmux.conf vimrc pythonrc pryrc gitconfig bashrc editorconfig gitexcludes)
+	@cfg_list=(zshrc tmux.conf vimrc pythonrc pryrc gitconfig bashrc editorconfig gitexcludes spacemacs)
 
 	@for f in ${cfg_list[@]}; do \
 		if ! [[ -L ~/.${f} ]]; then \
