@@ -24,7 +24,7 @@ install-coc-extensions: setup-neovim
 
 .PHONY: setup
 ## setup: link dotfiles config files in home directory
-setup: setup-symlinks setup-ssh-config setup-vim-ultisnips setup-neovim setup-docker setup-vim setup-default-python setup-rust-analyzer setup-go-pls setup-spacemacs
+setup: setup-symlinks setup-ssh-config setup-vim-ultisnips setup-neovim setup-docker setup-vim setup-default-python setup-rust-analyzer setup-go-pls setup-spacemacs setup-terraform-lsp
 
 ## setup-rust-analyzer: update rust-analyzer binary
 setup-rust-analyzer:
@@ -35,6 +35,16 @@ setup-rust-analyzer:
 ## setup-go-pls: update go gls
 setup-go-pls:
 	@go get golang.org/x/tools/gopls
+
+## setup-terraform-lsp: update terraform-lsp
+setup-terraform-lsp:
+	@mkdir -p ~/src
+	@rm -rf ~/src/terraform-lsp
+	@git clone https://github.com/juliosueiras/terraform-lsp.git ~/src/terraform-lsp
+	@cd ~/src/terraform-lsp && \
+	go mod download && \
+	make && \
+	make copy DST="~/.local/bin/"
 
 ## setup-spacemacs: install spacemacs
 setup-spacemacs:
