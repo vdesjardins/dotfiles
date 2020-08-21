@@ -102,3 +102,5 @@
 	gpgsign = true
 [http]
 	cookiefile = /Users/inf10906/.gitcookies
+[init]
+	defaultBranch = main
