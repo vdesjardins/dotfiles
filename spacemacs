@@ -39,7 +39,7 @@ values."
      html
      dash
      themes-megapack
-     ;; auto-completion
+     auto-completion
      lsp
      emacs-lisp
      git
