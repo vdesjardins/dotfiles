@@ -26,16 +26,24 @@ install-coc-extensions: setup-neovim
 ## setup: link dotfiles config files in home directory
 setup: setup-symlinks setup-ssh-config setup-vim-ultisnips setup-neovim setup-docker setup-vim setup-default-python setup-rust-analyzer setup-go-pls setup-spacemacs setup-terraform-lsp
 
+.PHONY: setup-lsp
+## setup-lsp: setup all lsp servers
+setup-lsp: setup-bash-lsp setup-yaml-lsp setup-go-pls setup-rust-analyzer
+
+.PHONY: setup-rust-analyzer
 ## setup-rust-analyzer: update rust-analyzer binary
 setup-rust-analyzer:
 	@mkdir -p ~/.local/bin
 	@curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o ~/.local/bin/rust-analyzer
 	@chmod +x ~/.local/bin/rust-analyzer
 
+.PHONY: setup-go-pls
 ## setup-go-pls: update go gls
 setup-go-pls:
 	@go get golang.org/x/tools/gopls
 
+.PHONY: setup-terraform-lsp
+## setup-go-pls: update go gls
 ## setup-terraform-lsp: update terraform-lsp
 setup-terraform-lsp:
 	@mkdir -p ~/src
@@ -46,6 +54,17 @@ setup-terraform-lsp:
 	make && \
 	make copy DST="~/.local/bin/"
 
+.PHONY: setup-bash-lsp
+## setup-bash-lsp: update bash language server
+setup-bash-lsp:
+	@npm i -g bash-language-server
+
+.PHONY: setup-yaml-lsp
+## setup-yaml-lsp: update yaml language server
+setup-yaml-lsp:
+	@npm i -g yaml-language-server
+
+.PHONY: setup-spacemacs
 ## setup-spacemacs: install spacemacs
 setup-spacemacs:
 	@if ! [[ -d ~/.emacs.d ]]; then \
@@ -59,16 +78,19 @@ help:
 	@echo "Usage: "
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
 
+.PHONY: setup-ssh-config
 setup-ssh-config:
 	@mkdir -p ~/.ssh
 	@chmod 700 ~/.ssh
 	@rm ~/.ssh/config 2>/dev/null
 	@sed -e "s|gpg_extra_socket|$(GPG_EXTRA_SOCKET)|g" ~/dotfiles/ssh/config >~/.ssh/config
 
+.PHONY: setup-vim-ultisnips
 setup-vim-ultisnips:
 	@mkdir -p ~/.vim
 	@ln -sf ~/dotfiles/vim/UltiSnips ~/.vim/
 
+.PHONY: setup-neovim
 setup-neovim:
 	@mkdir -p ~/.config/nvim
 	@ln -sf ~/dotfiles/vimrc ~/.config/nvim/init.vim
@@ -77,24 +99,29 @@ setup-neovim:
 	@mkdir -p ~/.config/coc/extensions
 	@ln -sf ~/dotfiles/vim/package.json ~/.config/coc/extensions/package.json
 
+.PHONY: setup-docker
 setup-docker:
 	@mkdir -p ~/.docker
 	@if [[ ! -f ~/docker/config.json ]]; then \
 		cp ~/dotfiles/docker/config.json ~/.docker/config.json; \
 	fi
 
+.PHONY: setup-vim
 setup-vim:
 	@mkdir -p ~/.vimundo ~/.vimbkp
 
+.PHONY: setup-starship
 setup-starship:
 	@mkdir -p ~/.config
 	@ln -sf ~/dotfiles/starship.toml ~/.config/starship.toml
 
+.PHONY: setup-default-python
 # this is necessary for zplug that assume that python executable exists
 setup-default-python:
 	mkdir -p ~/bin
 	ln -s $(which python3) ~/bin/python
 
+.PHONY: setup-symlinks
 setup-symlinks:
 	@cfg_list=(zshrc tmux.conf vimrc pythonrc pryrc gitconfig bashrc editorconfig gitexcludes spacemacs); \
 	for f in $${cfg_list[@]}; do \
