@@ -33,13 +33,21 @@ values."
    '(go
      rust
      terraform
+	 (yaml :variables
+		   yaml-enable-lsp t)
+	 json
+	 kubernetes
      helm
+	 (shell-scripts :variables
+					shell-scripts-backend 'lsp)
      treemacs
-     better-defaults
      html
      dash
+     better-defaults
      themes-megapack
-     auto-completion
+     (auto-completion :variables
+					  auto-completion-enable-snippets-in-popup t
+					  auto-completion-enable-help-tooltip t)
      lsp
      emacs-lisp
      git
@@ -49,8 +57,10 @@ values."
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
-     ;; spell-checking
-     ;; syntax-checking
+     spell-checking
+     syntax-checking
+	 (xclipboard :variables
+				 xclipboard-enable-cliphist t)
      (version-control :variables
                       version-control-diff-side 'left
 					  version-control-diff-tool 'diff-hl
@@ -318,6 +328,11 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (add-hook 'before-save-hook (lambda () (when (eq 'rust-mode major-mode)
 										   (rust-format-buffer))))
+
+  "snippets"
+  (yas-global-mode 1)
+  (add-hook 'yas-minor-mode-hook (lambda ()
+								   (yas-activate-extra-mode 'fundamental-mode)))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
