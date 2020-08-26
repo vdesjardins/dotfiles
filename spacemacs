@@ -32,7 +32,8 @@ values."
    dotspacemacs-configuration-layers
    '(go
      rust
-     terraform
+     (terraform :variables
+				terraform-auto-format-on-save t)
 	 (yaml :variables
 		   yaml-enable-lsp t)
 	 json
