@@ -38,6 +38,8 @@ values."
 		   yaml-enable-lsp t)
 	 json
 	 kubernetes
+	 (c-c++ :variables
+			c-c++-backend 'lsp-clangd)
      helm
 	 (shell-scripts :variables
 					shell-scripts-backend 'lsp)
