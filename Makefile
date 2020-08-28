@@ -43,7 +43,6 @@ setup-go-pls:
 	@go get golang.org/x/tools/gopls
 
 .PHONY: setup-terraform-lsp
-## setup-go-pls: update go gls
 ## setup-terraform-lsp: update terraform-lsp
 setup-terraform-lsp:
 	@mkdir -p ~/src
