@@ -38,6 +38,8 @@ values."
 		   yaml-enable-lsp t)
 	 json
 	 kubernetes
+	 (docker :variables
+			 docker-dockerfile-backend 'lsp)
 	 (c-c++ :variables
 			c-c++-backend 'lsp-clangd)
      helm

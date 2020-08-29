@@ -24,7 +24,7 @@ install-coc-extensions: setup-neovim
 
 .PHONY: setup
 ## setup: link dotfiles config files in home directory
-setup: setup-symlinks setup-ssh-config setup-vim-ultisnips setup-neovim setup-docker setup-vim setup-default-python setup-rust-analyzer setup-go-pls setup-spacemacs setup-terraform-lsp
+setup: setup-symlinks setup-ssh-config setup-vim-ultisnips setup-neovim setup-docker setup-vim setup-default-python setup-rust-analyzer setup-go-pls setup-spacemacs setup-terraform-lsp setup-dockerfile-lsp
 
 .PHONY: setup-lsp
 ## setup-lsp: setup all lsp servers
@@ -62,6 +62,11 @@ setup-bash-lsp:
 ## setup-yaml-lsp: update yaml language server
 setup-yaml-lsp:
 	@npm i -g yaml-language-server
+
+.PHONY: setup-dockerfile-lsp
+## setup-dockerfile-lsp: update dockerfile language server
+setup-dockerfile-lsp:
+	@npm i -g dockerfile-language-server-nodejs
 
 .PHONY: setup-spacemacs
 ## setup-spacemacs: install spacemacs
