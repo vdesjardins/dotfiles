@@ -6,9 +6,6 @@ ARG TF_SHA256SUM
 ENV TERRAFORM_VERSION=${TF_VERSION}
 ENV TERRAFORM_VERSION_SHA256SUM=${TF_SHA256SUM}
 
-ENV HELM_VERSION=v3.1.1
-ENV GCS_PLUGIN_VERSION=0.3.1
-
 ENV HOME=/home
 ENV XDG_CACHE_HOME=/home/.cache
 ENV XDG_CONFIG_HOME=/home/.config
@@ -27,6 +24,9 @@ RUN gcloud -q components install kubectl docker-credential-gcr && \
 COPY certs/ /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
+ENV HELM_VERSION=v3.3.0
+ENV GCS_PLUGIN_VERSION=0.3.6
+
 RUN mkdir -p /helm && \
   curl -SL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -o helm.tar.gz && \
   tar zxvf helm.tar.gz --strip-components=1 -C /helm linux-amd64/helm && \
@@ -37,4 +37,3 @@ RUN mkdir -p /helm && \
 ENV PATH=/terraform/:/helm/:$PATH
 
 ENTRYPOINT ["terraform"]
-
