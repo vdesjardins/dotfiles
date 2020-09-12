@@ -68,7 +68,7 @@ spacemacs:
 # configure ssh config file
 ssh-config:
 	#!/usr/bin/env bash
-	GPG_EXTRA_SOCKET=$(shell gpgconf --list-dir agent-extra-socket)
+	GPG_EXTRA_SOCKET=$(gpgconf --list-dir agent-extra-socket)
 	mkdir -p ~/.ssh
 	chmod 700 ~/.ssh
 	rm ~/.ssh/config 2>/dev/null
