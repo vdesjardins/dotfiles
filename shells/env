@@ -21,3 +21,7 @@ fi
 
 export SPACESHIP_KUBECTL_VERSION_SHOW=false
 export SPACESHIP_KUBECTL_SHOW=true
+
+if command -v bat &>/dev/null; then
+        export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi
