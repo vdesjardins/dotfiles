@@ -27,6 +27,7 @@ lsp: lsp-bash lsp-yaml lsp-go lsp-rust lsp-dockerfile lsp-terraform
 lsp-rust:
 	#!/usr/bin/env bash
 	mkdir -p ~/.local/bin
+	rm ~/.local/bin/rust-analyzer 2>/dev/null
 	curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o ~/.local/bin/rust-analyzer
 	chmod +x ~/.local/bin/rust-analyzer
 
