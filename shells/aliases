@@ -221,8 +221,8 @@ stashgrep() {
 }
 
 # Emacs
-alias em="open -a Emacs"
-alias emm="open -a Emacs ."
+alias em="emacs"
+alias emm="emacs ."
 
 # tags
 function ct() {
