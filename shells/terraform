@@ -8,6 +8,7 @@ alias tfa="dterraform apply"
 alias tfp="dterraform plan"
 alias tfd="dterraform plan"
 alias tfi="dterraform init"
+alias tfsl="dterraform state list"
 
 function tfat() {
         dterraform apply -target="$@"
