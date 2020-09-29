@@ -104,3 +104,6 @@
 	cookiefile = /Users/inf10906/.gitcookies
 [init]
 	defaultBranch = main
+
+[include]
+	path = ~/.gitconfig.local
