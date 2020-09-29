@@ -206,6 +206,11 @@ alias egg="$EDITOR ~/.gitconfig"
 alias gsm="git merge --squash -s subtree --no-commit"
 alias glso="git ls-files -o"
 
+# Github
+alias ghc="gh pr create -f"
+alias ghs="gh pr status"
+alias ghm="gh pr merge -r"
+
 # Make
 alias m=make
 
