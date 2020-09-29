@@ -5,6 +5,8 @@ alias ei="$EDITOR ~/dotfiles/shells/istio; source ~/dotfiles/shells/istio"
 alias i="istioctl"
 alias ida="istioctl dashboard"
 
+alias kcli="kubectl logs -c istio-proxy"
+
 function istio-objects() {
         k8s-get-crd-objects istio
 }
@@ -185,6 +187,9 @@ function istio-desc() {
         istioctl x describe "$@"
 }
 
+alias idp="istio-desc pod"
+alias ids="istio-desc service"
+
 function istio-analyze() {
         istioctl x analyze "$@"
 }
@@ -207,4 +212,8 @@ function envoy-proxy-listener-servernames() {
         envoy-dump-config -p=$pod | jq ".configs[] | select(.dynamicActiveListeners!=null) | .dynamicActiveListeners[] | select(.listener.name==\"${listener}\") | .listener.filterChains[] | select(.filterChainMatch.serverNames!=null) | .filterChainMatch.serverNames[]" -Mr
 }
 
+function istio-filter-gateways() {
+        local label=$1
+        kubectl get gateways -A -o json | jq ".items[] | select(.spec.selector.istio == \"${label}\") | (.metadata.namespace + \"\t\" + .metadata.name)" -Mr
+}
 # vim: ft=sh
