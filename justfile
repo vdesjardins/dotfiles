@@ -3,6 +3,9 @@
 default:
 	@echo "no default task"
 
+brew:
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
 brew-dump:
 	rm Brewfile
 	brew bundle dump
