@@ -67,7 +67,9 @@ function dhelm() {
                 -v "${HOME}/.config/gcloud:/home/.config/gcloud" \
                 -v "${cfgname}:/home/.kube/config" \
                 -v "$HOME/.docker-data/helm/config:/home/.config/helm" \
+                -v "$HOME/.docker-data/helm/local:/home/.local" \
                 -v "$HOME/.docker-data/helm/cache/repository:/home/.cache/helm/repository" \
+                -v "$HOME/.docker-data/helm/cache/plugins:/home/.cache/helm/plugins" \
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
                 -e HELM_REPO_UPDATE=no \
                 -e HELM_REPO_DEFAULT_INIT=yes \
@@ -92,7 +94,9 @@ function dterraform() {
                 -v "${docker_root_mount_path}/:${docker_root_mount_path}/" \
                 -v "${HOME}/.vault-token:/home/.vault-token" \
                 -v "$HOME/.docker-data/helm/config:/home/.config/helm" \
+                -v "$HOME/.docker-data/helm/local:/home/.local" \
                 -v "$HOME/.docker-data/helm/cache/repository:/home/.cache/helm/repository" \
+                -v "$HOME/.docker-data/helm/cache/plugins:/home/.cache/helm/plugins" \
                 -w $(pwd) \
                 -e VAULT_ADDR=${VAULT_ADDR} \
                 -e VAULT_TOKEN=${VAULT_TOKEN} \
