@@ -164,6 +164,7 @@ function pod-problems() {
 
 function cluster-switch() {
         local cluster=${1}
+	local KUBECONFIG=""
 
         if [[ ${cluster} == "" ]]; then
                 cluster=$(set -o pipefail && kubectl config get-contexts | tail -n +2 | awk '{ print $2; }' | fzf-down)
@@ -202,6 +203,7 @@ alias csw=cluster-switch
 
 function cluster-switch-local() {
         local cluster=${1}
+	local KUBECONFIG=""
 
         if [[ ${cluster} == "" ]]; then
                 cluster=$(set -o pipefail && kubectl config get-contexts | tail -n +2 | awk '{ print $2; }' | fzf-down)
