@@ -879,7 +879,6 @@ nnoremap <F8> :TagbarToggle<CR>
 
 " airline -------------------------------- {{{
 let g:airline_powerline_fonts = 1
-let g:airline_theme='monokai_tasty'
 " }}}
 
 " promptline -------------------------------- {{{
