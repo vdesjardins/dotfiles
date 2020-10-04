@@ -31,7 +31,8 @@
 	l = log --numstat
 	mt = mergetool
 	who = shortlog -s --
-	r = !sh -c 'git ls-files --deleted -z | xargs -0 git rm'
+	r = rebase
+	remove = !sh -c 'git ls-files --deleted -z | xargs -0 git rm'
 	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
 	whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
 	intercommit = !sh -c 'git show "$1" > .git/commit1 && git show "$2" > .git/commit2 && interdiff .git/commit[12] | less -FRS' -
