@@ -85,8 +85,13 @@ function dterraform() {
         local cfgname=$(refresh-docker-kubeconfig)
         trap "rm ${cfgname}" EXIT
 
-        docker run --rm -i \
-                -v "${HOME}/.ssh:/home/.ssh:ro" \
+        mkdir -p $HOME/.docker-data/ssh
+        cp ~/.ssh/config $HOME/.docker-data/ssh/
+        cp ~/.ssh/known_hosts $HOME/.docker-data/ssh/
+        chmod 600 $HOME/.docker-data/ssh/*
+
+        # docker run --rm -i \
+        local docker_name=$(docker create --rm -i \
                 -v "$(which docker):/usr/bin/docker" \
                 -v "/var/run/docker.sock:/var/run/docker.sock" \
                 -v "${HOME}/.config/gcloud:/home/.config/gcloud" \
@@ -97,14 +102,23 @@ function dterraform() {
                 -v "$HOME/.docker-data/helm/local:/home/.local" \
                 -v "$HOME/.docker-data/helm/cache/repository:/home/.cache/helm/repository" \
                 -v "$HOME/.docker-data/helm/cache/plugins:/home/.cache/helm/plugins" \
+                -v "$HOME/.docker-data/ssh:/home/.ssh" \
+                -v "$HOME/.gitconfig:/home/.gitconfig" \
+                -v "${SSH_AUTH_SOCK}:/ssh_agent" \
                 -w $(pwd) \
                 -e VAULT_ADDR=${VAULT_ADDR} \
                 -e VAULT_TOKEN=${VAULT_TOKEN} \
                 -e TF_INIT=no \
                 -e TF_LOG="${TF_LOG}" \
                 -e HOME=/home \
+                -e SSH_AUTH_SOCK=/ssh_agent \
                 --user ${UID} \
-                ${docker_base_repo_url}/terraform-helm "$@"
+                ${docker_base_repo_url}/terraform-helm "$@")
+
+        docker cp ${docker_name}:/etc/passwd /tmp/passwd
+        echo "${USER}:x:${UID}:${UID}::/home:/bin/bash" >>/tmp/passwd
+        docker cp /tmp/passwd ${docker_name}:/etc/passwd
+        docker start -i ${docker_name}
 }
 compdef dterraform=terraform
 
