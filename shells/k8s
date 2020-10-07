@@ -2,7 +2,7 @@
 
 alias eak="$EDITOR ~/dotfiles/shells/k8s; source ~/dotfiles/shells/k8s"
 
-alias kc="dkubectl"
+alias kc="kubectl"
 alias kcg="kc get"
 alias kcgp="kc get pods --show-labels"
 alias kcgs="kc get services"
@@ -268,7 +268,7 @@ function k8s-connect-to-nodes() {
 }
 
 function helm() {
-        dhelm $@
+        command helm $@
 }
 
 function hl() {
