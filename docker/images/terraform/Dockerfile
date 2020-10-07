@@ -24,7 +24,7 @@ RUN gcloud -q components install kubectl docker-credential-gcr && \
 COPY certs/ /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
-ENV HELM_VERSION=v3.3.0
+ENV HELM_VERSION=v3.3.4
 ENV GCS_PLUGIN_VERSION=0.3.6
 
 RUN mkdir -p /helm && \
