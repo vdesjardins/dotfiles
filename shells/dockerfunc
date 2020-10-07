@@ -110,6 +110,7 @@ function dterraform() {
                 -e VAULT_TOKEN=${VAULT_TOKEN} \
                 -e TF_INIT=no \
                 -e TF_LOG="${TF_LOG}" \
+                -e TZ=UTC \
                 -e HOME=/home \
                 -e SSH_AUTH_SOCK=/ssh_agent \
                 --user ${UID} \
