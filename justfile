@@ -124,6 +124,10 @@ github-client-symlink:
 	mkdir -p ~/.config/gh
 	ln -s ~/dotfiles/gh-config.yml ~/.config/gh/config.yml
 
+# setup fish shell
+fish-setup:
+	mkdir -p ~/.config/
+	ln -s ~/dotfiles/fish ~/.config/fish
 # Local Variables:
 # mode: makefile
 # End:
