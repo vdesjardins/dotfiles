@@ -109,7 +109,7 @@ default-python:
 	mkdir -p ~/bin
 	ln -s $(which python3) ~/bin/python
 
-home-symlinks:
+home-symlinks: github-client-symlink
 	#!/usr/bin/env bash
 	cfg_list=(zshrc tmux.conf vimrc pythonrc pryrc gitconfig bashrc editorconfig gitexcludes spacemacs); \
 	for f in ${cfg_list[@]}; do
@@ -119,6 +119,10 @@ home-symlinks:
 		rm ~/.${f}
 		ln -sf ~/dotfiles/${f} ~/.${f}
 	done
+
+github-client-symlink:
+	mkdir -p ~/.config/gh
+	ln -s ~/dotfiles/gh-config.yml ~/.config/gh/config.yml
 
 # Local Variables:
 # mode: makefile
