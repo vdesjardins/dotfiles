@@ -11,3 +11,9 @@ disabled = false
 
 [terraform]
 format = "via [$symbol$version]($style) "
+
+[gcloud]
+disabled = true
+
+[line_break]
+disabled = false
