@@ -141,6 +141,7 @@ nix-install-pkgs:
 		bash
 		bat
 		bats
+		ctags
 		emacs
 		exa
 		fzf
