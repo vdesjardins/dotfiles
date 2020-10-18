@@ -128,6 +128,50 @@ github-client-symlink:
 fish-setup:
 	mkdir -p ~/.config/
 	ln -s ~/dotfiles/fish ~/.config/fish
+
+# nix-env install
+nix-install:
+	#!/usr/bin/env bash
+	sh <(curl -L https://nixos.org/nix/install) --no-daemon
+
+# install packages
+nix-install-pkgs:
+	#!/usr/bin/env bash
+	pkg_list=(
+		bash
+		bat
+		bats
+		emacs
+		exa
+		fzf
+		fish
+		gh
+		git
+		go
+		helm
+		htop
+		istioctl
+		jq
+		just
+		kind
+		kubectl
+		kustomize
+		neovim
+		nix
+		ripgrep
+		rustup
+		skaffold
+		starship
+		terraform
+		terraform-compliance
+		terraform-docs
+		terraform-lsp
+		tmux
+		vault
+	)
+	for p in ${pkg_list[@]}; do
+		nix-env -i ${p}
+	done
 # Local Variables:
 # mode: makefile
 # End:
