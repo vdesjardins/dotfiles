@@ -26,10 +26,6 @@ for f in $(ls -1 ~/dotfiles/shells/*); do
         source ${f}
 done
 
-if [[ -d /home/linuxbrew ]]; then
-	eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-fi
-
 # use .localzshrc for settings specific to one system
 [[ -f ~/.localzshrc ]] && . ~/.localzshrc
 
@@ -70,3 +66,4 @@ export FPATH=~/dotfiles/zsh/completions/:$FPATH
 eval "$(starship init zsh)"
 
 # vim: ft=sh
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
