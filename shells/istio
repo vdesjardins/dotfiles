@@ -191,7 +191,7 @@ alias idp="istio-desc pod"
 alias ids="istio-desc service"
 
 function istio-analyze() {
-        istioctl x analyze "$@"
+        istioctl analyze "$@"
 }
 
 function istio-proxy-listener-servernames() {

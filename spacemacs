@@ -61,6 +61,7 @@ This function should only modify configuration layer settings."
 	 github
      markdown
 	 multiple-cursors
+	 nixos
      ;; org
      ;; (shell :variables
      ;;        shell-default-height 30

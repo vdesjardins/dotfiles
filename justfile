@@ -3,17 +3,6 @@
 default:
 	@echo "no default task"
 
-brew:
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-
-brew-dump:
-	rm Brewfile
-	brew bundle dump
-
-# install brew packages from Brewfile
-brew-install:
-	brew bundle
-
 # install all coc extensions
 install-coc-extensions: neovim
 	@mkdir -p ~/.config/coc/extensions
@@ -173,6 +162,7 @@ nix-install-pkgs:
 	for p in ${pkg_list[@]}; do
 		nix-env -i ${p}
 	done
+
 # Local Variables:
 # mode: makefile
 # End:

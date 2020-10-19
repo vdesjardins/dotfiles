@@ -19,7 +19,6 @@ zplug "plugins/tmux", from:oh-my-zsh, defer:2
 zplug "plugins/git-flow", from:oh-my-zsh, defer:2
 zplug "plugins/git", from:oh-my-zsh, defer:2
 zplug "plugins/git-extras", from:oh-my-zsh, defer:2
-zplug "plugins/brew", from:oh-my-zsh, defer:2, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/ansible", from:oh-my-zsh, defer:2
 zplug "plugins/vault", from:oh-my-zsh, defer:2
 zplug "plugins/helm", from:oh-my-zsh, defer:2
