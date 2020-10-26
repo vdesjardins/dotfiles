@@ -30,5 +30,5 @@ with lib;
     };
   };
 
-  home.packages = [ pkgs.fortune ];
+  home.packages = with pkgs; [ fortune ];
 }
