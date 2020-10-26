@@ -26,7 +26,7 @@ function kube-ctx-switch --description="Create a new Tmux session with dedicated
 
 	printf "\
 #!/usr/bin/env fish
-set -g KUBECONFIG $kubeconfig
+set -gx KUBECONFIG $kubeconfig
 kubectl config use-context $cluster
 fish -l" >$startup_script
 

@@ -5,13 +5,13 @@ function __tmux-refresh-env --description="Refresh SSH_AUTH_SOCK and DISPLAY var
 			return
 		end
 
-		set SSH_AUTH_SOCK (echo "$sshauth" | string split -m 1 '=')[2]
+		set -gx SSH_AUTH_SOCK (echo "$sshauth" | string split -m 1 '=')[2]
 
 		set -l display (tmux show-environment | grep "^DISPLAY")
 		if test -z "$display"
 			return
 		end
 
-		set DISPLAY (echo "$display" | string split -m 1 '=')[2]
+		set -gx DISPLAY (echo "$display" | string split -m 1 '=')[2]
 	end
 end
