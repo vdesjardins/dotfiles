@@ -19,5 +19,6 @@
 
   home.sessionVariables = {
     VAULT_USERNAME = "inf10906";
+    VAULT_ADDR = "https://vault.gcp.internal";
   };
 }
