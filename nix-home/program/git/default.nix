@@ -139,4 +139,6 @@
   };
 
   programs.fish.shellAbbrs = { g = "git"; };
+
+  home.packages = with pkgs; [ gitAndTools.delta ];
 }

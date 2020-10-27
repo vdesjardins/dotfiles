@@ -28,29 +28,28 @@ in
 
   home.packages = with pkgs; [
     bandwhich
-	  bash
-	  bats
+    bash
+    bats
     bottom
-	  cachix
-	  ctags
+    cachix
+    ctags
     fd
-    gitAndTools.delta
-	  go
+    go
     google-cloud-sdk
-	  helm
-	  htop
+    helm
+    htop
     hexyl
     hyperfine
-	  jq
-	  kind
-	  kustomize
+    jq
+    kind
+    kustomize
     lazygit
     nixfmt
     nodejs
     pueue
-	  ripgrep
-	  rustup
-	  skaffold
+    ripgrep
+    rustup
+    skaffold
     tokei
     topgrade
     wrk
@@ -60,7 +59,7 @@ in
     gopls
     rust-analyzer
     clang-tools
-	  terraform-lsp
+    terraform-lsp
     nodePackages.bash-language-server
     nodePackages.yaml-language-server
     nodePackages.dockerfile-language-server-nodejs
