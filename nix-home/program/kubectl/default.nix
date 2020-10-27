@@ -28,6 +28,8 @@ mkMerge [
       ./fish/functions/kube-ctx-switch-current.fish;
     xdg.configFile."fish/functions/kube-ns-switch.fish".source =
       ./fish/functions/kube-ns-switch.fish;
+    xdg.configFile."fish/functions/kube-get-pod-images.fish".source =
+      ./fish/functions/kube-get-pod-images.fish;
 
     xdg.configFile."fish/conf.d/kubectl_abbrs.fish".source =
       pkgs.stdenv.mkDerivation {
