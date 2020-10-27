@@ -40,6 +40,7 @@ in {
     hyperfine
     jq
     kind
+    kubetail
     kustomize
     lazygit
     nixfmt
