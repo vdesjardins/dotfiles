@@ -16,6 +16,7 @@ in
 
     extraPackages = with pkgs; [
       shfmt
+      ctags
     ];
 
     plugins = with pkgs.vimPlugins; [
