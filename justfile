@@ -23,10 +23,19 @@ docker:
 home-manager:
 	home-manager switch
 
+# home-manager install
+home-manager-install:
+	ln -sf ~/dotfiles/nix-home ~/.config/nixpkgs
+	nix-shell '<home-manager>' -A install
+
 # nix-env install
 nix-install:
 	#!/usr/bin/env bash
-	sh <(curl -L https://nixos.org/nix/install) --no-daemon
+	if [[ $(uname -s) == "Darwin" ]]; then
+		sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume --no-daemon
+	else
+		sh <(curl -L https://nixos.org/nix/install) --no-daemon
+	fi
 	nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
 	nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 
