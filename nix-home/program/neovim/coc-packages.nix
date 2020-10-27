@@ -1,5 +1,4 @@
-{ config }:
-{
+{ config }: {
   dependencies = {
     coc-go = ">=0.8.0";
     coc-gocode = ">=1.2.4";

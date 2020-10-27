@@ -2,8 +2,7 @@
 let
   coc = import ./coc.nix;
   coc-packages = import ./coc-packages.nix;
-in
-{
+in {
   programs.neovim = {
     enable = true;
 
@@ -14,10 +13,7 @@ in
     withPython3 = true;
     withNodeJs = true;
 
-    extraPackages = with pkgs; [
-      shfmt
-      ctags
-    ];
+    extraPackages = with pkgs; [ shfmt ctags ];
 
     plugins = with pkgs.vimPlugins; [
       # vim-snazzy

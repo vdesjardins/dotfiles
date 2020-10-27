@@ -6,16 +6,10 @@ with lib;
   programs.bat = {
     enable = true;
 
-    config = {
-      theme = "Sublime Snazzy";
-    };
+    config = { theme = "Sublime Snazzy"; };
   };
 
-  programs.fish.shellAliases = {
-    cat = "bat";
-  };
+  programs.fish.shellAliases = { cat = "bat"; };
 
-  home.sessionVariables = {
-    PAGER = "bat";
-  };
+  home.sessionVariables = { PAGER = "bat"; };
 }

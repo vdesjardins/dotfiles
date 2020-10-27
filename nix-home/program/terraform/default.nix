@@ -1,9 +1,8 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   home.packages = with pkgs; [
-	  terraform_0_13
-	  terraform-compliance
-	  terraform-docs
+    terraform_0_13
+    terraform-compliance
+    terraform-docs
   ];
 
   programs.fish.shellAbbrs = {

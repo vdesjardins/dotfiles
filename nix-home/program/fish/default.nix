@@ -23,11 +23,7 @@ with lib;
       }
     ];
 
-    functions = {
-      fish_greeting = {
-        body = "fortune";
-      };
-    };
+    functions = { fish_greeting = { body = "fortune"; }; };
   };
 
   home.packages = with pkgs; [ fortune ];

@@ -1,8 +1,7 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   programs.emacs = {
     enable = true;
-	  package = pkgs.emacsGcc;
+    package = pkgs.emacsGcc;
   };
 
   home.file.".emacs.d" = {
@@ -15,7 +14,5 @@
 
   home.file.".spacemacs".source = ./spacemacs;
 
-  programs.fish.shellAliases = {
-      em = "emacs";
-  };
+  programs.fish.shellAliases = { em = "emacs"; };
 }

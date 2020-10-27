@@ -1,9 +1,7 @@
 { config, lib, pkgs, ... }:
 
-let
-  pkgsUnstable = import <nixpkgs-unstable> {};
-in
-{
+let pkgsUnstable = import <nixpkgs-unstable> { };
+in {
   imports = [
     ../program/neovim
     ../program/emacs

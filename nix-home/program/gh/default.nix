@@ -1,5 +1,4 @@
-{ config, lib, pkgs, ... }:
-{
+{ config, lib, pkgs, ... }: {
   home.packages = with pkgs; [ gitAndTools.gh ];
 
   programs.gh = {
@@ -17,5 +16,5 @@
 
   programs.fish.loginShellInit = ''
     gh completion -s fish | source
-    '';
+  '';
 }
