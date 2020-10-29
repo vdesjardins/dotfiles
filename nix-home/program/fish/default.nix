@@ -24,6 +24,12 @@ with lib;
     ];
 
     functions = { fish_greeting = { body = "fortune"; }; };
+
+    # Restore CTRL-F behavior changed by fzf.fish
+    shellInit = ''
+      bind \ct '__fzf_search_current_dir'
+      bind \cf 'forward-char'
+    '';
   };
 
   home.packages = with pkgs; [ fortune ];
