@@ -6,6 +6,12 @@
 
   home.packages = with pkgs; [
     terraform-lsp
+    terraform-compliance
+    terraform-docs
+    terraform-landscape
+    terraformer
+    tflint
+    tfsec
   ];
 
   programs.neovim = {
