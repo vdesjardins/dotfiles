@@ -15,6 +15,7 @@
     ../../program/bat
     ../../program/exa
     ../../program/broot
+    ../../program/direnv
     ../../program/ls
     ../../program/comma
   ];
