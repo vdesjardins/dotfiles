@@ -16,6 +16,7 @@
     ../../program/exa
     ../../program/broot
     ../../program/direnv
+    ../../program/any-nix-shell
     ../../program/ls
     ../../program/comma
   ];
