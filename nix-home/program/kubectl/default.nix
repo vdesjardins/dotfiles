@@ -12,6 +12,7 @@ mkMerge [
         src = builtins.fetchGit {
           url = "https://github.com/evanlucas/fish-kubectl-completions";
           ref = "master";
+          rev = "9a8383a0f4ed2315869b9fcd0f85039a323872a2";
         };
       }];
 
@@ -40,7 +41,8 @@ mkMerge [
         src = builtins.fetchurl {
           name = "kubectl_aliases";
           url =
-            "https://raw.githubusercontent.com/ahmetb/kubectl-aliases/master/.kubectl_aliases";
+            "https://raw.githubusercontent.com/ahmetb/kubectl-aliases/9f8948e7c3ca7b4c4c6cdc1461094bce08da758c/.kubectl_aliases";
+          sha256 = "17y05cphzln89i59yaaacbbnn6n62w9f95yd5imi5n0jzxjni1ps";
         };
 
         unpackPhase = ":";
