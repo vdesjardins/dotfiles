@@ -20,6 +20,8 @@ mkMerge [
   }
 
   (mkIf config.programs.fish.enable {
+    home.packages = with pkgs; [ gawk fzf ];
+
     xdg.configFile."fish/functions/kube-inspect.fish".source =
       ./fish/functions/kube-inspect.fish;
     xdg.configFile."fish/functions/kube-ctx-switch.fish".source =
