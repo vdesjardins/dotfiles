@@ -24,6 +24,7 @@
   home.packages = with pkgs; [
     act
     bandwhich
+    coreutils
     bottom
     cachix
     ctags
