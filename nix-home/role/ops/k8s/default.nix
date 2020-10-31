@@ -8,10 +8,11 @@
 
   home.packages = with pkgs; [
     helm
-    jq
     kind
     kubetail
     kustomize
     skaffold
+    stern
+    velero
   ];
 }
