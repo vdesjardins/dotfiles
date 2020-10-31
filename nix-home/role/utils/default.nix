@@ -15,6 +15,8 @@
     ../../program/bat
     ../../program/exa
     ../../program/broot
+    ../../program/ls
+    ../../program/comma
   ];
 
   home.packages = with pkgs; [
