@@ -18,6 +18,7 @@
   ];
 
   home.packages = with pkgs; [
+    act
     bandwhich
     bottom
     cachix
