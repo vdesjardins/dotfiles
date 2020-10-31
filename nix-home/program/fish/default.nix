@@ -19,6 +19,7 @@ with lib;
         src = builtins.fetchGit {
           url = "https://github.com/laughedelic/pisces";
           ref = "master";
+          rev = "34971b9671e217cfba0c71964f5028d44b58be8c";
         };
       }
       {
@@ -26,6 +27,15 @@ with lib;
         src = builtins.fetchGit {
           url = "https://github.com/lilyball/nix-env.fish";
           ref = "master";
+          rev = "c239a69122c88797b34e3721659b2ba5060ca7e7";
+        };
+      }
+      {
+        name = "fenv";
+        src = builtins.fetchGit {
+          url = "https://github.com/oh-my-fish/plugin-foreign-env";
+          ref = "master";
+          rev = "dddd9213272a0ab848d474d0cbde12ad034e65bc";
         };
       }
     ];
