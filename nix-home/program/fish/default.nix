@@ -6,6 +6,13 @@ with lib;
   programs.fish = {
     enable = true;
 
+    shellInit = ''
+      # we need to source functions on events for them to take effect.
+      for f in (grep -l -E '^function\s+.*--on-.*$' ~/.config/fish/functions/*.fish)
+      source $f
+      end
+    '';
+
     plugins = [
       {
         name = "pisces";
@@ -24,12 +31,6 @@ with lib;
     ];
 
     functions = { fish_greeting = { body = "fortune"; }; };
-
-    # Restore CTRL-F behavior changed by fzf.fish
-    shellInit = ''
-      bind \ct '__fzf_search_current_dir'
-      bind \cf 'forward-char'
-    '';
   };
 
   home.packages = with pkgs; [ fortune ];
