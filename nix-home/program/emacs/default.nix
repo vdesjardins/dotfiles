@@ -1,7 +1,7 @@
 { config, pkgs, ... }: {
   programs.emacs = {
     enable = true;
-    # package = pkgs.emacsGcc;
+    package = pkgs.emacs-nox;
   };
 
   home.file.".emacs.d" = {
