@@ -9,6 +9,7 @@ mkMerge [
     programs.fish.shellAbbrs = { t = "tmux attach -d"; };
 
     home.file.".tmux.conf".source = ./tmux.conf;
+    home.file.".tmux-theme.conf".source = ./tmux-theme.conf;
   }
 
   (mkIf config.programs.fish.enable {
