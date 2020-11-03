@@ -954,3 +954,7 @@ augroup END
 " keep C-r for accessing registers
 let g:EmacsCommandLineSearchCommandLineDisable = 1
 " }}}
+
+" airline ---------------------- {{{
+let g:airline#extensions#tmuxline#enabled = 0
+" }}}
