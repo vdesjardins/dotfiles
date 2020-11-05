@@ -304,6 +304,8 @@ key_bindings:
 
   - { key: Period,   mods: Alt,           chars: "\x1b."                 }
 
+  - { key: Key6,     mods: Control,       chars: "\x1e"                  }
+
   - { key: Home,                          chars: "\x1bOH",   mode: AppCursor   }
   - { key: Home,                          chars: "\x1b[H",   mode: ~AppCursor  }
   - { key: End,                           chars: "\x1bOF",   mode: AppCursor   }
