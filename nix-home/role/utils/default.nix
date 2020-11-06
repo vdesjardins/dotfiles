@@ -3,6 +3,7 @@
   imports = [
     ../../program/neovim
     ../../program/emacs
+    ../../program/bash
     ../../program/fish
     ../../program/starship
     ../../program/git
