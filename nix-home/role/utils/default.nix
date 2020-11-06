@@ -4,6 +4,7 @@
     ../../program/neovim
     ../../program/emacs
     ../../program/bash
+    ../../program/zsh
     ../../program/fish
     ../../program/starship
     ../../program/git
