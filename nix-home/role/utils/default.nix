@@ -30,6 +30,7 @@
     bottom
     cachix
     ctags
+    curl
     fd
     htop
     hexyl
@@ -40,7 +41,7 @@
     ripgrep
     tokei
     topgrade
+    wget
     wrk
-    wtf
   ];
 }
