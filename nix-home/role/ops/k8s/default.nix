@@ -7,8 +7,8 @@
   ];
 
   home.packages = with pkgs; [
-    helm
     kind
+    kubernetes-helm
     kubetail
     kustomize
     skaffold
