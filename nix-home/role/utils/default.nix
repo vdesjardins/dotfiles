@@ -39,6 +39,7 @@
     lazygit
     pueue
     ripgrep
+    openssh
     tokei
     topgrade
     wget
