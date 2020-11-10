@@ -1,19 +1,46 @@
 { config, lib, pkgs, ... }:
 
-{
-  services.gpg-agent = {
-    enable = true;
+with lib;
 
-    defaultCacheTtl = 30;
-    maxCacheTtl = 120;
-    defaultCacheTtlSsh = 30;
-    maxCacheTtlSsh = 120;
-    enableSshSupport = true;
-    enableScDaemon = true;
+mkMerge [
+  (mkIf pkgs.hostPlatform.isLinux {
+    services.gpg-agent = {
+      enable = true;
 
-    extraConfig = ''
+      defaultCacheTtl = 30;
+      maxCacheTtl = 120;
+      defaultCacheTtlSsh = 30;
+      maxCacheTtlSsh = 120;
+      enableSshSupport = true;
+      enableScDaemon = true;
+
+      extraConfig = ''
+        ignore-cache-for-signing
+        no-allow-external-cache
+      '';
+    };
+  })
+
+  (mkIf pkgs.hostPlatform.isDarwin {
+    home.packages = with pkgs; [ gnupg ];
+
+    home.file.".gnupg/gpg-agent.conf".text = ''
+      default-cache-ttl 30
+      max-cache-ttl 120
+      default-cache-ttl-ssh 30
+      max-cache-ttl-ssh 120
       ignore-cache-for-signing
       no-allow-external-cache
+      enable-ssh-support
+      pinentry-program = ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
     '';
-  };
-}
+
+    home.sessionVariables = {
+      SSH_AUTH_SOCK = config.home.homeDirectory + "/.gnupg/S.gpg-agent.ssh";
+    };
+
+    programs.fish.shellInit = ''
+      gpgconf --launch gpg-agent >/dev/null
+    '';
+  })
+]
