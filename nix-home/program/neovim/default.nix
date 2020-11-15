@@ -8,7 +8,11 @@
     vimdiffAlias = true;
 
     withPython3 = true;
+    withPython = false;
+
     withNodeJs = true;
+
+    withRuby = false;
 
     extraPackages = with pkgs; [ ctags ];
 
