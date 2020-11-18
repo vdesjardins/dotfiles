@@ -7,7 +7,7 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "etopeter";
       repo = "kubectl-view-utilization";
-      rev = "master";
+      rev = "ec114ef3bf9609e8dff9b952fa10c6a75b94f570";
       sha256 = "15cjq19xx516ha0w4hwbw720ly21a8m3f34vs4a1ki0w63h9qsp2";
     };
 
