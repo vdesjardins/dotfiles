@@ -23,4 +23,11 @@
       description = "copy secret content from a path src to dst";
     };
   };
+
+  programs.zsh.shellAliases = {
+    vlad = "vault login -method=ldap -path=ad username=$VAULT_USERNAME";
+  };
+
+  xdg.configFile."zsh/functions/vault-copy".source =
+    mkIf config.programs.zsh.enable ./zsh/functions/vault-copy;
 }

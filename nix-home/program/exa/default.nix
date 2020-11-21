@@ -12,4 +12,11 @@ with lib;
     la = "exa -la";
     lt = "exa -T";
   };
+  programs.zsh.shellAliases = {
+    ls = "exa";
+    l = "exa";
+    ll = "exa -l";
+    la = "exa -la";
+    lt = "exa -T";
+  };
 }

@@ -10,6 +10,7 @@ with lib;
   };
 
   programs.fish.shellAliases = { cat = "bat"; };
+  programs.zsh.shellAliases = { cat = "bat"; };
 
   home.sessionVariables = { PAGER = "bat"; };
 }

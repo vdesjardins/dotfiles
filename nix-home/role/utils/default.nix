@@ -32,6 +32,7 @@
     ctags
     curl
     fd
+    gnused
     htop
     hexyl
     hyperfine

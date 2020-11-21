@@ -28,7 +28,7 @@ mkMerge [
   }
 
   (mkIf config.programs.fish.enable {
-    home.packages = with pkgs; [ gawk fzf ];
+    home.packages = with pkgs; [ gawk fzf jq ];
 
     xdg.configFile."fish/functions/kube-inspect.fish".source =
       ./fish/functions/kube-inspect.fish;
@@ -59,5 +59,31 @@ mkMerge [
           cat $src | sed 's/alias /abbr -a /' | sed "s/='/ '/" >$out/kubectl_abbrs.fish
         '';
       } + "/kubectl_abbrs.fish";
+  })
+
+  (mkIf config.programs.zsh.enable {
+    home.packages = with pkgs; [ gawk fzf jq ];
+
+    programs.zsh.initExtra = ''
+      source ${config.xdg.configHome}/zsh/conf.d/kubectl_aliases
+    '';
+
+    xdg.configFile."zsh/functions/kube-inspect".source =
+      ./zsh/functions/kube-inspect;
+    xdg.configFile."zsh/functions/kube-ctx-switch".source =
+      ./zsh/functions/kube-ctx-switch;
+    xdg.configFile."zsh/functions/kube-ctx-switch-current".source =
+      ./zsh/functions/kube-ctx-switch-current;
+    xdg.configFile."zsh/functions/kube-ns-switch".source =
+      ./zsh/functions/kube-ns-switch;
+    xdg.configFile."zsh/functions/kube-get-pod-images".source =
+      ./zsh/functions/kube-get-pod-images;
+
+    xdg.configFile."zsh/conf.d/kubectl_aliases".source = builtins.fetchurl {
+        name = "kubectl_aliases_zsh";
+        url =
+          "https://raw.githubusercontent.com/ahmetb/kubectl-aliases/9f8948e7c3ca7b4c4c6cdc1461094bce08da758c/.kubectl_aliases";
+        sha256 = "17y05cphzln89i59yaaacbbnn6n62w9f95yd5imi5n0jzxjni1ps";
+      };
   })
 ]

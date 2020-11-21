@@ -10,4 +10,8 @@
   programs.fish.shellInit = ''
     fenv source (dircolors ${config.home.homeDirectory + "/" + config.home.file.".dircolors".target} | psub -F)
   '';
+
+  programs.zsh.initExtra = ''
+    source <(dircolors ${config.home.homeDirectory + "/" + config.home.file.".dircolors".target})
+  '';
 }

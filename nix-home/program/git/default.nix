@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+
+{
+  home.packages = with pkgs; [ gitAndTools.delta ];
+
   programs.git = {
     enable = true;
     userEmail = "vdesjardins@gmail.com";
@@ -133,5 +137,5 @@
 
   programs.fish.shellAbbrs = { g = "git"; };
 
-  home.packages = with pkgs; [ gitAndTools.delta ];
+  programs.zsh.shellAliases = { g = "git"; };
 }
