@@ -14,6 +14,16 @@
     autocd = true;
     enableAutosuggestions = true;
 
+    shellGlobalAliases = {
+      "..." ="../..";
+      "...." = "../../..";
+      "....." = "../../../..";
+      DN = "/dev/null";
+      EG = "|& egrep";
+      EL = "|& less";
+      ET = "|& tail";
+    };
+
     oh-my-zsh = {
       enable = true;
       plugins = [ "globalias" ];
