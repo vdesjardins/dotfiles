@@ -1,4 +1,8 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+
+with lib;
+
+{
   home.packages = with pkgs; [ vault ];
 
   programs.fish.shellAbbrs = {
