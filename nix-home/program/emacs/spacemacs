@@ -63,12 +63,13 @@ This function should only modify configuration layer settings."
 	 multiple-cursors
 	 nixos
 	 vimscript
-     ;; org
+     org
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      spell-checking
      syntax-checking
+     templates
 	 (xclipboard :variables
 				 xclipboard-enable-cliphist t)
      (version-control :variables
