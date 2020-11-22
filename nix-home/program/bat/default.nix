@@ -10,7 +10,15 @@ with lib;
   };
 
   programs.fish.shellAliases = { cat = "bat"; };
-  programs.zsh.shellAliases = { cat = "bat"; };
+
+  programs.zsh = {
+    shellAliases = { cat = "bat"; };
+    shellGlobalAliases = {
+      BJ = "|& bat -ljson";
+      BY = "|& bat -lyaml";
+      BT = "|& bat";
+    };
+  };
 
   home.sessionVariables = { PAGER = "bat"; };
 }
