@@ -33,5 +33,9 @@
       fpath=( ${config.xdg.configHome}/zsh/functions "''${fpath[@]}" )
       autoload -Uz ''$fpath[1]/*
     '';
+
+    initExtra = ''
+      source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    '';
   };
 }
