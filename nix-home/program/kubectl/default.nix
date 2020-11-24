@@ -64,9 +64,19 @@ mkMerge [
   (mkIf config.programs.zsh.enable {
     home.packages = with pkgs; [ gawk fzf jq ];
 
-    programs.zsh.initExtra = ''
-      source ${config.xdg.configHome}/zsh/conf.d/kubectl_aliases
-    '';
+    programs.zsh = {
+      initExtra = ''
+        source ${config.xdg.configHome}/zsh/conf.d/kubectl_aliases
+      '';
+
+      oh-my-zsh.plugins = [ "kubectl" ];
+
+      shellGlobalAliases = {
+        OJ = "-ojson";
+        OY = "-oyaml";
+        SL = "--show-labels";
+      };
+    };
 
     xdg.configFile."zsh/functions/kube-inspect".source =
       ./zsh/functions/kube-inspect;
