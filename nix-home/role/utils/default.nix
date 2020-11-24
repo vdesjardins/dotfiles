@@ -46,4 +46,8 @@
     wget
     wrk
   ];
+
+  home.sessionVariables = {
+    LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+  };
 }
