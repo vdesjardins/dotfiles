@@ -306,6 +306,8 @@ key_bindings:
 
   - { key: Key6,     mods: Control,       chars: "\x1e"                  }
 
+  - { key: Space,    mods: Control,       chars: "\x00"                  }
+
   - { key: Home,                          chars: "\x1bOH",   mode: AppCursor   }
   - { key: Home,                          chars: "\x1b[H",   mode: ~AppCursor  }
   - { key: End,                           chars: "\x1bOF",   mode: AppCursor   }
