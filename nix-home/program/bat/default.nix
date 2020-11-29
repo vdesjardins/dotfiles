@@ -6,7 +6,10 @@ with lib;
   programs.bat = {
     enable = true;
 
-    config = { theme = "Sublime Snazzy"; };
+    config = {
+      theme = "Sublime Snazzy";
+      paging = "never";
+    };
   };
 
   programs.fish.shellAliases = { cat = "bat"; };
@@ -20,5 +23,5 @@ with lib;
     };
   };
 
-  home.sessionVariables = { PAGER = "bat"; };
+  home.sessionVariables = { MANPAGER = "sh -c 'col -bx | bat --paging=always -l man -p'"; };
 }
