@@ -44,6 +44,7 @@ This function should only modify configuration layer settings."
 			 docker-dockerfile-backend 'lsp)
 	 (c-c++ :variables
 			c-c++-backend 'lsp-clangd)
+	 lua
      helm
 	 (shell-scripts :variables
 					shell-scripts-backend 'lsp)
