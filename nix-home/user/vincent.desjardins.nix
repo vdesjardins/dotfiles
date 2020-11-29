@@ -1,5 +1,7 @@
 { config, pkgs, ... }:
 {
+  nixpkgs.config.allowUnfree = true;
+
   imports = [
     ../role/utils
     ../program/vault
@@ -11,10 +13,13 @@
     ../role/dev/nix
     ../role/dev/bash
     ../role/dev/golang
+    ../role/dev/rust
     ../role/ops/docker
     ../role/ops/gcloud
     ../role/ops/k8s
   ];
+
+  xdg.enable = true;
 
   home.username = "vincent.desjardins";
   home.homeDirectory = "/home/vincent.desjardins";
