@@ -22,7 +22,7 @@ mkMerge [
   })
 
   (mkIf pkgs.hostPlatform.isDarwin {
-    home.packages = with pkgs; [ gnupg ];
+    home.packages = with pkgs; [ gnupg pinentry_mac ];
 
     home.file.".gnupg/gpg-agent.conf".text = ''
       default-cache-ttl 30
@@ -32,7 +32,7 @@ mkMerge [
       ignore-cache-for-signing
       no-allow-external-cache
       enable-ssh-support
-      pinentry-program = ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
+      log-file ${config.home.homeDirectory}/.gnupg/gpg-agent.log
     '';
 
     home.sessionVariables = {
@@ -40,6 +40,10 @@ mkMerge [
     };
 
     programs.fish.shellInit = ''
+      gpgconf --launch gpg-agent >/dev/null
+    '';
+
+    programs.zsh.initExtra = ''
       gpgconf --launch gpg-agent >/dev/null
     '';
   })
