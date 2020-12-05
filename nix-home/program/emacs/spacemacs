@@ -38,7 +38,10 @@ This function should only modify configuration layer settings."
 				terraform-auto-format-on-save t)
 	 (yaml :variables
 		   yaml-enable-lsp t)
-	 json
+	 (json :variables
+		   json-fmt-tool 'prettier
+		   json-fmt-on-save t
+		   json-backend 'lsp)
 	 kubernetes
 	 (docker :variables
 			 docker-dockerfile-backend 'lsp)
