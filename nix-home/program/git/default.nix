@@ -28,6 +28,10 @@
     includes = [{ path = "~/.gitconfig.local"; }];
 
     extraConfig = {
+      help = {
+        autocorrect = 20;
+      };
+
       merge = {
         conflictstyle = "diff3";
         tool = "vimdiff";
