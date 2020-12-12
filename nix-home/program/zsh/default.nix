@@ -62,6 +62,11 @@
       zstyle ':completion:*:descriptions' format '[%d]'
 
       source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+      function take() {
+        mkdir -p $1
+        cd $1
+      }
     '';
   };
 }
