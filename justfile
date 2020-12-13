@@ -25,6 +25,7 @@ home-manager:
 
 # home-manager install
 home-manager-install:
+	mkdir -p ~/.config
 	ln -sf ~/dotfiles/nix-home ~/.config/nixpkgs
 	nix-shell '<home-manager>' -A install
 
@@ -36,8 +37,10 @@ nix-install:
 	else
 		sh <(curl -L https://nixos.org/nix/install) --no-daemon
 	fi
+	source ~/.nix-profile/etc/profile.d/nix.sh
 	nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
 	nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+	nix-channel --update
 
 # Local Variables:
 # mode: makefile
