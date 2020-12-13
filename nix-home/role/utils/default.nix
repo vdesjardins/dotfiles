@@ -1,5 +1,4 @@
-{ config, lib, pkgs, ... }:
-{
+{ config, lib, pkgs, ... }: {
   imports = [
     ../../program/neovim
     ../../program/emacs
@@ -32,14 +31,18 @@
     ctags
     curl
     fd
+    findutils
     gnused
     htop
     hexyl
     hyperfine
     jq
     lazygit
+    lsof
     pueue
+    ps
     ripgrep
+    rsync
     openssh
     tokei
     topgrade
