@@ -13,6 +13,7 @@
     kustomize
     skaffold
     stern
+    telepresence
     velero
   ];
 }
