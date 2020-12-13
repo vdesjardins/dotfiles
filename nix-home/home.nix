@@ -1,5 +1,4 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -13,9 +12,7 @@
   # changes in each release.
   home.stateVersion = "20.09";
 
-  imports = [
-    ./user/vincent.desjardins.nix
-  ];
+  imports = [ ./user/vincent_desjardins.nix ];
 
   home.sessionVariables = {
     VAULT_USERNAME = "inf10906";

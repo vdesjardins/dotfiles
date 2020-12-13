@@ -1,5 +1,4 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   nixpkgs.config.allowUnfree = true;
 
   imports = [
@@ -20,8 +19,13 @@
     ../role/ops/bpf
   ];
 
+  # home.sessionVariables = {
+  #   LD_PRELOAD =
+  #     "${pkgs.google-compute-engine-oslogin}/lib/libnss_cache_oslogin.so.2:${pkgs.google-compute-engine-oslogin}/lib/libnss_oslogin.so.2";
+  # };
+
   xdg.enable = true;
 
-  home.username = "vincent.desjardins";
-  home.homeDirectory = "/home/vincent.desjardins";
+  home.username = "vincent_desjardins";
+  home.homeDirectory = "/home/vincent_desjardins";
 }
