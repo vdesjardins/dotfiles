@@ -67,6 +67,8 @@
         mkdir -p $1
         cd $1
       }
+
+      bindkey \^U backward-kill-line
     '';
   };
 }
