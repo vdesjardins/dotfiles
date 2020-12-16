@@ -74,6 +74,7 @@ mkMerge [
       shellGlobalAliases = {
         OJ = "-ojson";
         OY = "-oyaml";
+        OW = "-owide";
         SL = "--show-labels";
       };
     };
