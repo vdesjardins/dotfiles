@@ -36,6 +36,7 @@
     htop
     hexyl
     hyperfine
+    gnumake
     jq
     lazygit
     lsof
