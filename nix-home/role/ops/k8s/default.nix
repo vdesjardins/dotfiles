@@ -10,6 +10,7 @@
     kind
     kubernetes-helm
     kubetail
+    kube3d
     kustomize
     skaffold
     stern
