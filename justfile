@@ -21,26 +21,38 @@ docker:
 
 # home-manager apply
 home-manager:
+	#!/usr/bin/env bash
 	home-manager switch
 
 # home-manager install
 home-manager-install:
-	mkdir -p ~/.config
-	ln -sf ~/dotfiles/nix-home ~/.config/nixpkgs
+	#!/usr/bin/env bash
+	. /home/vince/.nix-profile/etc/profile.d/nix.sh
+	export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
 	nix-shell '<home-manager>' -A install
 
 # nix-env install
 nix-install:
 	#!/usr/bin/env bash
+	mkdir -p ~/.config
+	ln -sf ~/dotfiles/nix-home ~/.config/nixpkgs
+
 	if [[ $(uname -s) == "Darwin" ]]; then
 		sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume --no-daemon
 	else
 		sh <(curl -L https://nixos.org/nix/install) --no-daemon
 	fi
+
 	source ~/.nix-profile/etc/profile.d/nix.sh
 	nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs-unstable
 	nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 	nix-channel --update
+
+# nix-cleanup
+nix-cleanup:
+	#!/usr/bin/env bash
+	rm -rf $HOME/{.nix-channels,.nix-defexpr,.nix-profile,.config/nixpkgs}
+	sudo rm -rf /nix
 
 # Local Variables:
 # mode: makefile
