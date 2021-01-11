@@ -17,6 +17,7 @@
     ../role/ops/gcloud
     ../role/ops/k8s
     ../role/ops/bpf
+    ../role/ops/networking
   ];
 
   xdg.enable = true;
