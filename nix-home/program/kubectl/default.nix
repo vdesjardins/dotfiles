@@ -1,15 +1,15 @@
 { config, lib, pkgs, ... }:
 
 let
-  kubectl-view-utilization = import ./kubectl-view-utilization.nix { inherit pkgs; };
+  kubectl-view-utilization =
+    pkgs.callPackage ./kubectl-view-utilization.nix { };
+  ksniff = pkgs.callPackage ./ksniff.nix { };
 
-in
-
-with lib;
+in with lib;
 
 mkMerge [
   {
-    home.packages = with pkgs; [ kubectl kubectl-view-utilization ];
+    home.packages = with pkgs; [ kubectl kubectl-view-utilization ksniff ];
 
     programs.fish = {
       plugins = [{
@@ -21,9 +21,7 @@ mkMerge [
         };
       }];
 
-      shellAbbrs = {
-        kvu = "kubectl view utilization -h";
-      };
+      shellAbbrs = { kvu = "kubectl view utilization -h"; };
     };
   }
 
@@ -91,10 +89,10 @@ mkMerge [
       ./zsh/functions/kube-get-pod-images;
 
     xdg.configFile."zsh/conf.d/kubectl_aliases".source = builtins.fetchurl {
-        name = "kubectl_aliases_zsh";
-        url =
-          "https://raw.githubusercontent.com/ahmetb/kubectl-aliases/9f8948e7c3ca7b4c4c6cdc1461094bce08da758c/.kubectl_aliases";
-        sha256 = "17y05cphzln89i59yaaacbbnn6n62w9f95yd5imi5n0jzxjni1ps";
-      };
+      name = "kubectl_aliases_zsh";
+      url =
+        "https://raw.githubusercontent.com/ahmetb/kubectl-aliases/9f8948e7c3ca7b4c4c6cdc1461094bce08da758c/.kubectl_aliases";
+      sha256 = "17y05cphzln89i59yaaacbbnn6n62w9f95yd5imi5n0jzxjni1ps";
+    };
   })
 ]
