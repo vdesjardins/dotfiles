@@ -3,6 +3,8 @@
 with lib;
 
 {
+  home.packages = with pkgs; [ unixtools.col ];
+
   programs.bat = {
     enable = true;
 
