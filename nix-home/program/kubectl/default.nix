@@ -86,6 +86,9 @@ mkMerge [
         # events
         kge = "kubectl get events";
         kges = "kubectl get events --sort-by=.metadata.creationTimestamp";
+
+        # pods
+        kgc = "kubectl get pods -o=custom-columns='POD:.metadata.name,CONTAINERS:..containers[*].name'";
       };
     };
 
