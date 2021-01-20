@@ -1,5 +1,6 @@
 { config, pkgs, ... }:
-{
+let coc-settings = import ./coc-settings.nix { };
+in {
   programs.neovim = {
     enable = true;
 
@@ -77,4 +78,6 @@
 
     extraConfig = builtins.readFile ./vimrc;
   };
+
+  xdg.configFile."nvim/coc-settings.json".text = builtins.toJSON coc-settings;
 }
