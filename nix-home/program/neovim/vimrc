@@ -888,6 +888,7 @@ augroup END
 " easytags --------------------------------------------- {{{
 set tags=./tags;
 let g:easytags_dynamic_files = 1
+let g:easytags_suppress_ctags_warning = 1
 " }}}
 "
 " snippet --------------------------------------------- {{{
