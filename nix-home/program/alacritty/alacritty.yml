@@ -67,23 +67,18 @@ font:
   # The normal (roman) font face to use.
   # Style can be specified to pick a specific face.
   normal:
-    family: "Fira Code"
-    # family: Iosevka
-    # family: "Source Code Pro"
-    # style: Retina
+    family: "FiraCode Nerd Font Mono"
+    style: Retina
 
   # The bold font face
   bold:
-    family: "Fira Code"
-    # family: Iosevka
-    # family: "Source Code Pro"
+    family: "FiraCode Nerd Font Mono"
+    style: Retina
 
   # The italic font face
   italic:
-    family: "Fira Code"
-    # family: Iosevka
-    # family: "Source Code Pro"
-    # style: "Medium Italic"
+    family: "FiraCode Nerd Font Mono"
+    style: Retina
 
   # Point size of the font
   size: 12.0
@@ -128,32 +123,32 @@ draw_bold_text_with_bright_colors: false
 colors:
   # Tomorrow Night Bright
   primary:
-    background: '0x000000'
-    foreground: '0xeaeaea'
+    background: "0x000000"
+    foreground: "0xeaeaea"
 
   cursor:
-    text: '0x000000'
-    cursor: '0xffffff'
+    text: "0x000000"
+    cursor: "0xffffff"
 
   normal:
-    black:   '0x000000'
-    red:     '0xd54e53'
-    green:   '0xb9ca4a'
-    yellow:  '0xe6c547'
-    blue:    '0x7aa6da'
-    magenta: '0xc397d8'
-    cyan:    '0x70c0ba'
-    white:   '0xffffff'
+    black: "0x000000"
+    red: "0xd54e53"
+    green: "0xb9ca4a"
+    yellow: "0xe6c547"
+    blue: "0x7aa6da"
+    magenta: "0xc397d8"
+    cyan: "0x70c0ba"
+    white: "0xffffff"
 
   bright:
-    black:   '0x666666'
-    red:     '0xff3334'
-    green:   '0x9ec400'
-    yellow:  '0xe7c547'
-    blue:    '0x7aa6da'
-    magenta: '0xb77ee0'
-    cyan:    '0x54ced6'
-    white:   '0xffffff'
+    black: "0x666666"
+    red: "0xff3334"
+    green: "0x9ec400"
+    yellow: "0xe7c547"
+    blue: "0x7aa6da"
+    magenta: "0xb77ee0"
+    cyan: "0x54ced6"
+    white: "0xffffff"
 
   # Indexed Colors
   #
@@ -189,7 +184,7 @@ colors:
 #
 bell:
   animation: EaseOutExpo
-  color: '0xffffff'
+  color: "0xffffff"
   duration: 0
 
 # Background opacity
@@ -289,75 +284,75 @@ background_opacity: 1.0
 #   - AppKeypad
 #
 key_bindings:
-  - { key: V,        mods: Command,       action: Paste                        }
-  - { key: C,        mods: Command,       action: Copy                         }
-  - { key: Q,        mods: Command,       action: Quit                         }
-  - { key: N,        mods: Command,       action: SpawnNewInstance             }
-  - { key: Return,   mods: Command,       action: ToggleFullscreen             }
+  - { key: V, mods: Command, action: Paste }
+  - { key: C, mods: Command, action: Copy }
+  - { key: Q, mods: Command, action: Quit }
+  - { key: N, mods: Command, action: SpawnNewInstance }
+  - { key: Return, mods: Command, action: ToggleFullscreen }
 
   # https://godoc.org/github.com/tiborvass/uniline/ansi#Code
   # https://github.com/jwilm/alacritty/issues/93#issuecomment-334790547
-  - { key: F,  mods: Alt,           chars: "\x1bf"                       }
-  - { key: B,  mods: Alt,           chars: "\x1bb"                       }
+  - { key: F, mods: Alt, chars: "\x1bf" }
+  - { key: B, mods: Alt, chars: "\x1bb" }
   # https://github.com/jwilm/alacritty/issues/93#issuecomment-427592040
-  - { key: D,  mods: Alt,           chars: "\x1bd"                       }
+  - { key: D, mods: Alt, chars: "\x1bd" }
 
-  - { key: Period,   mods: Alt,           chars: "\x1b."                 }
+  - { key: Period, mods: Alt, chars: "\x1b." }
 
-  - { key: Key6,     mods: Control,       chars: "\x1e"                  }
+  - { key: Key6, mods: Control, chars: "\x1e" }
 
-  - { key: Space,    mods: Control,       chars: "\x00"                  }
+  - { key: Space, mods: Control, chars: "\x00" }
 
-  - { key: Home,                          chars: "\x1bOH",   mode: AppCursor   }
-  - { key: Home,                          chars: "\x1b[H",   mode: ~AppCursor  }
-  - { key: End,                           chars: "\x1bOF",   mode: AppCursor   }
-  - { key: End,                           chars: "\x1b[F",   mode: ~AppCursor  }
-  - { key: Equals,   mods: Command,       action: IncreaseFontSize             }
-  - { key: Minus,    mods: Command,       action: DecreaseFontSize             }
-  - { key: Minus,    mods: Command|Shift, action: ResetFontSize                }
-  - { key: PageUp,   mods: Shift,         chars: "\x1b[5;2~"                   }
-  - { key: PageUp,   mods: Control,       chars: "\x1b[5;5~"                   }
-  - { key: PageUp,                        chars: "\x1b[5~"                     }
-  - { key: PageDown, mods: Shift,         chars: "\x1b[6;2~"                   }
-  - { key: PageDown, mods: Control,       chars: "\x1b[6;5~"                   }
-  - { key: PageDown,                      chars: "\x1b[6~"                     }
-  - { key: Left,     mods: Shift,         chars: "\x1b[1;2D"                   }
-  - { key: Left,     mods: Control,       chars: "\x1b[1;5D"                   }
-  - { key: Left,     mods: Alt,           chars: "\x1b[1;3D"                   }
-  - { key: Left,                          chars: "\x1b[D",   mode: ~AppCursor  }
-  - { key: Left,                          chars: "\x1bOD",   mode: AppCursor   }
-  - { key: Right,    mods: Shift,         chars: "\x1b[1;2C"                   }
-  - { key: Right,    mods: Control,       chars: "\x1b[1;5C"                   }
-  - { key: Right,    mods: Alt,           chars: "\x1b[1;3C"                   }
-  - { key: Right,                         chars: "\x1b[C",   mode: ~AppCursor  }
-  - { key: Right,                         chars: "\x1bOC",   mode: AppCursor   }
-  - { key: Up,       mods: Shift,         chars: "\x1b[1;2A"                   }
-  - { key: Up,       mods: Control,       chars: "\x1b[1;5A"                   }
-  - { key: Up,       mods: Alt,           chars: "\x1b[1;3A"                   }
-  - { key: Up,                            chars: "\x1b[A",   mode: ~AppCursor  }
-  - { key: Up,                            chars: "\x1bOA",   mode: AppCursor   }
-  - { key: Down,     mods: Shift,         chars: "\x1b[1;2B"                   }
-  - { key: Down,     mods: Control,       chars: "\x1b[1;5B"                   }
-  - { key: Down,     mods: Alt,           chars: "\x1b[1;3B"                   }
-  - { key: Down,                          chars: "\x1b[B",   mode: ~AppCursor  }
-  - { key: Down,                          chars: "\x1bOB",   mode: AppCursor   }
-  - { key: Tab,      mods: Shift,         chars: "\x1b[Z"                      }
-  - { key: F1,                            chars: "\x1bOP"                      }
-  - { key: F2,                            chars: "\x1bOQ"                      }
-  - { key: F3,                            chars: "\x1bOR"                      }
-  - { key: F4,                            chars: "\x1bOS"                      }
-  - { key: F5,                            chars: "\x1b[15~"                    }
-  - { key: F6,                            chars: "\x1b[17~"                    }
-  - { key: F7,                            chars: "\x1b[18~"                    }
-  - { key: F8,                            chars: "\x1b[19~"                    }
-  - { key: F9,                            chars: "\x1b[20~"                    }
-  - { key: F10,                           chars: "\x1b[21~"                    }
-  - { key: F11,                           chars: "\x1b[23~"                    }
-  - { key: F12,                           chars: "\x1b[24~"                    }
-  - { key: Back,                          chars: "\x7f"                        }
-  - { key: Back,     mods: Alt,           chars: "\x1b\x7f"                    }
-  - { key: Insert,                        chars: "\x1b[2~"                     }
-  - { key: Delete,                        chars: "\x1b[3~"                     }
+  - { key: Home, chars: "\x1bOH", mode: AppCursor }
+  - { key: Home, chars: "\x1b[H", mode: ~AppCursor }
+  - { key: End, chars: "\x1bOF", mode: AppCursor }
+  - { key: End, chars: "\x1b[F", mode: ~AppCursor }
+  - { key: Equals, mods: Command, action: IncreaseFontSize }
+  - { key: Minus, mods: Command, action: DecreaseFontSize }
+  - { key: Minus, mods: Command|Shift, action: ResetFontSize }
+  - { key: PageUp, mods: Shift, chars: "\x1b[5;2~" }
+  - { key: PageUp, mods: Control, chars: "\x1b[5;5~" }
+  - { key: PageUp, chars: "\x1b[5~" }
+  - { key: PageDown, mods: Shift, chars: "\x1b[6;2~" }
+  - { key: PageDown, mods: Control, chars: "\x1b[6;5~" }
+  - { key: PageDown, chars: "\x1b[6~" }
+  - { key: Left, mods: Shift, chars: "\x1b[1;2D" }
+  - { key: Left, mods: Control, chars: "\x1b[1;5D" }
+  - { key: Left, mods: Alt, chars: "\x1b[1;3D" }
+  - { key: Left, chars: "\x1b[D", mode: ~AppCursor }
+  - { key: Left, chars: "\x1bOD", mode: AppCursor }
+  - { key: Right, mods: Shift, chars: "\x1b[1;2C" }
+  - { key: Right, mods: Control, chars: "\x1b[1;5C" }
+  - { key: Right, mods: Alt, chars: "\x1b[1;3C" }
+  - { key: Right, chars: "\x1b[C", mode: ~AppCursor }
+  - { key: Right, chars: "\x1bOC", mode: AppCursor }
+  - { key: Up, mods: Shift, chars: "\x1b[1;2A" }
+  - { key: Up, mods: Control, chars: "\x1b[1;5A" }
+  - { key: Up, mods: Alt, chars: "\x1b[1;3A" }
+  - { key: Up, chars: "\x1b[A", mode: ~AppCursor }
+  - { key: Up, chars: "\x1bOA", mode: AppCursor }
+  - { key: Down, mods: Shift, chars: "\x1b[1;2B" }
+  - { key: Down, mods: Control, chars: "\x1b[1;5B" }
+  - { key: Down, mods: Alt, chars: "\x1b[1;3B" }
+  - { key: Down, chars: "\x1b[B", mode: ~AppCursor }
+  - { key: Down, chars: "\x1bOB", mode: AppCursor }
+  - { key: Tab, mods: Shift, chars: "\x1b[Z" }
+  - { key: F1, chars: "\x1bOP" }
+  - { key: F2, chars: "\x1bOQ" }
+  - { key: F3, chars: "\x1bOR" }
+  - { key: F4, chars: "\x1bOS" }
+  - { key: F5, chars: "\x1b[15~" }
+  - { key: F6, chars: "\x1b[17~" }
+  - { key: F7, chars: "\x1b[18~" }
+  - { key: F8, chars: "\x1b[19~" }
+  - { key: F9, chars: "\x1b[20~" }
+  - { key: F10, chars: "\x1b[21~" }
+  - { key: F11, chars: "\x1b[23~" }
+  - { key: F12, chars: "\x1b[24~" }
+  - { key: Back, chars: "\x7f" }
+  - { key: Back, mods: Alt, chars: "\x1b\x7f" }
+  - { key: Insert, chars: "\x1b[2~" }
+  - { key: Delete, chars: "\x1b[3~" }
 
 mouse:
   # Click settings
@@ -373,25 +368,25 @@ mouse:
 
   # URL launcher
   # url:
-    # This program is executed when clicking on a text which is recognized as a URL.
-    # The URL is always added to the command as the last parameter.
-    #
-    # When set to `None`, URL launching will be disabled completely.
-    #
-    # Default:
-    #   - (macOS) open
-    #   - (Linux) xdg-open
-    #   - (Windows) explorer
-    # launcher:
-    #   program: xdg-open
-    #   args: []
+  # This program is executed when clicking on a text which is recognized as a URL.
+  # The URL is always added to the command as the last parameter.
+  #
+  # When set to `None`, URL launching will be disabled completely.
+  #
+  # Default:
+  #   - (macOS) open
+  #   - (Linux) xdg-open
+  #   - (Windows) explorer
+  # launcher:
+  #   program: xdg-open
+  #   args: []
 
-    # These are the modifiers that need to be held down for opening URLs when clicking
-    # on them. The available modifiers are documented in the key binding section.
-    # modifiers: Control|Shift
+  # These are the modifiers that need to be held down for opening URLs when clicking
+  # on them. The available modifiers are documented in the key binding section.
+  # modifiers: Control|Shift
 
 selection:
-  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+  semantic_escape_chars: ',│`|:"'' ()[]{}<>'
 
   # When set to `true`, selected text will be copied to the primary clipboard.
   save_to_clipboard: true
@@ -462,5 +457,4 @@ debug:
 
   # Record all characters and escape sequences as test data.
   ref_test: false
-
 # vim: nospell
