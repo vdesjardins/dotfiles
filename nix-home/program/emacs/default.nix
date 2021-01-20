@@ -15,6 +15,5 @@
 
   home.file.".spacemacs".source = ./spacemacs;
 
-  programs.fish.shellAliases = { em = "emacs"; };
   programs.zsh.shellAliases = { em = "emacs"; };
 }

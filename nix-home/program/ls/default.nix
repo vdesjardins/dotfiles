@@ -1,5 +1,4 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   home.file.".dircolors".source = builtins.fetchurl {
     name = "dircolors";
     url =
@@ -7,11 +6,9 @@
     sha256 = "10cb84hnhqggcn93h1njcvlgabmfyg06q76imjd10c248ff4ky13";
   };
 
-  programs.fish.shellInit = ''
-    fenv source (dircolors ${config.home.homeDirectory + "/" + config.home.file.".dircolors".target} | psub -F)
-  '';
-
   programs.zsh.initExtra = ''
-    source <(dircolors ${config.home.homeDirectory + "/" + config.home.file.".dircolors".target})
+    source <(dircolors ${
+      config.home.homeDirectory + "/" + config.home.file.".dircolors".target
+    })
   '';
 }

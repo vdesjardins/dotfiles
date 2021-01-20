@@ -39,10 +39,6 @@ mkMerge [
       SSH_AUTH_SOCK = config.home.homeDirectory + "/.gnupg/S.gpg-agent.ssh";
     };
 
-    programs.fish.shellInit = ''
-      gpgconf --launch gpg-agent >/dev/null
-    '';
-
     programs.zsh.initExtra = ''
       gpgconf --launch gpg-agent >/dev/null
     '';

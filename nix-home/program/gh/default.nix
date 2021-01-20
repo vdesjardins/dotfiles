@@ -14,10 +14,6 @@
     };
   };
 
-  programs.fish.loginShellInit = ''
-    gh completion -s fish | source
-  '';
-
   programs.zsh.initExtraBeforeCompInit = ''
     source <(gh completion -s zsh)
   '';

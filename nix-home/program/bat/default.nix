@@ -14,8 +14,6 @@ with lib;
     };
   };
 
-  programs.fish.shellAliases = { cat = "bat"; };
-
   programs.zsh = {
     shellAliases = { cat = "bat"; };
     shellGlobalAliases = {
@@ -25,5 +23,7 @@ with lib;
     };
   };
 
-  home.sessionVariables = { MANPAGER = "sh -c 'col -bx | bat --paging=always -l man -p'"; };
+  home.sessionVariables = {
+    MANPAGER = "sh -c 'col -bx | bat --paging=always -l man -p'";
+  };
 }

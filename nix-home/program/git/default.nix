@@ -28,9 +28,7 @@
     includes = [{ path = "~/.gitconfig.local"; }];
 
     extraConfig = {
-      help = {
-        autocorrect = 20;
-      };
+      help = { autocorrect = 20; };
 
       merge = {
         conflictstyle = "diff3";
@@ -138,8 +136,6 @@
       sli = "stash list --format='%gd (%cr): %gs'";
     };
   };
-
-  programs.fish.shellAbbrs = { g = "git"; };
 
   programs.zsh.shellAliases = { g = "git"; };
 }
