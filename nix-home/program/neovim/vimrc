@@ -85,7 +85,6 @@ Plug 'mxw/vim-jsx'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'mogelbrod/vim-jsonpath'
 Plug 'towolf/vim-helm'
-Plug 'camspiers/animate.vim'
 Plug 'camspiers/lens.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
