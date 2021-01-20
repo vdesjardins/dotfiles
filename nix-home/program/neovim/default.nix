@@ -36,6 +36,7 @@ in {
       coc-fzf
       coc-git
       coc-json
+      coc-vimlsp
       float-preview-nvim
       ultisnips
       vim-snippets
