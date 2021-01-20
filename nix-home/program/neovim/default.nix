@@ -44,6 +44,8 @@ in {
       vim-toml
       vim-commentary
       nerdtree
+      nerdtree-git-plugin
+      vim-nerdtree-syntax-highlight
       tagbar
       vim-airline
       vim-airline-themes
