@@ -78,17 +78,27 @@ mkMerge [
 
       shellAliases = {
         # Produce a period-delimited tree of all keys
-        kgnop = "kubectl get nodes -o json | jq -c 'path(..)|[.[]|tostring]|join(\".\")'";
-        kgpp = "kubectl get pods -o json | jq -c 'path(..)|[.[]|tostring]|join(\".\")'";
+        kgnop =
+          "kubectl get nodes -o json | jq -c 'path(..)|[.[]|tostring]|join(\".\")'";
+        kgpp =
+          "kubectl get pods -o json | jq -c 'path(..)|[.[]|tostring]|join(\".\")'";
 
         # secret dump
-        kgsecd = "kubectl get secret -o go-template='{{range $k,$v := .data}}{{$k}}={{$v|base64decode}}{{\"\\n\"}}{{end}}'";
+        kgsecd =
+          "kubectl get secret -o go-template='{{range $k,$v := .data}}{{$k}}={{$v|base64decode}}{{\"\\n\"}}{{end}}'";
         # events
         kge = "kubectl get events";
         kges = "kubectl get events --sort-by=.metadata.creationTimestamp";
 
         # pods
-        kgc = "kubectl get pods -o=custom-columns='POD:.metadata.name,CONTAINERS:..containers[*].name'";
+        kgc =
+          "kubectl get pods -o=custom-columns='POD:.metadata.name,CONTAINERS:..containers[*].name'";
+        kgimg =
+          "kubectl get pods -o=custom-columns='POD:.metadata.name,IMAGES:.spec.containers[*].image'";
+
+        # context and ns switching
+        kns = "kube-ns-switch";
+        kctx = "kube-ctx-switch";
       };
     };
 
