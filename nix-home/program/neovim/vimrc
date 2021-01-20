@@ -87,6 +87,7 @@ Plug 'mogelbrod/vim-jsonpath'
 Plug 'towolf/vim-helm'
 Plug 'camspiers/lens.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'chriskempson/base16-vim'
 
 call plug#end()
 
@@ -914,8 +915,7 @@ set background=dark
 set termguicolors
 set guifont=FiraCode\ Nerd\ Font\ 11
 
-let g:vim_monokai_tasty_italic = 1
-colorscheme snazzy
+colorscheme base16-default-dark
 
 if MySys() ==? "windows"
   set guifont=Lucida_Console:h10:cANSI
