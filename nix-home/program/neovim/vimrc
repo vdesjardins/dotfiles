@@ -912,6 +912,7 @@ syntax on
 set t_Co=256
 set background=dark
 set termguicolors
+set guifont=FiraCode\ Nerd\ Font\ 11
 
 let g:vim_monokai_tasty_italic = 1
 colorscheme snazzy

@@ -72,6 +72,7 @@
       # animate-vim
       # lens-vim
       # markdown-preview-nvim
+      vim-devicons
     ];
 
     extraConfig = builtins.readFile ./vimrc;
