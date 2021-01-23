@@ -8,8 +8,8 @@ with lib;
   programs.zsh.shellAliases = {
     ls = "exa";
     l = "exa";
-    ll = "exa -l";
-    la = "exa -la";
+    ll = "exa -l -s modified";
+    la = "exa -la -s modified";
     lt = "exa -T";
   };
 }
