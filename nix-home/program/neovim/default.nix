@@ -18,7 +18,7 @@ in {
     extraPackages = with pkgs; [ ctags ];
 
     plugins = with pkgs.vimPlugins; [
-      # vim-snazzy
+      vim-sensible
       ale
       gundo-vim
       vim-fugitive
@@ -27,20 +27,18 @@ in {
       vim-gitgutter
       vim-easytags
       vim-misc
-      # vim-session
       vim-endwise
       vim-rooter
-      # vim-emacscommandline
-      vim-grepper
       coc-nvim
       coc-fzf
       coc-git
       coc-json
-      coc-vimlsp
+      coc-snippets
+      coc-yank
+      coc-lists
       float-preview-nvim
       ultisnips
       vim-snippets
-      # L9
       vim-toml
       vim-commentary
       nerdtree
@@ -50,8 +48,6 @@ in {
       vim-airline
       vim-airline-themes
       vim-repeat
-      # tmuxline-vim
-      # promptline-vim
       vim-easy-align
       editorconfig-vim
       splitjoin-vim
@@ -59,23 +55,13 @@ in {
       neoformat
       vim-gist
       webapi-vim
-      # fzf-mru-vim
       fzf-vim
       auto-pairs
       echodoc-vim
-      # nvim-miniyank
-      vim-tmux-focus-events
-      vim-tmux-clipboard
       vim-which-key
       vim-json
-      # vim-jsonpath
-      vim-devicons
       vim-dispatch
       vim-abolish
-      # vim-helm
-      # animate-vim
-      # lens-vim
-      # markdown-preview-nvim
       vim-devicons
     ];
 

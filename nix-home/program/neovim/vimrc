@@ -81,7 +81,6 @@ Plug 'edkolev/promptline.vim'
 Plug 'pbogut/fzf-mru.vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'bfredl/nvim-miniyank'
-Plug 'mxw/vim-jsx'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'mogelbrod/vim-jsonpath'
 Plug 'towolf/vim-helm'
@@ -93,16 +92,9 @@ call plug#end()
 
 " }}}
 
-syntax on                 " Enable syntax highlighting
-filetype plugin indent on " Enable filetype-specific indenting and plugins
-set mouse=
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set history=1000          " How many history lines vim remembers.
-set autoread              " auto read file changed from the outside
-
 set ttyfast
 
 if v:version >= 703
@@ -162,46 +154,13 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
-" Add argument (can be negative, default 1) to global variable i.
-" Return value of i before the change.
-" Example: :let i = 1 | %s/abc/\='xyz_' . Inc()/g
-function! Inc(...)
-  let result = g:i
-  let g:i += a:0 > 0 ? a:1 : 1
-  return result
-endfunction
-
 nnoremap <leader>ws :StripWhitespace<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" modeline
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Append modeline after last line in buffer.
-" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
-" files.
-function! AppendModeline()
-  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d :",
-        \ &tabstop, &shiftwidth, &textwidth)
-  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-  call append(line("$"), l:modeline)
-endfunction
-nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " User interface
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set 7 lines to the curors - when moving vertical..
 set so=7
-
-set wildmenu "Turn on WiLd menu
-set wildmode=longest,list:longest
-set wildignore=*.swp,*.bak,*.pyc,*.class
-if has("nvim-0.4")
-  set wildoptions=pum
-  set pumblend=20
-endif
-
-set ruler "Always show current position
 
 set cmdheight=2 "The commandbar height
 
@@ -213,15 +172,11 @@ set signcolumn=yes
 
 set hid "Change buffer - without saving
 
-" Set backspace config
-set backspace=indent,eol,start
 set whichwrap+=<,>,h,l
 
 set ignorecase "Ignore case when searching
 
 set hlsearch "Highlight search things
-
-set incsearch "Make search act like search in modern browsers
 
 set magic "Set magic on, for regular expressions
 
@@ -244,9 +199,6 @@ set guioptions-=T
 
 " Disable ALT keys for menu
 set winaltkeys=no
-
-" Remove Info(Preview) window
-set completeopt-=preview
 
 " format everything
 autocmd BufWritePre * :Neoformat
@@ -371,11 +323,6 @@ func! CurrentFileDir(cmd)
 endfunc
 " }}}
 
-" Grepper mapping ---------------------------------------- {{{
-nnoremap <leader>* :Grepper -tool rg<cr>
-nnoremap <leader>ack :Grepper -tool ack -cword -noprompt<cr>
-" }}}
-
 " Moving around, tabs and buffers ------------------------------------ {{{
 
 " Clear search highlighting
@@ -436,11 +383,6 @@ endtry
 
 " }}}
 
-" Statusline --------------------------- {{{
-" Always show the statusline
-set laststatus=2
-" }}}
-
 " Parenthesis/bracket expanding ----------------------- {{{
 vnoremap $1 <esc>`>a)<esc>`<i(<esc>
 vnoremap $2 <esc>`>a]<esc>`<i[<esc>
@@ -497,96 +439,6 @@ noremap <leader>sn ]s
 noremap <leader>sp [s
 noremap <leader>sa zg
 noremap <leader>s? z=
-" }}}
-
-" CSS section -------------------------------------- {{{
-augroup css_autocmplete_group
-  autocmd!
-  autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-augroup END
-
-" Sort CSS properties
-nnoremap <leader>S ?{<CR>jV/^\s*\}?$<CR>k:sort<CR>:noh<CR>
-" }}}
-
-" Bash section -------------------------------------------- {{{
-augroup sh_group
-  autocmd!
-  autocmd FileType sh inoremap <buffer> $f #--- PH ----------------------------------------------<esc>FP2xi
-augroup END
-" }}}
-
-" Ruby section --------------------------------------------- {{{
-augroup ruby_group
-  autocmd!
-  autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-  autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-  autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-  autocmd FileType ruby,eruby let g:ycm_collect_identifiers_from_tags_files = 1
-  autocmd FileType ruby inoremap <buffer> $f #--- PH ----------------------------------------------<esc>FP2xi
-  autocmd BufNewFile,BufRead *_spec.rb compiler rspec
-augroup END
-" }}}
-
-" Python section --------------------------------------------- {{{
-augroup python_group
-  autocmd!
-  autocmd FileType python set nocindent
-  autocmd FileType python syn keyword pythonDecorator True None False self
-
-  autocmd BufNewFile,BufRead *.jinja set syntax=htmljinja
-  autocmd BufNewFile,BufRead *.mako set ft=mako
-
-  autocmd FileType python inoremap <buffer> $r return
-  autocmd FileType python inoremap <buffer> $i import
-  autocmd FileType python inoremap <buffer> $p print
-  autocmd FileType python inoremap <buffer> $f #--- PH ----------------------------------------------<esc>FP2xi
-  autocmd FileType python noremap <buffer> <leader>1 /class
-  autocmd FileType python noremap <buffer> <leader>2 /def
-  autocmd FileType python noremap <buffer> <leader>C ?class
-  autocmd FileType python noremap <buffer> <leader>D ?def
-
-  autocmd FileType python set omnifunc=pythoncomplete#Complete
-augroup END
-
-let python_highlight_all = 1
-" }}}
-
-" JavaScript section --------------------------------------------- {{{
-function! JavaScriptFold()
-  setl foldmethod=syntax
-  setl foldlevelstart=1
-  syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-
-  function! FoldText()
-    return substitute(getline(v:foldstart), '{.*', '{...}', '')
-  endfunction
-  setl foldtext=FoldText()
-endfunction
-
-augroup javascript_group
-  autocmd!
-  "autocmd FileType javascript call JavaScriptFold()
-  autocmd FileType javascript setl fen
-  autocmd FileType javascript setl nocindent
-
-  autocmd FileType javascript inoremap <c-t> AJS.log();<esc>hi
-  autocmd FileType javascript inoremap <c-a> alert();<esc>hi
-
-  autocmd FileType javascript inoremap <buffer> $r return
-  autocmd FileType javascript inoremap <buffer> $f //--- PH ----------------------------------------------<esc>FP2xi
-
-
-  autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-augroup END
-" }}}
-
-" CoffeeScript autocompile on save -------------------------------------- {{{
-augroup coffeescript_group
-  autocmd!
-  autocmd BufWritePost *.coffee silent CoffeeMake! -b | cwindow
-augroup END
 " }}}
 
 " Markdown -------------------------------------- {{{
@@ -662,12 +514,25 @@ xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
 
-" Use <TAB> for selections ranges.
-" NOTE: Requires 'textDocument/selectionRange' support from the language server.
-" coc-tsserver, coc-python are the examples of servers that support it.
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support from the language server.
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -681,26 +546,75 @@ command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImpo
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
-"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-" Mappings using CoCList:
+" Mappings using CocFzfCList:
+nnoremap <silent><nowait> <space><space>  :<C-u>CocFzfList<cr>
 " Show all diagnostics.
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent><nowait> <space>a  :<C-u>CocFzfList diagnostics<cr>
+" Show all diagnostics current buffer.
+nnoremap <silent><nowait> <space>b  :<C-u>CocFzfList diagnostics --current-buf<cr>
 " Manage extensions.
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent><nowait> <space>e  :<C-u>CocFzfList extensions<cr>
 " Show commands.
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent><nowait> <space>c  :<C-u>CocFzfList commands<cr>
+" jump locations
+nnoremap <silent><nowait> <space>l  :<C-u>CocFzfList location<cr>
 " Find symbol of current document.
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent><nowait> <space>o  :<C-u>CocFzfList outline<cr>
 " Search workspace symbols.
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent><nowait> <space>s  :<C-u>CocFzfList symbols<cr>
+" Search Files
+nnoremap <silent><nowait> <space>f  :<C-u>CocFzfList files<cr>
+" Search Text
+nnoremap <silent><nowait> <space>g  :<C-u>CocFzfList grep<cr>
 " Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent><nowait> <space>p  :<C-u>CocFzfListResume<CR>
 
+" }}}
+
+" coc-fzf ------------------------------------------ {{{
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+let g:coc_fzf_preview = ''
+let g:coc_fzf_opts = []
+" }}}
+"
+" coc-snippets ------------------------------------------ {{{
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)
+
+" Using tab too
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
 " }}}
 
 " Vim grep ------------------------------------------ {{{
@@ -778,20 +692,6 @@ noremap <leader>g :Rg<cr>
 
 " }}}
 
-" Utilities --------------------------------- {{{
-" capture ex command output to tab
-function! TabMessage(cmd)
-  redir => message
-  silent execute a:cmd
-  redir END
-  tabnew
-  silent put=message
-  set nomodified
-endfunction
-
-command! -nargs=+ -complete=command TabMessage call TabMessage(<q-args>)
-" }}}
-
 " rainbow parentheses ------------------------- {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup rainbow_group
@@ -863,29 +763,10 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 " }}}
 
-" Ansible section --------------------------------------------- {{{
-augroup ansible_group
-  autocmd!
-  autocmd FileType ansible,ansible_host setlocal keywordprg=:te\ ansible-doc
-  autocmd BufRead,BufNewFile */playbooks/*.yml,*/playbooks/*.yaml set filetype=ansible
-augroup END
-" }}}
-
 " Task List --------------------------------------------- {{{
 map <leader>v <Plug>TaskList
 " }}}
 "
-" Java --------------------------------------------- {{{
-augroup java_group
-  autocmd!
-  autocmd FileType java set makeprg=mvn\ compile\ -q\ -f\ pom.xml
-  autocmd BufNewFile,BufRead pom.xml set makeprg=mvn\ compile\ -q\ -f\ pom.xml
-  autocmd FileType java set errorformat=\[ERROR]\ %f:[%l\\,%v]\ %m
-  autocmd FileType java nmap <localleader>m :make<cr>
-augroup END
-
-" }}}
-
 " easytags --------------------------------------------- {{{
 set tags=./tags;
 let g:easytags_dynamic_files = 1
@@ -924,14 +805,6 @@ endif
 
 " vim-commentary ---------------------- {{{
 autocmd FileType terraform setlocal commentstring=#%s
-" }}}
-
-" tmux-navigator ---------------------- {{{
-nnoremap <silent> {Left-mapping} :TmuxNavigateLeft<cr>
-nnoremap <silent> {Down-Mapping} :TmuxNavigateDown<cr>
-nnoremap <silent> {Up-Mapping} :TmuxNavigateUp<cr>
-nnoremap <silent> {Right-Mapping} :TmuxNavigateRight<cr>
-nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
 " }}}
 
 " which key mapping ---------------------- {{{
