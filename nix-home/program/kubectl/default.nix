@@ -9,7 +9,15 @@ in with lib;
 
 mkMerge [
   (mkIf config.programs.zsh.enable {
-    home.packages = with pkgs; [ gawk fzf jq ];
+    home.packages = with pkgs; [
+      kubectl
+      kubectl-view-utilization
+      ksniff
+      gawk
+      fzf
+      jq
+      bat
+    ];
 
     programs.zsh = {
       initExtra = ''
@@ -19,10 +27,12 @@ mkMerge [
       oh-my-zsh.plugins = [ "kubectl" ];
 
       shellGlobalAliases = {
-        OJ = "-ojson";
-        OY = "-oyaml";
-        OW = "-owide";
         SL = "--show-labels";
+        OJ = "-ojson";
+        OJB = "-ojson | bat -ljson";
+        OY = "-oyaml";
+        OYB = "-oyaml | bat -lyaml";
+        OW = "-owide";
       };
 
       shellAliases = {
