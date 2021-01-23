@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, lib, pkgs, ... }: {
   nixpkgs.config.allowUnfree = true;
 
   imports = [
@@ -9,6 +9,7 @@
     ../role/dev/cpp
     ../role/dev/rust
     ../role/dev/terraform
+    ../role/dev/vimscript
     ../role/dev/nix
     ../role/dev/bash
     ../role/dev/golang
