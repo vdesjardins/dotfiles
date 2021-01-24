@@ -62,6 +62,7 @@ in {
       vim-json
       vim-dispatch
       vim-abolish
+      vim-markdown-composer
       vim-devicons
     ];
 

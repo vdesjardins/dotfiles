@@ -71,21 +71,12 @@ endif
 
 call plug#begin(s:vimplugdir)
 
-Plug 'connorholyday/vim-snazzy'
-
-Plug 'xolox/vim-session'
 Plug 'houtsnip/vim-emacscommandline'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'edkolev/tmuxline.vim'
-Plug 'edkolev/promptline.vim'
-Plug 'pbogut/fzf-mru.vim'
-Plug 'hail2u/vim-css3-syntax'
-Plug 'bfredl/nvim-miniyank'
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'mogelbrod/vim-jsonpath'
 Plug 'towolf/vim-helm'
-Plug 'camspiers/lens.vim'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
 Plug 'chriskempson/base16-vim'
 
 call plug#end()
