@@ -74,6 +74,7 @@ call plug#begin(s:vimplugdir)
 Plug 'houtsnip/vim-emacscommandline'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'edkolev/tmuxline.vim'
+Plug 'edkolev/promptline.vim'
 Plug 'mogelbrod/vim-jsonpath'
 Plug 'towolf/vim-helm'
 
