@@ -95,24 +95,13 @@ call plug#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set ttyfast
+set colorcolumn=85
 
-if v:version >= 703
-  set undofile
-  set undolevels=1000
-  set undodir=~/.vimundo  " Put all undo files in the same directory
+set undofile
+set undolevels=1000
 
-  if !isdirectory(&undodir)
-    echo "Undo directory (~/.vimundo) does not exists."
-  endif
-
-  set colorcolumn=85
-endif
-
-set backupdir=~/.vimbkp   " Put all backup files in the same directory
-if !isdirectory(&backupdir)
-  echo "Backup directory (~/.vimbkp) does not exists."
-endif
+set nobackup
+set nowritebackup
 
 " Permit extra key combinations
 let mapleader = ","
