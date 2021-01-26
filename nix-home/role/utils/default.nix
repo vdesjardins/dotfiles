@@ -43,6 +43,7 @@
     ps
     ripgrep
     rsync
+    sysstat
     openssh
     tokei
     topgrade
