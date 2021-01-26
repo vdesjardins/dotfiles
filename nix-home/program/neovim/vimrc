@@ -802,12 +802,6 @@ noremap <leader>es :e! ~/.vim/UltiSnips/<cr>
 let g:session_autosave = 'no'
 " }}}
 
-" miniyank --------------------------------------------- {{{
-map p <Plug>(miniyank-autoput)
-map P <Plug>(miniyank-autoPut)
-map <C-p> <Plug>(miniyank-cycle)
-" }}}
-
 syntax on
 
 " Colors and Fonts ---------------------- {{{
