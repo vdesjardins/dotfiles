@@ -9,7 +9,7 @@
     aliases = {
       co = "pr checkout";
       c = "pr create -f";
-      m = "pr merge -r";
+      m = "pr merge -r -d";
       s = "pr status";
     };
   };
