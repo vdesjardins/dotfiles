@@ -638,6 +638,10 @@ let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated .git log logs tmp'
 set grepprg=rg\ --vimgrep
 " }}}
 
+" coc-yank ------------------------------------------ {{{
+noremap <silent> <space>y  :<C-u>CocFzfList yank<cr>
+" }}}
+
 " MISC ---------------------------------------- {{{
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>wm mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
