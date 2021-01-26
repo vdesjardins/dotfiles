@@ -12,6 +12,7 @@
     ../role/dev/vimscript
     ../role/dev/nix
     ../role/dev/bash
+    ../role/dev/lua
     ../role/dev/golang
     ../role/dev/rust
     ../role/ops/docker
