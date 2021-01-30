@@ -1,5 +1,5 @@
 { config, pkgs, ... }: {
-  home.packages = with pkgs; [ terraform_0_13 ];
+  home.packages = with pkgs; [ terraform_0_14 ];
 
   programs.zsh.shellAliases = {
     tf = "terraform";

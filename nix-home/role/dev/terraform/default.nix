@@ -1,10 +1,8 @@
-{ config, lib, pkgs, ... }:
-{
-  imports = [
-    ../../../program/terraform
-  ];
+{ config, lib, pkgs, ... }: {
+  imports = [ ../../../program/terraform ];
 
   home.packages = with pkgs; [
+    terraform-ls
     terraform-lsp
     terraform-compliance
     terraform-docs
@@ -14,9 +12,5 @@
     tfsec
   ];
 
-  programs.neovim = {
-    plugins = with pkgs.vimPlugins; [
-      vim-terraform
-    ];
-  };
+  programs.neovim = { plugins = with pkgs.vimPlugins; [ vim-terraform ]; };
 }
