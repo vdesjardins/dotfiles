@@ -14,7 +14,6 @@ mkMerge [
     programs.neovim.plugins = with pkgs.vimPlugins; [
       vim-tmux-focus-events
       vim-tmux-clipboard
-      vim-tmux-navigator
     ];
   }
 
