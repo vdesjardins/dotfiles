@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [ gitAndTools.delta ];
+  home.packages = with pkgs; [ gitAndTools.delta gitAndTools.git-filter-repo ];
 
   programs.git = {
     enable = true;
@@ -91,6 +91,8 @@
       cm = "commit -m";
       co = "checkout";
       cob = "checkout -b";
+      sw = "switch";
+      swc = "switch -c";
       ps = "push";
       psf = "push --force-with-lease";
       pl = "pull --rebase";
