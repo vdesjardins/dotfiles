@@ -95,6 +95,9 @@ set undolevels=1000
 set nobackup
 set nowritebackup
 
+set wildmenu
+set wildmode=longest,list,full
+
 " Permit extra key combinations
 let mapleader = ","
 let g:mapleader = ","
