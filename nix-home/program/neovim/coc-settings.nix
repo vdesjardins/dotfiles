@@ -1,4 +1,14 @@
 { ... }: {
+  "coc.preferences.formatOnType" = true;
+  "diagnostic.errorSign" = "✘";
+  "diagnostic.infoSign" = "ℹ";
+  "diagnostic.hintSign" = "➤";
+  "diagnostic.enableHighlightLineNumber" = true;
+  "diagnostic.virtualText" = true;
+  "codeLens.enable" = true;
+
+  "suggest.enablePreview" = true;
+
   languageserver = {
     dockerfile = {
       command = "docker-langserver";
