@@ -15,7 +15,7 @@
     enableAutosuggestions = true;
 
     shellGlobalAliases = {
-      "..." ="../..";
+      "..." = "../..";
       "...." = "../../..";
       "....." = "../../../..";
       DN = "/dev/null";
@@ -55,11 +55,19 @@
       source ${config.home.homeDirectory}/.nix-profile/etc/profile.d/nix.sh
 
       fpath=( ${config.xdg.configHome}/zsh/functions "''${fpath[@]}" )
-      autoload -Uz ''$fpath[1]/*
+      autoload -Uz $fpath[1]/*
     '';
 
     initExtra = ''
       zstyle ':completion:*:descriptions' format '[%d]'
+
+      # popup menu - requires tmux 3.2+
+      zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+
+      # complete manual by their section
+      zstyle ':completion:*:manuals'   separate-sections true
+      zstyle ':completion:*:manuals.*' insert-sections   true
+      zstyle ':completion:*:man:*'     menu yes select
 
       source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
