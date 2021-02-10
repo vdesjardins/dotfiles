@@ -4,7 +4,20 @@ with lib;
 
 mkMerge [
   {
-    programs.tmux.enable = true;
+    programs.tmux = { enable = true; };
+
+    nixpkgs.overlays = [
+      (self: super: {
+        tmux = super.tmux.overrideDerivation (attrs: {
+          src = pkgs.fetchFromGitHub {
+            owner = "tmux";
+            repo = "tmux";
+            rev = "03430887bed001037a39e8c85a7a8282e3d1eb61";
+            sha256 = "0i7x4mrhmc3awfvvhb28bw6lfcm3dv6clr0kdfh19nnlvckcqwwj";
+          };
+        });
+      })
+    ];
 
     programs.zsh.shellAliases = { t = "tmux attach -d"; };
 
