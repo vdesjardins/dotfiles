@@ -3,6 +3,7 @@
 let
   kubectl-view-utilization =
     pkgs.callPackage ./kubectl-view-utilization.nix { };
+  kubectl-trace = pkgs.callPackage ./kubectl-trace.nix { };
   ksniff = pkgs.callPackage ./ksniff.nix { };
 
 in with lib;
@@ -11,6 +12,7 @@ mkMerge [
   (mkIf config.programs.zsh.enable {
     home.packages = with pkgs; [
       kubectl
+      kubectl-trace
       kubectl-view-utilization
       ksniff
       gawk
