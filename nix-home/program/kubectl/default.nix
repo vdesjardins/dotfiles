@@ -31,9 +31,9 @@ mkMerge [
       shellGlobalAliases = {
         SL = "--show-labels";
         OJ = "-ojson";
-        OJB = "-ojson | bat -ljson";
+        OJB = "-ojson |& bat -ljson";
         OY = "-oyaml";
-        OYB = "-oyaml | bat -lyaml";
+        OYB = "-oyaml |& bat -lyaml";
         OW = "-owide";
       };
 
@@ -53,13 +53,28 @@ mkMerge [
 
         # pods
         kgc =
-          "kubectl get pods -o=custom-columns='POD:.metadata.name,CONTAINERS:..containers[*].name'";
+          "kubectl get pods -o=custom-columns='NAMESPACE:.metadata.namespace,POD:.metadata.name,CONTAINERS:..containers[*].name'";
         kgimg =
-          "kubectl get pods -o=custom-columns='POD:.metadata.name,IMAGES:.spec.containers[*].image'";
+          "kubectl get pods -o=custom-columns='NAMESPACE:.metadata.namespace,POD:.metadata.name,IMAGES:.spec.containers[*].image'";
+        kgpoall-problems =
+          "kubectl get pods --all-namespaces | grep -v -P '(Running|Completed)'";
 
         # context and ns switching
         kns = "kube-ns-switch";
         kctx = "kube-ctx-switch";
+
+        # edit
+        ke = "kubectl edit";
+
+        # top
+        ktp = "kc top pods";
+        ktc = "kc top pods --containers=true";
+        ktn = "kc top nodes";
+
+        # certs
+        kube-get-certs = ''
+          kubectl get certificates --all-namespaces -o jsonpath='{range .items[?(@.spec.commonName!="")]}{.spec.commonName}{"	"}{.status.notAfter}{"
+          "}' | sort'';
       };
     };
 
