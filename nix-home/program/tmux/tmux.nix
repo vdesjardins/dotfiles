@@ -11,6 +11,9 @@
   unbind-key r
   bind-key r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded"
 
+  # clear screen and history
+  bind-key -n C-l send-keys -R C-l \; clear-history
+
   # key binding
   set-window -g mode-keys vi
 
