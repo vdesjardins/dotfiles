@@ -15,6 +15,7 @@
     ../role/dev/lua
     ../role/dev/golang
     ../role/dev/rust
+    ../role/dev/debugging
     ../role/ops/docker
     ../role/ops/gcloud
     ../role/ops/k8s
