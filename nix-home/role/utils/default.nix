@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }: {
   imports = [
     ../../program/neovim
-    ../../program/emacs
     ../../program/bash
     ../../program/zsh
     ../../program/starship
