@@ -31,6 +31,7 @@
     fd
     findutils
     gnused
+    grpcurl
     htop
     hexyl
     hyperfine
