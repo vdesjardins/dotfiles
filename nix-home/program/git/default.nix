@@ -1,7 +1,11 @@
 { config, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [ gitAndTools.delta gitAndTools.git-filter-repo ];
+  home.packages = with pkgs; [
+    gitAndTools.delta
+    gitAndTools.git-filter-repo
+    git-revise
+  ];
 
   programs.git = {
     enable = true;
