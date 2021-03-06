@@ -2,6 +2,6 @@
   home.packages = with pkgs; [ just ];
 
   programs.zsh.initExtra = ''
-    source <(just --completions zsh) 2>/dev/null
+    source <(${pkgs.just}/bin/just --completions zsh) 2>/dev/null
   '';
 }
