@@ -1,9 +1,9 @@
-{ config, lib, pkgs, ... }:
-{
+{ config, lib, pkgs, ... }: {
   imports = [
     ../../../program/k9s
     ../../../program/kubectl
     ../../../program/istioctl
+    ../../../program/stern
   ];
 
   home.packages = with pkgs; [
@@ -13,7 +13,6 @@
     kube3d
     kustomize
     skaffold
-    stern
     telepresence
     velero
   ];
