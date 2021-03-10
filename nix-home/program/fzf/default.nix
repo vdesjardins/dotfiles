@@ -14,7 +14,7 @@ with lib;
   programs.zsh = {
     envExtra = ''
       source $HOME/.config/zsh/fzf-colors.zsh
-      export FZF_CTRL_T_OPTS="--bind 'ctrl-p:toggle-preview,ctrl-e:execute-silent(emacsclient -n {})+abort' --preview-window=right:60% --preview '${pkgs.bat}/bin/bat --color=always {} 2>/dev/null'"
+      export FZF_CTRL_T_OPTS="--bind 'ctrl-p:toggle-preview,ctrl-e:execute-silent(nvim {})+abort' --preview-window=right:60% --preview '${pkgs.bat}/bin/bat --color=always {} 2>/dev/null'"
       export FZF_DEFAULT_COMMAND='${pkgs.fd}/bin/fd --type f'
       export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     '';
