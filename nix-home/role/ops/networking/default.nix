@@ -1,8 +1,1 @@
-{ pkgs, ... }:
-{
-  home.packages = with pkgs; [
-    tcpdump
-    tshark
-    termshark
-  ];
-}
+{ pkgs, ... }: { home.packages = with pkgs; [ tcpdump tshark termshark ]; }
