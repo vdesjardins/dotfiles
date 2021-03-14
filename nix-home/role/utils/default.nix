@@ -20,38 +20,32 @@
     ../../program/comma
   ];
 
-  home.packages = with pkgs; [
-    act
-    bandwhich
-    coreutils
-    bottom
-    cachix
-    ctags
-    curl
-    fd
-    findutils
-    gnused
-    grpcurl
-    htop
-    hexyl
-    hyperfine
-    gnumake
-    jq
-    lazygit
-    lsof
-    pueue
-    ps
-    ripgrep
-    rsync
-    sysstat
-    openssh
-    tokei
-    topgrade
-    wget
-    wrk
-  ];
-
-  home.sessionVariables = {
-    LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-  };
+  home.packages = with pkgs;
+    [
+      act
+      bandwhich
+      coreutils
+      bottom
+      cachix
+      ctags
+      curl
+      fd
+      findutils
+      gnused
+      grpcurl
+      htop
+      hexyl
+      hyperfine
+      gnumake
+      jq
+      lazygit
+      lsof
+      ps
+      ripgrep
+      rsync
+      openssh
+      tokei
+      topgrade
+      wrk
+    ] ++ (if !stdenv.isDarwin then [ pueue sysstat wget ] else [ ]);
 }
