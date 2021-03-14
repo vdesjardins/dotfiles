@@ -70,4 +70,9 @@
     enableFontDir = true;
     fonts = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" ]; }) ];
   };
+
+  homebrew = {
+    enable = true;
+    casks = [ "karabiner-elements" ];
+  };
 }
