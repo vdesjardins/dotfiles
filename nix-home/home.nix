@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{ lib, config, pkgs, ... }:
+let
+  localconfig = import <localconfig>;
+  userImport = ./user + "/${localconfig.user}.nix";
+in {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -12,10 +16,5 @@
   # changes in each release.
   home.stateVersion = "20.09";
 
-  imports = [ ./user/vincent_desjardins.nix ];
-
-  home.sessionVariables = {
-    VAULT_USERNAME = "inf10906";
-    VAULT_ADDR = "https://vault.gcp.internal";
-  };
+  imports = [ userImport ];
 }

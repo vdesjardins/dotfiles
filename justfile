@@ -22,7 +22,7 @@ docker:
 # home-manager apply
 home-manager:
 	#!/usr/bin/env bash
-	home-manager switch
+	home-manager switch -I localconfig=$HOME/dotfiles/nix-home/machine/$(hostname).nix
 
 # home-manager install
 home-manager-install:
@@ -72,6 +72,9 @@ nix-darwin-update:
 	#!/usr/bin/env bash
 	nix-channel --update darwin
 	darwin-rebuild changelog
+
+# switch all
+switch: nix-darwin home-manager
 
 # Local Variables:
 # mode: makefile
