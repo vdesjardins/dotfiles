@@ -46,6 +46,7 @@
       openssh
       tokei
       topgrade
+      tree
       wrk
     ] ++ (if !stdenv.isDarwin then [ pueue sysstat wget ] else [ ]);
 }
