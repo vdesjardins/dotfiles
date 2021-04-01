@@ -10,6 +10,7 @@
     kind
     kubernetes-helm
     kubetail
+    kubeval
     kube3d
     kustomize
     skaffold
