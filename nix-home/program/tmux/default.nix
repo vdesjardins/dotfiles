@@ -12,8 +12,8 @@ mkMerge [
           src = pkgs.fetchFromGitHub {
             owner = "tmux";
             repo = "tmux";
-            rev = "03430887bed001037a39e8c85a7a8282e3d1eb61";
-            sha256 = "0i7x4mrhmc3awfvvhb28bw6lfcm3dv6clr0kdfh19nnlvckcqwwj";
+            rev = "be568ea3b21b88763d2cc274bdec3a476136de2f";
+            sha256 = "0jn7dmqx8gbf3jpf88d8yj5isjplwvcs26z3hdwwywikaq7gp1h5";
           };
         });
       })
