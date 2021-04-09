@@ -31,12 +31,13 @@
       curl
       fd
       findutils
+      gnumake
       gnused
       grpcurl
       htop
       hexyl
       hyperfine
-      gnumake
+      iotop
       jq
       lazygit
       lsof
