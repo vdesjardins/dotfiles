@@ -43,6 +43,7 @@
       diff = {
         renameLimit = 3000;
         algorithm = "patience";
+        colorMoved = "default";
       };
 
       push = {
