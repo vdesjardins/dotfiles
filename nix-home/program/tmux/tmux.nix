@@ -34,8 +34,8 @@
   bind ^A select-pane -t :.+
 
   # color!
-  set-option -g default-terminal screen-256color
-  set-option -sa terminal-overrides ',screen-256color:RGB'
+  set-option -g default-terminal "tmux-256color"
+  set-option -ag terminal-overrides ',*256col*:RGB'
 
   # quick view of processes
   bind '~' split-window "exec htop"
