@@ -1,9 +1,9 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   programs.direnv = {
     enable = true;
 
-    enableFishIntegration = true;
+    enableNixDirenvIntegration = true;
+
     enableZshIntegration = true;
   };
 }
