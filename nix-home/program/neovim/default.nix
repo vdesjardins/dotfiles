@@ -1,8 +1,16 @@
 { config, pkgs, ... }:
 let coc-settings = import ./coc-settings.nix { };
 in {
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url =
+        "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
+    }))
+  ];
   programs.neovim = {
     enable = true;
+
+    package = pkgs.neovim-nightly;
 
     viAlias = true;
     vimAlias = true;
