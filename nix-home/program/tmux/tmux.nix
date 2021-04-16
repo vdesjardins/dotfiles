@@ -19,6 +19,10 @@
   # key binding
   set-window -g mode-keys vi
 
+  # Use current directory for new panes and windows
+  unbind-key c; bind-key 'c' new-window -c '#{pane_current_path}'
+  unbind-key s; bind-key 's' split-window -c '#{pane_current_path}'
+
   # Setup 'v' to begin selection as in Vim
   bind-key -T edit-mode-vi Up send-keys -X history-up
   bind-key -T edit-mode-vi Down send-keys -X history-down
