@@ -12,7 +12,9 @@
   bind-key r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded"
 
   # clear screen and history
-  bind-key -n C-l send-keys -R C-l \; clear-history
+  forward_programs="view|n?vim?|ctrlp"
+  should_forward="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?($forward_programs)(diff)?$'"
+  bind -n C-l if-shell "$should_forward" "send-keys C-l" "send-keys -R C-l \; clear-history"
 
   # key binding
   set-window -g mode-keys vi
