@@ -19,10 +19,6 @@
   # key binding
   set-window -g mode-keys vi
 
-  # Use current directory for new panes and windows
-  unbind-key c; bind-key 'c' new-window -c '#{pane_current_path}'
-  unbind-key s; bind-key 's' split-window -c '#{pane_current_path}'
-
   # Setup 'v' to begin selection as in Vim
   bind-key -T edit-mode-vi Up send-keys -X history-up
   bind-key -T edit-mode-vi Down send-keys -X history-down
@@ -98,8 +94,9 @@
   bind-key l select-pane -R
 
   # use "v" and "s" to do vertical/horizontal splits, like vim
-  bind-key s split-window -v
-  bind-key v split-window -h
+  bind-key c new-window -c '#{pane_current_path}'
+  bind-key s split-window -v -c '#{pane_current_path}'
+  bind-key v split-window -h -c '#{pane_current_path}'
 
   # use vim resize keys with submode.
   bind-key Z switch-client -T RESIZE
