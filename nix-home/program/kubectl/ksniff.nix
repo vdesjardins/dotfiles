@@ -1,14 +1,5 @@
 { config, lib, pkgs, ... }:
-let
-  static-tcpdump = pkgs.tcpdump.overrideDerivation (oldAttrs: {
-    name = "static-tcpdump";
-    postInstall = ''
-      mv $out/sbin/tcpdump $out/sbin/static-tcpdump
-    '';
-    makeFlags = [ "CFLAGS=-static" ];
-    configureFlags = oldAttrs.configureFlags ++ [ "--without-crypto" ];
-    buildInputs = oldAttrs.buildInputs ++ [ pkgs.glibc pkgs.glibc.static ];
-  });
+let static-tcpdump = pkgs.callPackage ./static-tcpdump.nix { };
 in pkgs.buildGoModule rec {
   name = "ksniff";
 
