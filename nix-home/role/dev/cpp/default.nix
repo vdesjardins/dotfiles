@@ -1,9 +1,3 @@
-{ config, lib, pkgs, ... }:
-{
-  home.packages = with pkgs; [
-    gcc
-    poco
-    cmake
-    clang-tools
-  ];
+{ config, lib, pkgs, ... }: {
+  home.packages = with pkgs; [ gcc poco cmake clang-tools cppcheck ];
 }
