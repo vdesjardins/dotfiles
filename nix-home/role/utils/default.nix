@@ -18,6 +18,7 @@
     ../../program/any-nix-shell
     ../../program/ls
     ../../program/comma
+    ../../program/efm-langserver
   ];
 
   home.packages = with pkgs;
