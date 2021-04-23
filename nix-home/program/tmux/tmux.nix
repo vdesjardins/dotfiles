@@ -37,7 +37,7 @@
 
   # color!
   set-option -g default-terminal "tmux-256color"
-  set-option -ag terminal-overrides ',*256col*:RGB'
+  set-option -sa terminal-overrides ',*256col*:RGB'
 
   # quick view of processes
   bind '~' split-window "exec htop"
@@ -55,7 +55,6 @@
   set-option -g   visual-bell off
   set-option -g   set-titles on
   set-option -g   set-titles-string ' #I-#W '
-  set-option -g   terminal-overrides 'xterm*:smcup@:rmcup@'
   set-option -g   base-index 1
   set-option -g   display-time 1500
   set-option -g   renumber-windows on
