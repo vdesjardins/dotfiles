@@ -68,7 +68,8 @@
 
   fonts = {
     enableFontDir = true;
-    fonts = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" ]; }) ];
+    fonts = with pkgs;
+      [ (nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; }) ];
   };
 
   homebrew = {
