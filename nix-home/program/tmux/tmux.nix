@@ -11,11 +11,6 @@
   unbind-key r
   bind-key r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded"
 
-  # clear screen and history
-  forward_programs="view|n?vim?|ctrlp"
-  should_forward="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?($forward_programs)(diff)?$'"
-  bind -n C-l if-shell "$should_forward" "send-keys C-l" "send-keys -R C-l \; clear-history"
-
   # key binding
   set-window -g mode-keys vi
 
@@ -30,10 +25,6 @@
 
   # update environment variables
   set-option -g update-environment "SSH_ASKPASS SSH_AUTH_SOCK SSH_AGENT_PID SSH_CONNECTION DISPLAY"
-
-  # quick pane cycling
-  unbind ^A
-  bind ^A select-pane -t :.+
 
   # color!
   set-option -g default-terminal "tmux-256color"
@@ -85,12 +76,35 @@
   set-window-option -g window-status-format ' #I-#W '
   set-window-option -g window-status-current-format ' #I-#W '
 
+  # quick pane cycling
+  unbind ^A
+  bind ^A select-pane -t :.+
+
   # Pane
   unbind-key l
   bind-key h select-pane -L
   bind-key j select-pane -D
   bind-key k select-pane -U
   bind-key l select-pane -R
+
+  # Smart pane switching with awareness of Vim splits.
+  # See: https://github.com/christoomey/vim-tmux-navigator
+  is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+      | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+  bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
+  bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
+  bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
+  bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
+  bind-key -n 'C-\' if-shell "$is_vim" 'send-keys C-\'  'select-pane -l'
+
+  bind-key -T copy-mode-vi 'C-h' select-pane -L
+  bind-key -T copy-mode-vi 'C-j' select-pane -D
+  bind-key -T copy-mode-vi 'C-k' select-pane -U
+  bind-key -T copy-mode-vi 'C-l' select-pane -R
+  bind-key -T copy-mode-vi 'C-\' select-pane -l
+
+  # clear screen and history
+  bind BSpace "send-keys -R C-l \; clear-history"
 
   # use "v" and "s" to do vertical/horizontal splits, like vim
   bind-key c new-window -c '#{pane_current_path}'
