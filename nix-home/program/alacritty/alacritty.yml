@@ -300,6 +300,7 @@ key_bindings:
   - { key: B, mods: Alt, chars: "\x1bb" }
   # https://github.com/jwilm/alacritty/issues/93#issuecomment-427592040
   - { key: D, mods: Alt, chars: "\x1bd" }
+  - { key: A, mods: Alt, chars: "\x1ba" }
 
   - { key: Period, mods: Alt, chars: "\x1b." }
 
