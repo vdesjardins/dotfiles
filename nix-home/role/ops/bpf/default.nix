@@ -1,7 +1,3 @@
 { config, pkgs, ... }: {
-  home.packages = with pkgs; [
-    bpftool
-    linuxPackages.bpftrace
-    linuxPackages.bcc
-  ];
+  home.packages = with pkgs; [ bpftool linuxPackages.bpftrace ];
 }
