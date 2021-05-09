@@ -1,11 +1,17 @@
 { config, pkgs, ... }:
-let coc-settings = import ./coc-settings.nix { };
-in {
+let
+  coc-settings = import ./coc-settings.nix {};
+in
+{
   nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url =
-        "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
-    }))
+    (
+      import (
+        builtins.fetchTarball {
+          url =
+            "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
+        }
+      )
+    )
   ];
   programs.neovim = {
     enable = true;
@@ -23,7 +29,7 @@ in {
 
     withRuby = false;
 
-    extraPackages = with pkgs; [ ctags ];
+    extraPackages = with pkgs; [ ctags tree-sitter ];
 
     plugins = with pkgs.vimPlugins; [
       vim-sensible
@@ -70,7 +76,7 @@ in {
       vim-json
       vim-dispatch
       vim-abolish
-      vim-markdown-composer
+      #vim-markdown-composer
       vim-devicons
     ];
 
