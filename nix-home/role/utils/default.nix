@@ -32,6 +32,7 @@
       curl
       fd
       findutils
+      glow
       gnumake
       gnused
       grpcurl
